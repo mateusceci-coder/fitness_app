@@ -74,3 +74,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .head-text {
+    @apply text-4xl text-blue-800 text-center
+  }
+
+  .subtitle {
+    @apply text-2xl text-center
+  }
+}
