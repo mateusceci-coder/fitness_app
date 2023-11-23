@@ -84,3 +84,19 @@
     @apply text-2xl text-center
   }
 }
+
+@keyframes infiniteScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.infinite-scale {
+  animation: infiniteScale 2s infinite;
+}
