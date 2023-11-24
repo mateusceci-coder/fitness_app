@@ -12,6 +12,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Dispatch, SetStateAction } from "react";
+
+import { UserProps } from "@/pages/Profile";
+
 
 const formSchema = z.object({
   firstname: z.string().min(3, {
@@ -56,9 +67,19 @@ const formSchema = z.object({
     .lte(200, {
       message: "Must weigh less than 200 kg",
     }),
+    gender: z.string({
+      required_error: "Please select a gender"
+    })
 });
 
-export default function FormProfile() {
+interface UserLogged {
+    setFirstProfile: Dispatch<SetStateAction<boolean>>
+    setUserInfo: Dispatch<SetStateAction<UserProps>>
+    setIsUpdating: Dispatch<SetStateAction<boolean>>
+}
+
+export default function FormProfile({setFirstProfile, setUserInfo, setIsUpdating }: UserLogged) {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,23 +88,31 @@ export default function FormProfile() {
       age: undefined,
       height: undefined,
       weight: undefined,
+      gender: "",
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    setIsUpdating(false)
+    setFirstProfile(false)
+    setUserInfo({
+        firstname: values.firstname,
+        lastname: values.lastname,
+        age: values.age,
+        height: values.height,
+        weight: values.weight,
+        gender: values.gender
+    })
   }
   return (
-    <div className="px-1 pb-16">
-      <h2 className="subtitle">Form Profile</h2>
+    <div className="px-1 pb-16 mt-10">
+      <h2 className="subtitle mb-8">Form Profile</h2>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-lg mx-auto"
+          className="space-y-8 max-w-lg mx-auto border-2 p-4 rounded-2xl"
         >
           <FormField
             control={form.control}
@@ -165,6 +194,27 @@ export default function FormProfile() {
               </FormItem>
             )}
           />
+           <FormField
+          control={form.control}
+          name="gender"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Gender</FormLabel>
+              <Select onValueChange={field.onChange} required >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a gender" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="men">Man</SelectItem>
+                  <SelectItem value="women">Woman</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
           <div className="flex justify-center">
             <Button type="submit">Submit</Button>
           </div>

@@ -5,10 +5,12 @@ import Profile from "./pages/Profile";
 import Workouts from "./pages/Workouts";
 
 import BottomBar from "./layouts/BottomBar";
+import Navbar from "./layouts/TopBar";
 
 export default function App() {
   return (
   <Router>
+    <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="exercises" element={<Exercises />} />

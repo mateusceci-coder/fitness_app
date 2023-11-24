@@ -83,6 +83,10 @@
   .subtitle {
     @apply text-2xl text-center
   }
+
+  .nav-button {
+    @apply border-2 border-primary rounded-xl hover:bg-secondary hover:text-primary hover:cursor-pointer p-2
+  }
 }
 
 @keyframes infiniteScale {
