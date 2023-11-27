@@ -85,9 +85,9 @@ export default function FormProfile({setFirstProfile, setUserInfo, setIsUpdating
     defaultValues: {
       firstname: "",
       lastname: "",
-      age: undefined,
-      height: undefined,
-      weight: undefined,
+      age: 0,
+      height: 0,
+      weight: 0,
       gender: "",
     },
   });
@@ -207,8 +207,8 @@ export default function FormProfile({setFirstProfile, setUserInfo, setIsUpdating
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="men">Man</SelectItem>
-                  <SelectItem value="women">Woman</SelectItem>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="women">Female</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

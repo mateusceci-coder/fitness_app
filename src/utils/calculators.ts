@@ -17,7 +17,7 @@ export function bmiCalculator(height: number, weight: number) {
 
 export function caloriesCalculator(height: number, weight:number, age:number, sex:string) {
     let result
-    if (sex === "men") {
+    if (sex === "male") {
         result = 88.362 + (13.397 * weight) + (4.799*height) - (5.677 * age)
     } else {
         result = 447.593 + (9.247 * weight) + (3.098*height) - (4.330 * age)

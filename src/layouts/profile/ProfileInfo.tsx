@@ -24,15 +24,15 @@ export default function ProfileInfo({userInfo, setIsUpdating}: ProfileProps) {
     <div className="mx-auto">
       <h1 className="head-text">Hello, {firstname}!</h1>
       <h2 className="subtitle">Here is your informations. You can update whenever you want!</h2>
-      <ul className="my-20 text-primary">
-        <li>Name: {firstname} {lastname}</li>
-        <li>Age: {age} years old</li>
-        <li>Height {height} cm</li>
-        <li>Weight: {weight} kg</li>
-        <li>Gender: {gender}</li>
+      <div className="flex gap-16 justify-center">
+      <ul className="text-primary">
+        <li><span className="text-mainBlue">Name:</span> {firstname} {lastname}</li>
+        <li><span className="text-mainBlue">Age:</span> {age} years old</li>
+        <li><span className="text-mainBlue">Height:</span> {height} cm</li>
+        <li><span className="text-mainBlue">Weight:</span> {weight} kg</li>
+        <li><span className="text-mainBlue">Gender:</span> {gender}</li>
       </ul>
-
-      <ul className="my-5">
+      <ul>
         <li>
           <p>BMI</p>
           <span>{bmi.bmi} "{bmi.result}"</span>
@@ -42,7 +42,10 @@ export default function ProfileInfo({userInfo, setIsUpdating}: ProfileProps) {
             <span>You need {calories} kcal to maintain your weight</span>
         </li>
       </ul>
-      <Button onClick={() => handleUpdate()}>Update Profile</Button>
+      </div>
+      <div className="flex justify-center">
+        <Button onClick={() => handleUpdate()}>Update Profile</Button>
+      </div>
     </div>
   )
 }

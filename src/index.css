@@ -77,7 +77,7 @@
 
 @layer components {
   .head-text {
-    @apply text-4xl text-blue-800 text-center
+    @apply text-4xl text-mainBlue text-center
   }
 
   .subtitle {
