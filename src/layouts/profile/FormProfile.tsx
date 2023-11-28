@@ -85,9 +85,9 @@ export default function FormProfile({setFirstProfile, setUserInfo, setIsUpdating
     defaultValues: {
       firstname: "",
       lastname: "",
-      age: 0,
-      height: 0,
-      weight: 0,
+      age: undefined,
+      height: undefined,
+      weight: undefined,
       gender: "",
     },
   });

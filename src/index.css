@@ -104,3 +104,7 @@
 .infinite-scale {
   animation: infiniteScale 2s infinite;
 }
+
+.scale-on-hover:hover {
+  transform: scale(1.05);
+}
