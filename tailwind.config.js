@@ -75,6 +75,10 @@ module.exports = {
       },
       spacing: {
         '128': '32rem',
+        '112': '28rem'
+      },
+      fontFamily: {
+        playfair: ['Playfair Display','sans-serif']
       }
     },
   },
