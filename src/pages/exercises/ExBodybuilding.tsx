@@ -8,13 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { exercisesBodybuildingList } from "@/constants/exercises";
+import { exercisesBodybuildingList, exercisesProps } from "@/constants/exercises";
+import { RootReducer } from "@/store/store";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 
 export default function ExBodybuilding() {
-  const [newBodybuildingList, setNewBodybuildingList] = useState(exercisesBodybuildingList)
-  
+  const [newBodybuildingList, setNewBodybuildingList] = useState<exercisesProps[]>(exercisesBodybuildingList)
+  const { bodybuildingList } = useSelector((store: RootReducer) => store.exercise)
+
   return (
     <section>
       <header className="my-16">
@@ -33,7 +36,7 @@ export default function ExBodybuilding() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {newBodybuildingList.map((exercise) => {
+          {bodybuildingList.map((exercise) => {
             return (
               <TableRow>
                 <TableCell className="font-medium">
@@ -42,7 +45,7 @@ export default function ExBodybuilding() {
                 <TableCell className="text-right">
                   {exercise.equipment}
                 </TableCell>
-                <TableCell className="text-right">{exercise.weight}</TableCell>
+                <TableCell className="text-right">{Number(exercise.weight.toFixed(2))}</TableCell>
                 <TableCell className="text-right">
                   {exercise.relation}
                 </TableCell>

@@ -39,7 +39,7 @@ export default function DialogButton({
           id: crypto.randomUUID(),
           exercise: exercise,
           equipment: equipment,
-          weight: maxRep,
+          weight: Number(maxRep.toFixed(2)),
         },
       ]);
     } else {
@@ -49,7 +49,7 @@ export default function DialogButton({
           id: crypto.randomUUID(),
           exercise: exercise,
           equipment: equipment,
-          weight: maxRep,
+          weight: Number(maxRep.toFixed(2)),
         },
       ]);
     }

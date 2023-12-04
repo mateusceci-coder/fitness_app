@@ -1,7 +1,8 @@
 import CreateProfileText from "@/layouts/profile/CreateProfileText";
 import FormProfile from "@/layouts/profile/FormProfile";
 import ProfileInfo from "@/layouts/profile/ProfileInfo";
-import { useState } from "react";
+import { RootReducer } from "@/store/store";
+import { useSelector } from "react-redux";
 
 
 export interface UserProps {
@@ -14,21 +15,15 @@ export interface UserProps {
 }
 
 export default function Profile() {
-    const [isUpdating, setIsUpdating] = useState<boolean>(false)
-    const [firstProfile, setFirstProfile] = useState<boolean>(true)
-    const [userInfo, setUserInfo] = useState<UserProps>({
-      firstname: "",
-      lastname: "",
-      age: 0,
-      height: 0,
-      weight: 0,
-      gender: "",
-    })
-    const renderForm = isUpdating || firstProfile
+
+    const { updatingProfile, firstProfile } = useSelector((store: RootReducer) => store.profile)
+
+    const renderForm = updatingProfile || firstProfile
+
     return (
     <div className={`${!renderForm ? "flex justify-center items-center" : "grid lg:grid-cols-2" } my-4 p-1`}>
-      {firstProfile ? <CreateProfileText /> : <ProfileInfo userInfo={userInfo} setIsUpdating={setIsUpdating} />}
-      {renderForm && <FormProfile setUserInfo={setUserInfo} setFirstProfile={setFirstProfile} setIsUpdating={setIsUpdating} />}
+      {firstProfile ? <CreateProfileText /> : <ProfileInfo />}
+      {renderForm && <FormProfile />}
     </div>
   );
 }

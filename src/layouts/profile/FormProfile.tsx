@@ -19,9 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Dispatch, SetStateAction } from "react";
 
 import { UserProps } from "@/pages/Profile";
+import { useDispatch } from "react-redux";
+import { isFirstProfile, isUpdating, updateUser } from "@/store/reducers/profile";
 
 
 const formSchema = z.object({
@@ -72,13 +73,15 @@ const formSchema = z.object({
     })
 });
 
-interface UserLogged {
-    setFirstProfile: Dispatch<SetStateAction<boolean>>
-    setUserInfo: Dispatch<SetStateAction<UserProps>>
-    setIsUpdating: Dispatch<SetStateAction<boolean>>
-}
+// interface UserLogged {
+//     setFirstProfile: Dispatch<SetStateAction<boolean>>
+//     setUserInfo: Dispatch<SetStateAction<UserProps>>
+//     setIsUpdating: Dispatch<SetStateAction<boolean>>
+// }
 
-export default function FormProfile({setFirstProfile, setUserInfo, setIsUpdating }: UserLogged) {
+export default function FormProfile() {
+
+  const dispatch = useDispatch()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -94,17 +97,20 @@ export default function FormProfile({setFirstProfile, setUserInfo, setIsUpdating
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsUpdating(false)
-    setFirstProfile(false)
-    setUserInfo({
-        firstname: values.firstname,
-        lastname: values.lastname,
-        age: values.age,
-        height: values.height,
-        weight: values.weight,
-        gender: values.gender
-    })
+       const profileData = {
+      firstname: values.firstname,
+      lastname: values.lastname,
+      age: values.age,
+      height: values.height,
+      weight: values.weight,
+      gender: values.gender
+    }
+
+    dispatch(isFirstProfile(false))
+    dispatch(isUpdating(false))
+    dispatch(updateUser(profileData))
   }
+
   return (
     <div className="px-1 pb-16 mt-10">
       <h2 className="subtitle mb-8">Form Profile</h2>

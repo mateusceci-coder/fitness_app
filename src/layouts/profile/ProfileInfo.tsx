@@ -1,21 +1,20 @@
 import { Button } from "@/components/ui/button"
-import { UserProps } from "@/pages/Profile"
-import { Dispatch, SetStateAction } from "react"
 import { bmiCalculator, caloriesCalculator } from "@/lib/calculators"
 import { capitalize } from "@/lib/utils"
+import { useDispatch, useSelector } from "react-redux"
+import { RootReducer } from "@/store/store"
+import { isUpdating } from "@/store/reducers/profile"
 
 
 
-interface ProfileProps {
-  userInfo: UserProps
-  setIsUpdating: Dispatch<SetStateAction<boolean>>
-}
 
-export default function ProfileInfo({userInfo, setIsUpdating}: ProfileProps) {
-  const { firstname, lastname, age, height, weight, gender } = userInfo
+
+export default function ProfileInfo()  {
+  const { firstname, lastname, age, height, weight, gender } = useSelector((store: RootReducer) => store.profile)
+  const dispatch = useDispatch()
 
   const handleUpdate = () => {
-    setIsUpdating(true)
+    dispatch(isUpdating(true))
   }
 
   const bmi = bmiCalculator(height,weight)
