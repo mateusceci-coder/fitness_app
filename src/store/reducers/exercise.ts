@@ -11,6 +11,7 @@ interface ExerciseParams {
 interface exercisesList {
     crossfitList: ExerciseParams[]
     bodybuildingList: ExerciseParams[]
+    exerciseId: string
 }
 
 const initialState: exercisesList = {
@@ -26,16 +27,31 @@ const initialState: exercisesList = {
       equipment: "Bar",
       weight: 0,
     }],
+    exerciseId: "",
 }
 
   const exerciseSlice = createSlice({
     name: "exercise",
     initialState,
     reducers: {
-
+      editingExerciseId: (state, action: PayloadAction<string>) => {
+        state.exerciseId = action.payload
+      },
+      updateWeightBodybuilding: (state, action: PayloadAction<ExerciseParams[]>) => {
+        state.bodybuildingList = action.payload
+      },
+      updateWeightCrossfit: (state, action: PayloadAction<ExerciseParams[]>) => {
+        state.crossfitList = action.payload
+      },
+      delExCrossfit: (state, action: PayloadAction<ExerciseParams[]>) => {
+          state.crossfitList = action.payload
+      },
+      delExBodybuilding: (state, action: PayloadAction<ExerciseParams[]>) => {
+        state.bodybuildingList = action.payload
+    }
     },
   });
 
-  export const { } = exerciseSlice.actions;
+  export const { editingExerciseId, updateWeightBodybuilding, updateWeightCrossfit, delExCrossfit, delExBodybuilding } = exerciseSlice.actions;
 
 export default exerciseSlice.reducer;

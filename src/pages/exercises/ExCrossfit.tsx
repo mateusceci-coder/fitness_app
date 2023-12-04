@@ -11,41 +11,49 @@ import {
 } from "@/components/ui/table";
 import { exercisesCrossfitList, exercisesProps } from "@/constants/exercises";
 import { capitalize } from "@/lib/utils";
+import {
+  delExCrossfit,
+  editingExerciseId,
+  updateWeightCrossfit,
+} from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
 import { Check } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ExCrossfit() {
   const [newCrossfitList, setNewCrossfitList] = useState<exercisesProps[]>(
     exercisesCrossfitList
   );
-  const [editingExerciseId, setEditingExerciseId] = useState("");
-  const { crossfitList } = useSelector((store: RootReducer) =>  store.exercise)
+  const { crossfitList, exerciseId } = useSelector(
+    (store: RootReducer) => store.exercise
+  );
+  const dispatch = useDispatch();
 
   const handleDelExerciseCrossfit = (id: string) => {
-    setNewCrossfitList(
-      newCrossfitList.filter((exercise) => exercise.id !== id)
+    dispatch(
+      delExCrossfit(crossfitList.filter((exercise) => exercise.id !== id))
     );
   };
 
   const handleUpdateRM = (exerciseId: string) => {
-    setEditingExerciseId(exerciseId);
+    dispatch(editingExerciseId(exerciseId));
   };
 
   const handleInputRM = (
     event: ChangeEvent<HTMLInputElement>,
     exerciseId: string
   ) => {
-    const updatedList = newCrossfitList.map((exercise) =>
+    const updatedList = crossfitList.map((exercise) =>
       exercise.id === exerciseId
         ? { ...exercise, weight: Number((+event.target.value).toFixed(2)) }
         : exercise
     );
-    setNewCrossfitList(updatedList);
+    dispatch(updateWeightCrossfit(updatedList));
   };
+
   const handleFinishEditing = () => {
-    setEditingExerciseId("");
+    dispatch(editingExerciseId(""));
   };
 
   return (
@@ -76,7 +84,7 @@ export default function ExCrossfit() {
                   {exercise.equipment}
                 </TableCell>
                 <TableCell className="text-right ">
-                  {editingExerciseId === exercise.id ? (
+                  {exerciseId === exercise.id ? (
                     <div className="flex justify-end">
                       <Input
                         className="w-16"
@@ -98,7 +106,7 @@ export default function ExCrossfit() {
                   {exercise.relation}
                 </TableCell>
                 <TableCell className="text-right">
-                  {editingExerciseId === exercise.id ? (
+                  {exerciseId === exercise.id ? (
                     ""
                   ) : (
                     <Button onClick={() => handleUpdateRM(exercise.id)}>

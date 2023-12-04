@@ -1,5 +1,6 @@
 import DialogButton from "@/components/DialogButton";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -9,14 +10,43 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { exercisesBodybuildingList, exercisesProps } from "@/constants/exercises";
+import { delExBodybuilding, editingExerciseId, updateWeightBodybuilding } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { Check } from "lucide-react";
+import { ChangeEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 
 export default function ExBodybuilding() {
   const [newBodybuildingList, setNewBodybuildingList] = useState<exercisesProps[]>(exercisesBodybuildingList)
-  const { bodybuildingList } = useSelector((store: RootReducer) => store.exercise)
+  const { bodybuildingList, exerciseId } = useSelector((store: RootReducer) => store.exercise)
+  const dispatch = useDispatch()
+
+  const handleInputRM = (
+    event: ChangeEvent<HTMLInputElement>,
+    exerciseId: string
+  ) => {
+    const updatedList = bodybuildingList.map((exercise) =>
+      exercise.id === exerciseId
+        ? { ...exercise, weight: Number((+event.target.value).toFixed(2)) }
+        : exercise
+    );
+    dispatch(updateWeightBodybuilding(updatedList));
+  };
+
+  const handleUpdateRM = (exerciseId: string) => {
+    dispatch(editingExerciseId(exerciseId));
+  };
+
+  const handleFinishEditing = () => {
+    dispatch(editingExerciseId(""));
+  };
+
+  const handleDelExerciseBodybuilding = (id: string) => {
+    dispatch(
+      delExBodybuilding(bodybuildingList.filter((exercise) => exercise.id !== id))
+    );
+  };
 
   return (
     <section>
@@ -45,15 +75,44 @@ export default function ExBodybuilding() {
                 <TableCell className="text-right">
                   {exercise.equipment}
                 </TableCell>
-                <TableCell className="text-right">{Number(exercise.weight.toFixed(2))}</TableCell>
+                <TableCell className="text-right ">
+                  {exerciseId === exercise.id ? (
+                    <div className="flex justify-end">
+                      <Input
+                        className="w-16"
+                        type="number"
+                        value={exercise.weight}
+                        onChange={(event) => handleInputRM(event, exercise.id)}
+                      />{" "}
+                      <Check
+                        color="green"
+                        className="ml-1 cursor-pointer"
+                        onClick={handleFinishEditing}
+                      />
+                    </div>
+                  ) : (
+                    Number(exercise.weight.toFixed(2))
+                  )}
+                </TableCell>
                 <TableCell className="text-right">
                   {exercise.relation}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button>Update</Button>
+                  {exerciseId === exercise.id ? (
+                    ""
+                  ) : (
+                    <Button onClick={() => handleUpdateRM(exercise.id)}>
+                      Update
+                    </Button>
+                  )}
                 </TableCell>
                 <TableCell>
-                  <Button className="bg-destructive ">Delete</Button>
+                  <Button
+                    className="bg-destructive"
+                    onClick={() => handleDelExerciseBodybuilding(exercise.id)}
+                  >
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             );
