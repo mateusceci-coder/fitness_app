@@ -9,26 +9,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { exercisesBodybuildingList, exercisesProps } from "@/constants/exercises";
-import { delExBodybuilding, editingExerciseId, updateWeightBodybuilding } from "@/store/reducers/exercise";
+import {
+  delExBodybuilding,
+  editingExerciseId,
+  updateWeightBodybuilding,
+} from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
 import { Check } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-
 export default function ExBodybuilding() {
-  const [newBodybuildingList, setNewBodybuildingList] = useState<exercisesProps[]>(exercisesBodybuildingList)
-  const { bodybuildingList, exerciseId } = useSelector((store: RootReducer) => store.exercise)
-  const dispatch = useDispatch()
+  const { bodybuildingList, exerciseId } = useSelector(
+    (store: RootReducer) => store.exercise
+  );
+  const { weightUser } = useSelector((store: RootReducer) => store.profile);
+  const dispatch = useDispatch();
 
   const handleInputRM = (
     event: ChangeEvent<HTMLInputElement>,
     exerciseId: string
   ) => {
+    const newWeight = Number((+event.target.value).toFixed(2));
     const updatedList = bodybuildingList.map((exercise) =>
       exercise.id === exerciseId
-        ? { ...exercise, weight: Number((+event.target.value).toFixed(2)) }
+        ? {
+            ...exercise,
+            weight: newWeight,
+            relation:
+              weightUser === 0 || newWeight < 0
+                ? 0
+                : Number((+event.target.value / weightUser).toFixed(2)),
+          }
         : exercise
     );
     dispatch(updateWeightBodybuilding(updatedList));
@@ -44,7 +56,9 @@ export default function ExBodybuilding() {
 
   const handleDelExerciseBodybuilding = (id: string) => {
     dispatch(
-      delExBodybuilding(bodybuildingList.filter((exercise) => exercise.id !== id))
+      delExBodybuilding(
+        bodybuildingList.filter((exercise) => exercise.id !== id)
+      )
     );
   };
 
@@ -54,7 +68,7 @@ export default function ExBodybuilding() {
         <h1 className="head-text">Bodybuilding Exercises</h1>
       </header>
       <div className="flex justify-center pb-5">
-        <DialogButton setNewBodybuildingList={setNewBodybuildingList} />
+        <DialogButton />
       </div>
       <Table className="max-w-5xl mx-auto">
         <TableHeader>
@@ -83,6 +97,7 @@ export default function ExBodybuilding() {
                         type="number"
                         value={exercise.weight}
                         onChange={(event) => handleInputRM(event, exercise.id)}
+                        min={0}
                       />{" "}
                       <Check
                         color="green"
@@ -90,6 +105,8 @@ export default function ExBodybuilding() {
                         onClick={handleFinishEditing}
                       />
                     </div>
+                  ) : exercise.weight < 0 ? (
+                    0
                   ) : (
                     Number(exercise.weight.toFixed(2))
                   )}

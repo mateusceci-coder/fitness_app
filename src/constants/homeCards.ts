@@ -10,7 +10,7 @@ export const homeCards: homeCardsProps[] = [
   {
     name: "Profile",
     description:
-      "Write your information and discover your BMI, BMR and relationship between your weight and your 1 rep max",
+      "Write your information and discover your Body Mass Index and your Body Metabolic Rate",
     image: "src/images/profile-home.jpg",
     alt: "exercises-home",
     page: "profile"

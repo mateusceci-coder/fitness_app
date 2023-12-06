@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -12,47 +13,53 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { exercisesProps } from "@/constants/exercises";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  addExerciseBodybuilding,
+  addExerciseCrossfit,
+} from "@/store/reducers/exercise";
+import { RootReducer } from "@/store/store";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-interface Params {
-  setNewCrossfitList: Dispatch<SetStateAction<exercisesProps[]>>;
-  setNewBodybuildingList: Dispatch<SetStateAction<exercisesProps[]>>;
-}
-
-export default function DialogButton({
-  setNewBodybuildingList,
-  setNewCrossfitList,
-}: Params) {
+export default function DialogButton() {
   const [exercise, setExercise] = useState("");
-  const [equipment, setEquipment] = useState("");
+  const [equipment, setEquipment] = useState("Bar");
   const [maxRep, setMaxRep] = useState(0);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { weightUser } = useSelector((store: RootReducer) => store.profile);
 
   const handleNewExercise = () => {
-    if (location.pathname === "/exercises/crossfit") {
-      setNewCrossfitList((list) => [
-        ...list,
-        {
-          id: crypto.randomUUID(),
-          exercise: exercise,
-          equipment: equipment,
-          weight: Number(maxRep.toFixed(2)),
-        },
-      ]);
-    } else {
-      setNewBodybuildingList((list) => [
-        ...list,
-        {
-          id: crypto.randomUUID(),
-          exercise: exercise,
-          equipment: equipment,
-          weight: Number(maxRep.toFixed(2)),
-        },
-      ]);
+    let relation: number;
+
+    if (!exercise) {
+      return;
     }
+
+    if (weightUser) {
+      relation = Number((maxRep / weightUser).toFixed(2));
+    } else {
+      relation = 0;
+    }
+
+    const newExercise = {
+      id: crypto.randomUUID(),
+      exercise: exercise,
+      equipment: equipment,
+      weight: Number(maxRep.toFixed(2)),
+      relation: relation,
+    };
+
+    if (location.pathname === "/exercises/crossfit") {
+      dispatch(addExerciseCrossfit(newExercise));
+    } else {
+      dispatch(addExerciseBodybuilding(newExercise));
+    }
+
+    setExercise("");
+    setEquipment("Bar");
+    setMaxRep(0);
   };
 
   return (
@@ -60,7 +67,7 @@ export default function DialogButton({
       <DialogTrigger asChild>
         <Button>Add Exercise</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[512px]">
         <DialogHeader>
           <DialogTitle>Add New Exercise</DialogTitle>
           <DialogDescription>
@@ -75,7 +82,6 @@ export default function DialogButton({
             </Label>
             <Input
               id="exercise"
-              defaultValue=""
               onChange={(e) => setExercise(e.target.value)}
               className="col-span-3"
             />
@@ -84,7 +90,7 @@ export default function DialogButton({
             <Label htmlFor="equipment" className="text-right">
               Equipment
             </Label>
-            <RadioGroup defaultValue="bar" className="flex">
+            <RadioGroup className="flex" defaultValue="Bar">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem
                   value="Bar"

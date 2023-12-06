@@ -5,7 +5,7 @@ interface ProfileParams {
   lastname: string;
   age: number;
   height: number;
-  weight: number;
+  weightUser: number;
   gender: string;
   firstProfile: boolean;
   updatingProfile: boolean;
@@ -16,7 +16,7 @@ firstname: string;
   lastname: string;
   age: number;
   height: number;
-  weight: number;
+  weightUser: number;
   gender: string;
 }
 
@@ -25,7 +25,7 @@ const initialState: ProfileParams = {
   lastname: "",
   age: 0,
   height: 0,
-  weight: 0,
+  weightUser: 0,
   gender: "",
   firstProfile: true,
   updatingProfile: false,
@@ -42,15 +42,15 @@ const profileSlice = createSlice({
       state.updatingProfile = action.payload;
     },
     updateUser: (state, action: PayloadAction<Profile>) => {
-      const { firstname, lastname, age, height, weight, gender } =
+      const { firstname, lastname, age, height, weightUser, gender } =
         action.payload;
 
         (state.firstname = firstname),
         (state.lastname = lastname),
         (state.age = age),
         (state.height = height),
-        (state.weight = weight),
-        (state.gender = gender);
+        (state.weightUser = weightUser),
+        (state.gender = gender)
     },
   },
 });

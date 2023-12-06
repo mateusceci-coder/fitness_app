@@ -1,5 +1,8 @@
 export function bmiCalculator(height: number, weight: number) {
-    const bmi = weight/((height/10)*(height/10))
+
+    const heightM = height /100
+
+    const bmi = weight/(heightM * heightM)
 
     let result;
     if (bmi < 18.5) {

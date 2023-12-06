@@ -18,12 +18,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
-import { UserProps } from "@/pages/Profile";
 import { useDispatch } from "react-redux";
-import { isFirstProfile, isUpdating, updateUser } from "@/store/reducers/profile";
+import {
+  isFirstProfile,
+  isUpdating,
+  updateUser,
+} from "@/store/reducers/profile";
 
+import { newUserWeight } from "@/store/reducers/exercise";
 
 const formSchema = z.object({
   firstname: z.string().min(3, {
@@ -68,20 +72,13 @@ const formSchema = z.object({
     .lte(200, {
       message: "Must weigh less than 200 kg",
     }),
-    gender: z.string({
-      required_error: "Please select a gender"
-    })
+  gender: z.string({
+    required_error: "Please select a gender",
+  }),
 });
 
-// interface UserLogged {
-//     setFirstProfile: Dispatch<SetStateAction<boolean>>
-//     setUserInfo: Dispatch<SetStateAction<UserProps>>
-//     setIsUpdating: Dispatch<SetStateAction<boolean>>
-// }
-
 export default function FormProfile() {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,18 +94,19 @@ export default function FormProfile() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-       const profileData = {
+    const profileData = {
       firstname: values.firstname,
       lastname: values.lastname,
       age: values.age,
       height: values.height,
-      weight: values.weight,
-      gender: values.gender
-    }
+      weightUser: values.weight,
+      gender: values.gender,
+    };
 
-    dispatch(isFirstProfile(false))
-    dispatch(isUpdating(false))
-    dispatch(updateUser(profileData))
+    dispatch(isFirstProfile(false));
+    dispatch(isUpdating(false));
+    dispatch(updateUser(profileData));
+    dispatch(newUserWeight(values.weight));
   }
 
   return (
@@ -200,27 +198,27 @@ export default function FormProfile() {
               </FormItem>
             )}
           />
-           <FormField
-          control={form.control}
-          name="gender"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Gender</FormLabel>
-              <Select onValueChange={field.onChange} required >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a gender" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="women">Female</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select onValueChange={field.onChange} required>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="women">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex justify-center">
             <Button type="submit">Submit</Button>
           </div>

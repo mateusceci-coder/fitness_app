@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { exercisesCrossfitList, exercisesProps } from "@/constants/exercises";
 import { capitalize } from "@/lib/utils";
 import {
   delExCrossfit,
@@ -18,16 +17,14 @@ import {
 } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
 import { Check } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ExCrossfit() {
-  const [newCrossfitList, setNewCrossfitList] = useState<exercisesProps[]>(
-    exercisesCrossfitList
-  );
   const { crossfitList, exerciseId } = useSelector(
     (store: RootReducer) => store.exercise
   );
+  const { weightUser } = useSelector((store: RootReducer) => store.profile);
   const dispatch = useDispatch();
 
   const handleDelExerciseCrossfit = (id: string) => {
@@ -44,9 +41,17 @@ export default function ExCrossfit() {
     event: ChangeEvent<HTMLInputElement>,
     exerciseId: string
   ) => {
+    const newWeight = Number((+event.target.value).toFixed(2));
     const updatedList = crossfitList.map((exercise) =>
       exercise.id === exerciseId
-        ? { ...exercise, weight: Number((+event.target.value).toFixed(2)) }
+        ? {
+            ...exercise,
+            weight: newWeight,
+            relation:
+              weightUser === 0 || newWeight < 0
+                ? 0
+                : Number((+event.target.value / weightUser).toFixed(2)),
+          }
         : exercise
     );
     dispatch(updateWeightCrossfit(updatedList));
@@ -62,7 +67,7 @@ export default function ExCrossfit() {
         <h1 className="head-text">Crossfit Exercises</h1>
       </header>
       <div className="flex justify-center pb-5">
-        <DialogButton setNewCrossfitList={setNewCrossfitList} />
+        <DialogButton />
       </div>
       <Table className="max-w-5xl mx-auto">
         <TableHeader>
@@ -91,6 +96,7 @@ export default function ExCrossfit() {
                         type="number"
                         value={exercise.weight}
                         onChange={(event) => handleInputRM(event, exercise.id)}
+                        min={0}
                       />{" "}
                       <Check
                         color="green"
@@ -98,6 +104,8 @@ export default function ExCrossfit() {
                         onClick={handleFinishEditing}
                       />
                     </div>
+                  ) : exercise.weight < 0 ? (
+                    0
                   ) : (
                     Number(exercise.weight.toFixed(2))
                   )}
