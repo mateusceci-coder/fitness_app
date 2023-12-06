@@ -15,11 +15,16 @@ import {
   updateWeightBodybuilding,
 } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { Check } from "lucide-react";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ExBodybuilding() {
+  const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
+    null
+  );
+
   const { bodybuildingList, exerciseId } = useSelector(
     (store: RootReducer) => store.exercise
   );
@@ -62,13 +67,33 @@ export default function ExBodybuilding() {
     );
   };
 
+  const handleSelect = (e: string | null) => {
+    if (e === "All") {
+      setSelectedEquipment(null);
+    } else {
+      setSelectedEquipment(e);
+    }
+  };
+
   return (
     <section>
       <header className="my-16">
         <h1 className="head-text">Bodybuilding Exercises</h1>
       </header>
-      <div className="flex justify-center pb-5">
+      <div className="flex justify-evenly max-w-5xl mx-auto pb-5">
+        <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Equipment" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="All">All</SelectItem>
+            <SelectItem value="Bar">Bar</SelectItem>
+            <SelectItem value="Dumbbell">Dumbell</SelectItem>
+            <SelectItem value="Kettlebell">Kettlebell</SelectItem>
+          </SelectContent>
+        </Select>
         <DialogButton />
+        <div></div>
       </div>
       <Table className="max-w-5xl mx-auto">
         <TableHeader>

@@ -16,7 +16,7 @@ export default function CreateProfileText() {
         </li>
         <li>
           <CheckCircle className="inline mr-1" /> <span className="text-lg">Basal Metabolic Rate (BMR)</span>
-          <p className="text-sm mt-2"> Calculates how much calories your body needs at rest to maintain basic functions. It's the energy required for essential processes like breathing and circulation. BMR varies based on factors like age and body composition</p>
+          <p className="text-sm mt-2"> Calculates how much calories your body needs at rest to maintain basic functions. It's the energy required for essential processes like breathing and circulation. BMR varies based on factors like age and body composition.</p>
         </li>
       </ul>
     </div>
