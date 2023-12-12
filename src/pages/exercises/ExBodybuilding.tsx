@@ -9,15 +9,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { capitalize } from "@/lib/utils";
 import {
   delExBodybuilding,
   editingExerciseId,
   updateWeightBodybuilding,
 } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
 import { Check } from "lucide-react";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ExBodybuilding() {
@@ -105,60 +112,67 @@ export default function ExBodybuilding() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bodybuildingList.map((exercise) => {
-            return (
-              <TableRow>
-                <TableCell className="font-medium">
-                  {exercise.exercise}
-                </TableCell>
-                <TableCell className="text-right">
-                  {exercise.equipment}
-                </TableCell>
-                <TableCell className="text-right ">
-                  {exerciseId === exercise.id ? (
-                    <div className="flex justify-end">
-                      <Input
-                        className="w-16"
-                        type="number"
-                        value={exercise.weight}
-                        onChange={(event) => handleInputRM(event, exercise.id)}
-                        min={0}
-                      />{" "}
-                      <Check
-                        color="green"
-                        className="ml-1 cursor-pointer"
-                        onClick={handleFinishEditing}
-                      />
-                    </div>
-                  ) : exercise.weight < 0 ? (
-                    0
-                  ) : (
-                    Number(exercise.weight.toFixed(2))
-                  )}
-                </TableCell>
-                <TableCell className="text-right">
-                  {exercise.relation}
-                </TableCell>
-                <TableCell className="text-right">
-                  {exerciseId === exercise.id ? (
-                    ""
-                  ) : (
-                    <Button onClick={() => handleUpdateRM(exercise.id)}>
-                      Update
+          {bodybuildingList
+            .filter(
+              (exercise) =>
+                !selectedEquipment || exercise.equipment === selectedEquipment
+            )
+            .map((exercise) => {
+              return (
+                <TableRow key={exercise.id}>
+                  <TableCell className="font-medium">
+                    {capitalize(exercise.exercise)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {exercise.equipment}
+                  </TableCell>
+                  <TableCell className="text-right ">
+                    {exerciseId === exercise.id ? (
+                      <div className="flex justify-end">
+                        <Input
+                          className="w-16"
+                          type="number"
+                          value={exercise.weight}
+                          onChange={(event) =>
+                            handleInputRM(event, exercise.id)
+                          }
+                          min={0}
+                        />{" "}
+                        <Check
+                          color="green"
+                          className="ml-1 cursor-pointer"
+                          onClick={handleFinishEditing}
+                        />
+                      </div>
+                    ) : exercise.weight < 0 ? (
+                      0
+                    ) : (
+                      Number(exercise.weight.toFixed(2))
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {exercise.relation}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {exerciseId === exercise.id ? (
+                      ""
+                    ) : (
+                      <Button onClick={() => handleUpdateRM(exercise.id)}>
+                        Update
+                      </Button>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      className="bg-destructive"
+                      onClick={() => handleDelExerciseBodybuilding(exercise.id)}
+                    >
+                      Delete
                     </Button>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    className="bg-destructive"
-                    onClick={() => handleDelExerciseBodybuilding(exercise.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
     </section>
