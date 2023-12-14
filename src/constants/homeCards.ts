@@ -26,7 +26,7 @@ export const homeCards: homeCardsProps[] = [
   {
     name: "Workout",
     description:
-      "Do your own crossfit or bodybuilding workouts according to the exercises available",
+      "Do your own crossfit or bodybuilding workouts",
     image: "src/images/workout-home.jpg",
     alt: "workout-home",
     page:"workouts"

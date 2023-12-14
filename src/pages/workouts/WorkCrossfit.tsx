@@ -14,12 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addNewCrossfitWorkout, crossfitExercise } from "@/store/reducers/workout";
+import { capitalize } from "@/lib/utils";
+import { addNewCrossfitWorkout, crossfitExercise, deleteCrossfitWorkout } from "@/store/reducers/workout";
 import { RootReducer } from "@/store/store";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, X } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 
 
 export default function WorkCrossfit() {
@@ -46,7 +46,11 @@ export default function WorkCrossfit() {
   };
 
   const handleNewWod = () => {
+    if(!nameWod || !typeWod || wodItem.length === 0) return
+
+
     dispatch(addNewCrossfitWorkout({
+      id: crypto.randomUUID(),
       name: nameWod,
       type: typeWod,
       timeCap: timeCap,
@@ -54,6 +58,12 @@ export default function WorkCrossfit() {
       rounds: rounds,
     }))
     setIsFormWorkOpen(false)
+    setNameExercise("");
+    setRepsExercise(0);
+    setWomenWeight(0);
+    setMenWeight(0);
+    setAddingExercise(false);
+    setWodItem([])
   }
 
   const handleNewExercise = () => {
@@ -75,8 +85,15 @@ export default function WorkCrossfit() {
     setAddingExercise(false);
   };
 
+  const handleDeleteWod = (id: string) => {
+    dispatch(deleteCrossfitWorkout(id))
+  }
+
   return (
-    <div className="flex flex-col items-center p-5 gap-2">
+    <section className="flex flex-col items-center p-5 gap-2">
+      <header>
+            <h1 className="head-text">Crossfit Workouts</h1>
+        </header>
       <Button onClick={handleFormWork}>New WOD</Button>
       {isFormWorkOpen && (
         <form className="border-2 p-4 rounded-xl flex flex-col gap-2 w-96">
@@ -176,27 +193,28 @@ export default function WorkCrossfit() {
         </form>
       )}
       {workoutsCrossfit.map((workout) =>
-            <Collapsible className="border-2 p-2 rounded-xl w-96">
+            <Collapsible className="border-2 p-2 rounded-xl w-96 relative">
+            <X color="red" className="absolute bottom-3 right-2 cursor-pointer" onClick={() => handleDeleteWod(workout.id)}/>
             <div className="flex justify-center">
               <CollapsibleTrigger>
-                <h2 className="text-2xl">{workout.name}</h2>
+                <h2 className="text-2xl">{capitalize(workout.name)}</h2>
               </CollapsibleTrigger>
             </div>
             <CollapsibleContent className="flex gap-2 flex-col">
               <h1 className="text-lg mt-5 mb-2">
                 <p>{workout.type === "amrap" ? "AMRAP" : "For Time"}</p>
-                <p>{workout.rounds}</p> <span>{workout.rounds && "rounds"}</span>
+                <p>{workout.rounds} <span>{workout.rounds && "rounds"}</span> </p>
               </h1>
               <ul>
                 {workout.exercise.map((ex) =>
-                   <li><span>{ex.repsExercise}</span> {ex.nameExercise} <span>{ex.mensWeight === 0 && ex.womensWeight === 0  ? "" : `(${ex.mensWeight}/${ex.womensWeight})`}</span></li>
+                   <li><span>{ex.repsExercise}</span> {capitalize(ex.nameExercise)} <span>{ex.mensWeight === 0 && ex.womensWeight === 0  ? "" : `(${ex.mensWeight}/${ex.womensWeight})`}</span></li>
                 )}
               </ul>
-              <p>Time Cap: {workout.timeCap}'</p>
+             {workout.timeCap > 0 && <p>Time Cap: {workout.timeCap}'</p>}
             </CollapsibleContent>
             </Collapsible>
         )
       }
-    </div>
+    </section>
   );
 }
