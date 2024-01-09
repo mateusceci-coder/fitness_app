@@ -20,8 +20,9 @@ export default function CarouselDemo() {
         <Link to={cardProfile.page}>
               <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
-                  <li className="absolute inset-0 flex justify-center items-center leading-8 text-white z-10 p-8 text-xl">
-                    {cardProfile.description}
+                  <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
+                    <p className="text-2xl">PROFILE</p>
+                    <p>{cardProfile.description}</p>
                   </li>
                 </ul>
                 <img
@@ -37,8 +38,9 @@ export default function CarouselDemo() {
         <Link to={cardExercise.page}>
               <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
-                  <li className="absolute inset-0 flex justify-center items-center leading-8 text-white z-10 p-8 text-xl">
-                    {cardExercise.description}
+                  <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
+                  <p className="text-2xl">EXERCISE</p>
+                    <p>{cardExercise.description}</p>
                   </li>
                 </ul>
                 <img
@@ -54,8 +56,9 @@ export default function CarouselDemo() {
         <Link to={cardWorkout.page}>
               <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
-                  <li className="absolute inset-0 flex justify-center items-center leading-8 text-white z-10 p-8 text-xl">
-                    {cardWorkout.description}
+                  <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
+                    <p className="text-2xl">WORKOUT</p>
+                    <p>{cardWorkout.description}</p>
                   </li>
                 </ul>
                 <img

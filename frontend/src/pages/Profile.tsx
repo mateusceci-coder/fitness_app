@@ -10,7 +10,6 @@ export default function Profile() {
     const { updatingProfile, firstProfile } = useSelector((store: RootReducer) => store.profile)
 
     const renderForm = updatingProfile || firstProfile
-    console.log(updatingProfile, firstProfile)
 
     return (
     <div className={`${!renderForm ? "flex justify-center items-center" : "grid lg:grid-cols-2" } my-4 p-1`}>
