@@ -1,3 +1,4 @@
+import { calculateWeightReps } from "@/lib/calculators";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface crossfitExercise {
@@ -40,6 +41,7 @@ interface updatingWeight {
 const crossfitExample = [
   {
     id: "2",
+    rounds: 1,
     name: "Grace",
     type: "forTime",
     timeCap: 8,
@@ -133,7 +135,7 @@ const workoutSlice = createSlice({
       state.workoutsBodybuilding.forEach((workout) => {
         workout.exercise.forEach((exercise) => {
           if (exercise.nameExercise === action.payload.name) {
-            exercise.suggestedWeight = action.payload.newWeight;
+            exercise.suggestedWeight = calculateWeightReps(action.payload.newWeight, exercise.repsExercise)
           }
         });
       });

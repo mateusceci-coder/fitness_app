@@ -65,6 +65,7 @@ export default function WorkBodybuilding() {
     setNameExercise("");
     setRepsExercise(1);
     setSeriesExercise(1);
+
   };
 
   const handleNewWorkout = () => {
@@ -82,6 +83,7 @@ export default function WorkBodybuilding() {
     setRepsExercise(1);
     setSeriesExercise(1);
     setIsFormWorkOpen(false);
+    setWorkoutItem([])
   };
 
   const handleDeleteWorkout = (id: string) => {
@@ -103,11 +105,12 @@ export default function WorkBodybuilding() {
         .map((exercise) => exercise.weight || 0)
         .find(Boolean) || 0;
 
+
     return calculateWeightReps(repMax, numReps);
   };
 
   return (
-    <section className="flex justify-between p-4">
+    <section className="flex lg:justify-between lg:flex-row flex-col items-center p-4">
       <article>
         <div className="border-0 p-4 text-center w-96 rounded-full bg-mainGray relative">
         <Lightbulb color="yellow" strokeWidth={3} size={24} className="absolute top-2 left-10" />
@@ -120,8 +123,8 @@ export default function WorkBodybuilding() {
         </div>
       </article>
       <div className="flex flex-col items-center p-5 gap-2">
-        <header>
-        <h1 className="head-text">Bodybuilding Workouts</h1>
+      <header>
+        <h1 className="head-text mb-8">Bodybuilding Workouts</h1>
       </header>
       <Button onClick={() => setIsFormWorkOpen((i) => !i)}>New Workout</Button>
       {isFormWorkOpen && (
@@ -208,7 +211,7 @@ export default function WorkBodybuilding() {
       {workoutsBodybuilding.map((workout) => (
         <Collapsible
           key={workout.id}
-          className="flex flex-col border-2 p-2 rounded-xl w-96 relative"
+          className="flex flex-col border-2 p-4 rounded-xl w-96 relative"
         >
           <X
             color="red"
@@ -226,7 +229,7 @@ export default function WorkBodybuilding() {
             </p>
             <ul>
               {workout.exercise.map((ex) => (
-                <li className="flex justify-between">
+                <li className="flex justify-between border-b-2 p-1">
                   <div>
                     <span>{ex.seriesExercise}</span>x{ex.repsExercise}
                     <span>
@@ -248,6 +251,7 @@ export default function WorkBodybuilding() {
         </Collapsible>
       ))}
       </div>
+
 
       <div className="w-80"></div>
     </section>

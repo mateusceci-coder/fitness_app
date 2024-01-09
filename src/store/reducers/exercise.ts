@@ -8,6 +8,7 @@ interface ExerciseParams {
     relation: number;
 }
 
+
 interface exercisesList {
     crossfitList: ExerciseParams[]
     bodybuildingList: ExerciseParams[]
@@ -20,14 +21,14 @@ const initialState: exercisesList = {
       exercise: "Squat Clean",
       equipment: "Bar",
       weight: 0,
-      relation: 0
+      relation: 0,
     }],
     bodybuildingList: [{
       id: "1",
       exercise: "Bench Press",
       equipment: "Bar",
       weight: 0,
-      relation: 0
+      relation: 0,
     }],
     exerciseId: "",
 }

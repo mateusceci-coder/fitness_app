@@ -45,26 +45,29 @@ export default function ExBodybuilding() {
     exerciseName: string
   ) => {
     const newWeight = Number((+event.target.value).toFixed(2));
+
     const updatedList = bodybuildingList.map((exercise) =>
-      exercise.id === exerciseId
-        ? {
-            ...exercise,
-            weight: newWeight,
-            relation:
-              weightUser === 0 || newWeight < 0
-                ? 0
-                : Number((+event.target.value / weightUser).toFixed(2)),
-          }
-        : exercise
+    exercise.id === exerciseId
+    ? {
+      ...exercise,
+      weight: newWeight,
+      relation:
+      weightUser === 0 || newWeight < 0
+      ? 0
+      : Number((+event.target.value / weightUser).toFixed(2)),
+    }
+
+    : exercise
     );
-    const updatedWeight = weightUser ? newWeight / weightUser : 0;
+
     dispatch(updateWeightBodybuilding(updatedList));
     dispatch(
       updateRepMax({
         name: exerciseName,
-        newWeight: updatedWeight,
+        newWeight: newWeight,
       })
     );
+
   };
 
   const handleUpdateRM = (exerciseId: string) => {
