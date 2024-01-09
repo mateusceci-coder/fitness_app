@@ -10,6 +10,7 @@ import ExCrossfit from "./pages/exercises/ExCrossfit";
 import ExBodybuilding from "./pages/exercises/ExBodybuilding";
 import WorkCrossfit from "./pages/workouts/WorkCrossfit";
 import WorkBodybuilding from "./pages/workouts/WorkBodybuilding";
+import Login from "./pages/Login";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="login" element={<Login />} />
         <Route path="exercises" element={<Exercises />} />
         <Route path="/exercises/crossfit" element={<ExCrossfit />} />
         <Route path="/exercises/bodybuilding" element={<ExBodybuilding />} />

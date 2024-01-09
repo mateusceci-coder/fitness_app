@@ -19,6 +19,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        loginBg: colors.slate[100],
         mainGray: colors.zinc[300],
         mainGreen: colors.green[500],
         mainBlue: colors.blue[800],
