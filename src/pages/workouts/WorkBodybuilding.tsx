@@ -23,7 +23,7 @@ import {
   deleteBodybuildingWorkout,
 } from "@/store/reducers/workout";
 import { RootReducer } from "@/store/store";
-import { Dumbbell, X } from "lucide-react";
+import { Dumbbell, Lightbulb, X } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -39,11 +39,17 @@ export default function WorkBodybuilding() {
   const { workoutsBodybuilding } = useSelector(
     (store: RootReducer) => store.workout
   );
-  const { bodybuildingList } = useSelector((store: RootReducer) => store.exercise)
+  const { bodybuildingList } = useSelector(
+    (store: RootReducer) => store.exercise
+  );
   const dispatch = useDispatch();
 
-  const handleNewExercise =  () => {
-    const suggestedWeight = calculateSuggestedWeight(nameExercise, equipment, repsExercise)
+  const handleNewExercise = () => {
+    const suggestedWeight = calculateSuggestedWeight(
+      nameExercise,
+      equipment,
+      repsExercise
+    );
 
     setWorkoutItem((workoutItem) => [
       ...workoutItem,
@@ -55,13 +61,15 @@ export default function WorkBodybuilding() {
         suggestedWeight: suggestedWeight,
       },
     ]);
-    setAddingExercise(false)
+    setAddingExercise(false);
     setNameExercise("");
     setRepsExercise(1);
     setSeriesExercise(1);
   };
 
   const handleNewWorkout = () => {
+    if (!nameWorkout || workoutItem.length === 0) return;
+
     dispatch(
       addNewBodybuildingWorkout({
         id: crypto.randomUUID(),
@@ -69,29 +77,50 @@ export default function WorkBodybuilding() {
         exercise: workoutItem,
       })
     );
-    setAddingExercise(false)
+    setAddingExercise(false);
     setNameExercise("");
     setRepsExercise(1);
     setSeriesExercise(1);
-    setIsFormWorkOpen(false)
+    setIsFormWorkOpen(false);
   };
 
   const handleDeleteWorkout = (id: string) => {
     dispatch(deleteBodybuildingWorkout(id));
   };
 
-  const calculateSuggestedWeight = (exerciseName: string, equipment: string, numReps: number) => {
-    const repMax = bodybuildingList
-  .filter((exercise) => exercise.exercise.toLowerCase() === exerciseName.toLowerCase() && exercise.equipment === equipment)
-  .map((exercise) => exercise.weight || 0)
-  .find(Boolean) || 0;
+  const calculateSuggestedWeight = (
+    exerciseName: string,
+    equipment: string,
+    numReps: number
+  ) => {
+    const repMax =
+      bodybuildingList
+        .filter(
+          (exercise) =>
+            exercise.exercise.toLowerCase() === exerciseName.toLowerCase() &&
+            exercise.equipment === equipment
+        )
+        .map((exercise) => exercise.weight || 0)
+        .find(Boolean) || 0;
 
-      return calculateWeightReps(repMax, numReps)
-  }
+    return calculateWeightReps(repMax, numReps);
+  };
 
   return (
-    <section className="flex flex-col items-center p-5 gap-2">
-      <header>
+    <section className="flex justify-between p-4">
+      <article>
+        <div className="border-0 p-4 text-center w-96 rounded-full bg-mainGray relative">
+        <Lightbulb color="yellow" strokeWidth={3} size={24} className="absolute top-2 left-10" />
+          <h2 className="mb-2">Suggested Weight</h2>
+          <p className="text-sm">
+            If you add 1 rep max of an exercise and use it in a workout, it will
+            automatically give you a suggested weight according to the number of
+            repetitions that you are doing
+          </p>
+        </div>
+      </article>
+      <div className="flex flex-col items-center p-5 gap-2">
+        <header>
         <h1 className="head-text">Bodybuilding Workouts</h1>
       </header>
       <Button onClick={() => setIsFormWorkOpen((i) => !i)}>New Workout</Button>
@@ -164,7 +193,10 @@ export default function WorkBodybuilding() {
             {workoutItem.map((exercise) => (
               <li>
                 <span>{exercise.seriesExercise}</span>x
-                <span>{exercise.repsExercise}</span> {capitalize(exercise.nameExercise)}{" "} {exercise.equipment !== "Bodyweight" && `(${exercise.equipment})`}
+                <span>{exercise.repsExercise}</span>{" "}
+                {capitalize(exercise.nameExercise)}{" "}
+                {exercise.equipment !== "Bodyweight" &&
+                  `(${exercise.equipment})`}
               </li>
             ))}
           </ul>
@@ -174,7 +206,10 @@ export default function WorkBodybuilding() {
         </form>
       )}
       {workoutsBodybuilding.map((workout) => (
-        <Collapsible key={workout.id} className="flex flex-col border-2 p-2 rounded-xl w-96 relative">
+        <Collapsible
+          key={workout.id}
+          className="flex flex-col border-2 p-2 rounded-xl w-96 relative"
+        >
           <X
             color="red"
             className="absolute top-2 right-2 cursor-pointer"
@@ -186,22 +221,35 @@ export default function WorkBodybuilding() {
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="flex gap-2 flex-col">
-              <p className="text-right text-sm text-mainGray">Suggested Weight:</p>
+            <p className="text-right text-sm text-mainGray">
+              Suggested Weight:
+            </p>
             <ul>
               {workout.exercise.map((ex) => (
                 <li className="flex justify-between">
                   <div>
                     <span>{ex.seriesExercise}</span>x{ex.repsExercise}
-                    <span> {ex.nameExercise} ({ex.equipment})</span>
-
+                    <span>
+                      {" "}
+                      {ex.nameExercise} ({ex.equipment})
+                    </span>
                   </div>
-                  <div>{ex.suggestedWeight !== 0 && <p className="text-sm text-mainGray">{Math.round(ex.suggestedWeight)} kg</p>} </div>
+                  <div>
+                    {ex.suggestedWeight !== 0 && (
+                      <p className="text-sm text-mainGray">
+                        {Math.round(ex.suggestedWeight)} kg
+                      </p>
+                    )}{" "}
+                  </div>
                 </li>
               ))}
             </ul>
           </CollapsibleContent>
         </Collapsible>
       ))}
+      </div>
+
+      <div className="w-80"></div>
     </section>
   );
 }

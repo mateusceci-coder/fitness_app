@@ -16,7 +16,7 @@ import {
   updateWeightCrossfit,
 } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
-import { Check } from "lucide-react";
+import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -65,6 +65,7 @@ export default function ExCrossfit() {
         : exercise
     );
     dispatch(updateWeightCrossfit(updatedList));
+
   };
 
   const handleFinishEditing = () => {
@@ -80,7 +81,7 @@ export default function ExCrossfit() {
   };
 
   return (
-    <section>
+    <section className="relative">
       <header className="my-16">
         <h1 className="head-text">Crossfit Exercises</h1>
       </header>
@@ -104,7 +105,7 @@ export default function ExCrossfit() {
           <TableRow>
             <TableHead>Exercise</TableHead>
             <TableHead className="text-right">Equipment</TableHead>
-            <TableHead className="text-right">Weight (kg)</TableHead>
+            <TableHead className="text-right">1RM (kg)</TableHead>
             <TableHead className="text-right">Relation(%)</TableHead>
           </TableRow>
         </TableHeader>
@@ -112,8 +113,7 @@ export default function ExCrossfit() {
           {crossfitList
             .filter(
               (exercise) =>
-                !selectedEquipment ||
-                exercise.equipment === selectedEquipment
+                !selectedEquipment || exercise.equipment === selectedEquipment
             )
             .map((exercise) => {
               return (
@@ -173,6 +173,38 @@ export default function ExCrossfit() {
             })}
         </TableBody>
       </Table>
+      <div className="flex flex-col items-center gap-2 mt-20">
+        <article>
+          <div className="border-0 p-2 text-center w-80 h-24 rounded-full bg-mainGray relative">
+            <Lightbulb
+              color="yellow"
+              strokeWidth={3}
+              size={24}
+              className="absolute top-2 left-10"
+            />
+            <h2 className="mb-2 text-sm">1 Rep Max (RM)</h2>
+            <p className="text-xs">
+              Keep a record of how much weight you can put on for just one
+              repetition
+            </p>
+          </div>
+        </article>
+        <article>
+          <div className="border-0 p-2 text-center w-80 rounded-full bg-mainGray relative h-24">
+            <Lightbulb
+              color="yellow"
+              strokeWidth={3}
+              size={24}
+              className="absolute top-2 left-10"
+            />
+            <h2 className="mb-2 text-sm">Relation (%)</h2>
+            <p className="text-xs">
+              Update your Profile weight and your 1RM in the exercises you want
+              to give the percentage between your 1RM and your weight (kg/kg)
+            </p>
+          </div>
+        </article>
+      </div>
     </section>
   );
 }

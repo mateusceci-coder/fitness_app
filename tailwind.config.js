@@ -19,7 +19,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        mainGray: colors.zinc[500],
+        mainGray: colors.zinc[300],
         mainGreen: colors.green[500],
         mainBlue: colors.blue[800],
         border: "hsl(var(--border))",

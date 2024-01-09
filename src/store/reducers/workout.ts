@@ -10,7 +10,7 @@ interface workoutCrossfitParams {
   id: string;
   name: string;
   type: string;
-  rounds?: number;
+  rounds: number;
   timeCap: number;
   exercise: crossfitExercise[];
 }
@@ -30,6 +30,11 @@ interface workoutBodybuildingParams {
   id: string;
   name: string;
   exercise: bodybuildingExercise[];
+}
+
+interface updatingWeight {
+  name: string
+  newWeight: number
 }
 
 const crossfitExample = [
@@ -124,6 +129,15 @@ const workoutSlice = createSlice({
         (workout) => workout.id !== action.payload
       );
     },
+    updateRepMax: (state, action: PayloadAction<updatingWeight>) => {
+      state.workoutsBodybuilding.forEach((workout) => {
+        workout.exercise.forEach((exercise) => {
+          if (exercise.nameExercise === action.payload.name) {
+            exercise.suggestedWeight = action.payload.newWeight;
+          }
+        });
+      });
+    },
   },
 });
 
@@ -132,6 +146,7 @@ export const {
   deleteCrossfitWorkout,
   addNewBodybuildingWorkout,
   deleteBodybuildingWorkout,
+  updateRepMax
 } = workoutSlice.actions;
 
 export default workoutSlice.reducer;

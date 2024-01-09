@@ -203,7 +203,7 @@ export default function WorkCrossfit() {
             <CollapsibleContent className="flex gap-2 flex-col">
               <h1 className="text-lg mt-5 mb-2">
                 <p>{workout.type === "amrap" ? "AMRAP" : "For Time"}</p>
-                <p>{workout.rounds} <span>{workout.rounds && "rounds"}</span> </p>
+                {workout.rounds > 1 && <p>{workout.rounds} <span>{workout.rounds && "rounds"}</span> </p>}
               </h1>
               <ul>
                 {workout.exercise.map((ex) =>
