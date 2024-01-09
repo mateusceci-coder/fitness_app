@@ -113,6 +113,8 @@ export default function WorkCrossfit() {
           <div>
             <Input
               type="number"
+              min={1}
+              max={500}
               placeholder="Rounds"
               className="w-24 inline mr-2"
               onChange={(e) => setRounds(+e.target.value)}
@@ -133,6 +135,8 @@ export default function WorkCrossfit() {
               <div className="mt-4 border-b-2 p-2">
                 <div className="flex gap-2 mb-2">
                   <Input
+                    min={0}
+                    max={500}
                     type="number"
                     className="w-20"
                     placeholder="Reps"
@@ -148,12 +152,16 @@ export default function WorkCrossfit() {
                   <span className="text-sm">Weight (optional):</span>
                   <Input
                     type="number"
+                    min={0}
+                    max={500}
                     className="w-24"
                     placeholder="men"
                     onChange={(e) => setMenWeight(+e.target.value)}
                   />
                   <Input
                     type="number"
+                    min={0}
+                    max={500}
                     className="w-24"
                     placeholder="women"
                     onChange={(e) => setWomenWeight(+e.target.value)}
@@ -183,6 +191,8 @@ export default function WorkCrossfit() {
             ))}
           </ul>
           <Input
+            min={1}
+            max={500}
             type="number"
             placeholder="Time Cap"
             id="timeCap"

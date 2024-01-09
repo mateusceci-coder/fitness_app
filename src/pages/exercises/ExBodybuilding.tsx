@@ -149,6 +149,7 @@ export default function ExBodybuilding() {
                             handleInputRM(event, exercise.id, exercise.exercise)
                           }
                           min={0}
+                          max={500}
                         />{" "}
                         <Check
                           color="green"

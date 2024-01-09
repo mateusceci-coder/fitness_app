@@ -135,6 +135,7 @@ export default function ExCrossfit() {
                             handleInputRM(event, exercise.id)
                           }
                           min={0}
+                          max={500}
                         />{" "}
                         <Check
                           color="green"
