@@ -23,7 +23,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@radix-ui/react-select";
+} from "@/components/ui/select";
 import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

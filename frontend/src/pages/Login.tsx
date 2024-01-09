@@ -6,7 +6,7 @@ export default function Login() {
   return (
    <section className="h-screen bg-loginBg flex flex-col gap-10 justify-center items-center">
     <h1 className="head-text">Welcome to the App!</h1>
-    <form className="p-8 rounded-2xl max-w-2xl bg-white shadow-2xl">
+    <form className="p-12 rounded-2xl w-96 bg-white shadow-2xl">
         <h2 className="text-2xl text-center mb-10">LOGIN</h2>
         <Label htmlFor="email">Email:</Label>
         <Input className="mb-8" type="text" required />
