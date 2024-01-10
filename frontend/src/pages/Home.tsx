@@ -10,9 +10,7 @@ export default function Home() {
       <h2 className="subtitle">
         Your information about crossfit and bodybuilding all in one place
       </h2>
-      <div className="flex items-center justify-center">
         <CarouselHome />
-      </div>
     </section>
   );
 }

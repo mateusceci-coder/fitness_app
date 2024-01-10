@@ -6,7 +6,7 @@ export default function BottomBar() {
     <nav className="fixed bottom-0 z-10 w-full bg-primary text-secondary rounded-t-3xl py-4 px-6 backdrop-blur-lg xs:px-7 sm:hidden">
       <ul className="flex justify-between">
         <li>
-          <NavLink to="home">
+          <NavLink to="/">
             <Home className="hover:cursor-pointer" />
           </NavLink>
         </li>

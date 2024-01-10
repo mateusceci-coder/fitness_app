@@ -10,7 +10,7 @@ export default function TopBar() {
         <NavLink className="nav-button" to="workouts">Workouts</NavLink>
         <NavLink className="nav-button" to="profile">Profile</NavLink>
       </div>
-        <NavLink className="nav-button absolute top-2 right-10 text-lg underline" to="login" >Login</NavLink>
+        <NavLink className="nav-button absolute top-1 right-5 text-lg underline" to="login" >Login</NavLink>
     </nav>
   );
 }

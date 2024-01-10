@@ -14,10 +14,11 @@ export default function CarouselDemo() {
   const cardWorkout = homeCards[2];
 
   return (
-    <Carousel className="w-full max-w-md mt-20">
-      <CarouselContent>
-        <CarouselItem>
-        <Link to={cardProfile.page}>
+    <div className="flex justify-center">
+      <Carousel className="max-w-xs sm:max-w-md mt-20 mb-4 w-full">
+        <CarouselContent>
+          <CarouselItem>
+            <Link to={cardProfile.page}>
               <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
                   <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
@@ -33,13 +34,13 @@ export default function CarouselDemo() {
                 <div className="absolute inset-0 rounded-xl bg-black opacity-80"></div>
               </li>
             </Link>
-        </CarouselItem>
-        <CarouselItem>
-        <Link to={cardExercise.page}>
+          </CarouselItem>
+          <CarouselItem>
+            <Link to={cardExercise.page}>
               <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
                   <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
-                  <p className="text-2xl">EXERCISE</p>
+                    <p className="text-2xl">EXERCISE</p>
                     <p>{cardExercise.description}</p>
                   </li>
                 </ul>
@@ -51,9 +52,9 @@ export default function CarouselDemo() {
                 <div className="absolute inset-0 rounded-xl bg-black opacity-80"></div>
               </li>
             </Link>
-        </CarouselItem>
-        <CarouselItem>
-        <Link to={cardWorkout.page}>
+          </CarouselItem>
+          <CarouselItem>
+            <Link to={cardWorkout.page}>
               <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
                   <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
@@ -69,10 +70,11 @@ export default function CarouselDemo() {
                 <div className="absolute inset-0 rounded-xl bg-black opacity-80"></div>
               </li>
             </Link>
-        </CarouselItem>
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+          </CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious className="invisible sm:visible" />
+        <CarouselNext className="invisible sm:visible" />
+      </Carousel>
+    </div>
   );
 }
