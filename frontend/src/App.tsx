@@ -11,6 +11,7 @@ import ExBodybuilding from "./pages/exercises/ExBodybuilding";
 import WorkCrossfit from "./pages/workouts/WorkCrossfit";
 import WorkBodybuilding from "./pages/workouts/WorkBodybuilding";
 import Login from "./pages/Login";
+import Signin from "./pages/Signin";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
+        <Route path="signin" element={<Signin />} />
         <Route path="exercises" element={<Exercises />} />
         <Route path="/exercises/crossfit" element={<ExCrossfit />} />
         <Route path="/exercises/bodybuilding" element={<ExBodybuilding />} />
