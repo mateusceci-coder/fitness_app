@@ -41,7 +41,7 @@ export default function Login() {
   };
 
   return (
-    <section className="h-screen bg-loginBg flex flex-col gap-10 justify-center items-center">
+    <section className="h-screen bg-grayBg flex flex-col gap-10 justify-center items-center">
       <h1 className="head-text">Welcome to the App!</h1>
       <form
         onSubmit={handleSubmit}
@@ -53,7 +53,6 @@ export default function Login() {
           className="mb-8"
           name="username"
           type="text"
-          value={userData.username}
           onChange={handleInputChange}
           required
         />
@@ -61,7 +60,6 @@ export default function Login() {
         <Input
           className="mb-10"
           type="password"
-          value={userData.password}
           onChange={handleInputChange}
           required
         />

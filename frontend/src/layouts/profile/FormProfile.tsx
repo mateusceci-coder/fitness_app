@@ -116,7 +116,7 @@ export default function FormProfile() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 max-w-lg mx-auto border-2 p-4 rounded-2xl"
+          className="space-y-8 max-w-lg mx-auto p-4 rounded-2xl shadow-xl bg-white"
         >
           <FormField
             control={form.control}
