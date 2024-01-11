@@ -89,11 +89,14 @@ REST_FRAMEWORK = {
 
 # DJOSER
 # https://djoser.readthedocs.io/en/latest/settings.html
-DJOSER = {
-    "SERIALIZERS": {
-        "user_create": "api.serializers.UserCreateSerializer",
-    }
-}
+# DJOSER = {
+#     "SERIALIZERS": {
+#         "user_create": "autentication.serializers.CustomUserCreateSerializer",
+#     }
+# }
+
+# CORS (Cross-Origin Resource Sharing) remove when going to production
+CORS_ALLOW_ALL_ORIGINS = True  # Em ambiente de desenvolvimento
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
