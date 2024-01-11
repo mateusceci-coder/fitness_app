@@ -2,15 +2,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
 
-export default function Login() {
-  const [userData, setUserData] = useState({
+export default function Signin() {
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [userData, setUserData] = useState({
     username: "",
+    email: "",
     password: "",
   });
+  const [samePassword, setSamePassword] = useState(true)
 
-  const apiUrl = "http://127.0.0.1:8000/auth/token/login/";
+  const apiUrl = "http://127.0.0.1:8000/auth/users/";
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -24,6 +26,11 @@ export default function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (userData.password !== confirmPassword) {
+        setSamePassword(false)
+        return
+    }
+
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
@@ -35,6 +42,7 @@ export default function Login() {
       if (!res.ok) {
         throw new Error(`Erro na requisição: ${res.status}`);
       }
+      setSamePassword(true)
       const data = await res.json();
       sessionStorage.setItem("auth_token", data);
     } catch (err) {
@@ -49,7 +57,15 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="p-12 rounded-2xl w-96 bg-white shadow-2xl"
       >
-        <h2 className="text-2xl text-center mb-10">LOGIN</h2>
+        <h2 className="text-2xl text-center mb-10">Sign in</h2>
+        <Label htmlFor="email">Email:</Label>
+        <Input
+          className="mb-8"
+          name="email"
+          type="email"
+          onChange={handleInputChange}
+          required
+        />
         <Label htmlFor="username">Username:</Label>
         <Input
           className="mb-8"
@@ -66,10 +82,18 @@ export default function Login() {
           onChange={handleInputChange}
           required
         />
-        <Button className="w-full mb-2" type="submit">
-          Login
+        <Label htmlFor="confirmPassword">Confirm Password:</Label>
+        <Input
+          className="mb-10"
+          type="password"
+          name="confirmPassword"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+        {!samePassword && <p className="text-sm text-red-500 pb-1">Passwords does not match</p>}
+        <Button className="w-full" type="submit">
+          Sign in
         </Button>
-        <p className="text-sm text-center">Don't have an account? <Link to="signin" className="text-mainBlue">Create now!</Link>  </p>
       </form>
     </section>
   );
