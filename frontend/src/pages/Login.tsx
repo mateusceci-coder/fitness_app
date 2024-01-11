@@ -69,7 +69,7 @@ export default function Login() {
         <Button className="w-full mb-2" type="submit">
           Login
         </Button>
-        <p className="text-sm text-center">Don't have an account? <Link to="signin" className="text-mainBlue">Create now!</Link>  </p>
+        <p className="text-sm text-center">Don't have an account? <Link to="/signin" className="text-mainBlue">Create now!</Link>  </p>
       </form>
     </section>
   );
