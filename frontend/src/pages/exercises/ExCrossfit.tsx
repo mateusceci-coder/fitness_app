@@ -80,6 +80,7 @@ export default function ExCrossfit() {
     }
   };
 
+
   return (
     <section className="relative">
       <header className="my-16">

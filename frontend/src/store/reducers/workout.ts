@@ -6,6 +6,7 @@ export interface crossfitExercise {
   repsExercise: number;
   mensWeight?: number;
   womensWeight?: number;
+  equipment: string;
 }
 interface workoutCrossfitParams {
   id: string;
@@ -51,6 +52,7 @@ const crossfitExample = [
         repsExercise: 30,
         mensWeight: 61,
         womensWeight: 43,
+        equipment: "Bar"
       },
     ],
   },

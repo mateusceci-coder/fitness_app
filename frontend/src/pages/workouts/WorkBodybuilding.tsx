@@ -109,6 +109,7 @@ export default function WorkBodybuilding() {
     return calculateWeightReps(repMax, numReps);
   };
 
+
   return (
     <section className="flex lg:justify-between lg:flex-row flex-col items-center p-4">
       <article>
