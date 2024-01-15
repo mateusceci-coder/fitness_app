@@ -15,11 +15,11 @@ export default function CarouselDemo() {
 
   return (
     <div className="flex justify-center">
-      <Carousel className="max-w-xs sm:max-w-md mt-20 mb-4 w-full">
+      <Carousel className="max-w-xs sm:max-w-md mt-20 mb-4 w-9/12 sm:w-full">
         <CarouselContent>
           <CarouselItem>
             <Link to={cardProfile.page}>
-              <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
+              <li className="relative w-full  h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
                   <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
                     <p className="text-2xl">PROFILE</p>
@@ -37,7 +37,7 @@ export default function CarouselDemo() {
           </CarouselItem>
           <CarouselItem>
             <Link to={cardExercise.page}>
-              <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
+              <li className="relative w-full sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
                   <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
                     <p className="text-2xl">EXERCISE</p>
@@ -55,7 +55,7 @@ export default function CarouselDemo() {
           </CarouselItem>
           <CarouselItem>
             <Link to={cardWorkout.page}>
-              <li className="relative w-64 sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
+              <li className="relative w-full sm:w-112 h-128 border-2 rounded-xl hover:cursor-pointer">
                 <ul>
                   <li className="absolute inset-0 flex flex-col justify-between items-center leading-8 text-white z-10 p-12 text-xl">
                     <p className="text-2xl">WORKOUT</p>
@@ -72,7 +72,7 @@ export default function CarouselDemo() {
             </Link>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious  />
+        <CarouselPrevious />
         <CarouselNext />
       </Carousel>
     </div>
