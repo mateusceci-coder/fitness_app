@@ -28,6 +28,10 @@ import {
 } from "@/store/reducers/profile";
 
 import { newUserWeight } from "@/store/reducers/exercise";
+import { useState } from "react";
+
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
 
 const formSchema = z.object({
   firstname: z.string().min(3, {
@@ -75,10 +79,18 @@ const formSchema = z.object({
   gender: z.string({
     required_error: "Please select a gender",
   }),
+  image: z
+    .any()
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    ).optional(),
 });
 
 export default function FormProfile() {
   const dispatch = useDispatch();
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,6 +101,7 @@ export default function FormProfile() {
       height: undefined,
       weight: undefined,
       gender: "",
+      image: undefined,
     },
   });
 
@@ -101,6 +114,7 @@ export default function FormProfile() {
       height: values.height,
       weightUser: values.weight,
       gender: values.gender,
+      image: selectedImage ? URL.createObjectURL(selectedImage) : ""
     };
 
     dispatch(isFirstProfile(false));
@@ -118,6 +132,23 @@ export default function FormProfile() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 max-w-lg mx-auto p-4 rounded-2xl shadow-xl bg-white"
         >
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Profile Image</FormLabel>
+                <FormControl>
+                  <Input type="file"
+                  onChange={(e) => {
+                    field.onChange(e.target.files);
+                    setSelectedImage(e.target.files?.[0] || null);
+                  }} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="firstname"

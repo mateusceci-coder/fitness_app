@@ -14,49 +14,58 @@ export default function ProfileInfo() {
     height,
     weightUser,
     gender,
+    image,
     updatingProfile,
-    firstProfile
+    firstProfile,
   } = useSelector((store: RootReducer) => store.profile);
   const dispatch = useDispatch();
 
-  const renderForm = updatingProfile || firstProfile
+  const renderForm = updatingProfile || firstProfile;
 
   const handleUpdate = () => {
     dispatch(isUpdating(true));
   };
 
-
   const bmi = bmiCalculator(height, weightUser);
   const calories = caloriesCalculator(height, weightUser, age, gender);
 
   return (
-    <div className="h-screen w-full">
+    <div className="w-full">
       <h1 className="head-text">Hello, {firstname}!</h1>
       <h2 className="subtitle">
         Here is your informations. You can update whenever you want!
       </h2>
-      <div className={`flex flex-col md:flex-row ${renderForm ? "justify-center" : "md:justify-between"}`}>
-      {!renderForm && <div className="flex flex-col gap-12 lg:gap-24 text-center items-center p-8 bg-white shadow-xl rounded-2xl max-w-xs m-auto">
+      <div
+        className={`flex flex-col md:flex-row ${
+          renderForm ? "justify-center" : "md:justify-between"
+        }`}
+      >
+        {!renderForm && (
+          <div className="flex flex-col gap-12 lg:gap-24 text-center items-center p-8 bg-white shadow-xl rounded-2xl max-w-xs m-auto">
             <div>
-            <CheckCircle className="inline mr-1" />{" "}
-            <span className="text-lg head-text">Body Mass Index (BMI)</span>
-            <p className="text-sm mt-2">
-              Quick measure of body weight in relation to height. It categorizes
-              individuals into groups like underweight, normal weight,
-              overweight, or obese, serving as a basic indicator of healthy body
-              weight. However, it doesn't directly assess body fat or
-              distribution.
-            </p>
-
+              <CheckCircle className="inline mr-1" />{" "}
+              <span className="text-lg head-text">Body Mass Index (BMI)</span>
+              <p className="text-sm mt-2">
+                Quick measure of body weight in relation to height. It
+                categorizes individuals into groups like underweight, normal
+                weight, overweight, or obese, serving as a basic indicator of
+                healthy body weight. However, it doesn't directly assess body
+                fat or distribution.
+              </p>
             </div>
-          </div>}
+          </div>
+        )}
         <ul className="flex flex-col text-center gap-4 mt-16 p-4 rounded-xl bg-white shadow-xl w-112">
           <li className="flex flex-col items-center gap-1">
-            <img
-              src="https://via.placeholder.com/150"
-              alt="Imagem de teste"
-              className="rounded-full"
-            />
+            {image ? (
+              <img
+                src={image}
+                alt="Profile Photo"
+                className="rounded-full h-40 w-40 object-cover"
+              />
+            ) : (
+              <img src="src/images/profile-home.jpg" alt="Default Profile" className="rounded-full h-40 w-40 object-cover" />
+            )}
             <p>
               <b>
                 {capitalize(firstname)} {capitalize(lastname)}
@@ -114,23 +123,24 @@ export default function ProfileInfo() {
           </li>
         </ul>
 
-
-          {!renderForm && <div className="flex flex-col gap-12 lg:gap-24 text-center items-center p-8 bg-white shadow-xl rounded-2xl max-w-xs m-auto">
+        {!renderForm && (
+          <div className="flex flex-col gap-12 lg:gap-24 text-center items-center p-8 bg-white shadow-xl rounded-2xl max-w-xs m-auto">
             <div>
-            <CheckCircle className="inline mr-1" />{" "}
-            <span className="text-lg head-text">
-              Basal Metabolic Rate (BMR)
-            </span>
-            <p className="text-sm mt-2">
-              {" "}
-              Calculates how much calories your body needs at rest to maintain
-              basic functions. It's the energy required for essential processes
-              like breathing and circulation. BMR varies based on factors like
-              age and body composition.
-            </p>
+              <CheckCircle className="inline mr-1" />{" "}
+              <span className="text-lg head-text">
+                Basal Metabolic Rate (BMR)
+              </span>
+              <p className="text-sm mt-2">
+                {" "}
+                Calculates how much calories your body needs at rest to maintain
+                basic functions. It's the energy required for essential
+                processes like breathing and circulation. BMR varies based on
+                factors like age and body composition.
+              </p>
             </div>
-          </div>}
-        </div>
+          </div>
+        )}
       </div>
+    </div>
   );
 }
