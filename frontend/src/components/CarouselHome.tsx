@@ -72,8 +72,8 @@ export default function CarouselDemo() {
             </Link>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious className="invisible sm:visible" />
-        <CarouselNext className="invisible sm:visible" />
+        <CarouselPrevious  />
+        <CarouselNext />
       </Carousel>
     </div>
   );

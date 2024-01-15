@@ -38,13 +38,17 @@ export default function WorkCrossfit() {
   const [typeWod, setTypeWod] = useState("");
   const [rounds, setRounds] = useState(1);
   const [nameExercise, setNameExercise] = useState("");
-  const [repsExercise, setRepsExercise] = useState(0);
+  const [repsExercise, setRepsExercise] = useState(1);
   const [womenWeight, setWomenWeight] = useState(0);
   const [menWeight, setMenWeight] = useState(0);
   const [wodItem, setWodItem] = useState<crossfitExercise[]>([]);
   const [equipment, setEquipment] = useState("Bar");
   const [noSelectingExercise, setNoSelectingExercise] = useState(true);
   const [noNewExercise, setNoNewExercise] = useState(true);
+  const [blankNameWod, setBlankNameWod] = useState(false)
+  const [blankExercises, setBlankExercises] = useState(false)
+  const [blankTypeWod, setBlankTypeWod] = useState(false)
+  const [blankTimeCap, setBlankTimeCap] = useState(false)
 
   const handleFormWork = () => {
     setIsFormWorkOpen((i) => !i);
@@ -57,7 +61,14 @@ export default function WorkCrossfit() {
   };
 
   const handleNewWod = () => {
-    if (!nameWod || !typeWod || wodItem.length === 0) return;
+    if (!nameWod || !typeWod || wodItem.length === 0 || timeCap === 0) {
+      setBlankNameWod(!nameWod);
+      setBlankTypeWod(!typeWod);
+      setBlankExercises(wodItem.length === 0);
+      setBlankTimeCap(true)
+
+      return;
+    }
 
     dispatch(
       addNewCrossfitWorkout({
@@ -76,6 +87,10 @@ export default function WorkCrossfit() {
     setMenWeight(0);
     setAddingExercise(false);
     setWodItem([]);
+    setBlankExercises(false)
+    setBlankNameWod(false)
+    setBlankTimeCap(false)
+    setBlankTypeWod(false)
   };
 
   const handleNewExercise = () => {
@@ -127,6 +142,7 @@ export default function WorkCrossfit() {
             id="wod"
             onChange={(e) => setNameWod(e.target.value)}
           />
+          {blankNameWod && <p className="text-sm text-red-500">WOD need to have a name</p>}
           <Select onValueChange={(e) => setTypeWod(e)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="WOD Style" />
@@ -136,7 +152,7 @@ export default function WorkCrossfit() {
               <SelectItem value="forTime">For Time</SelectItem>
             </SelectContent>
           </Select>
-          <div>
+          {typeWod !== "amrap" && <div>
             <Input
               type="number"
               min={1}
@@ -146,7 +162,8 @@ export default function WorkCrossfit() {
               onChange={(e) => setRounds(+e.target.value)}
             />
             <span className="text-xs">Optional</span>
-          </div>
+            {blankTypeWod && <p className="text-sm text-red-500">Select a workout type</p>}
+          </div>}
           <div className="mt-4">
             <Button
               type="button"
@@ -157,11 +174,12 @@ export default function WorkCrossfit() {
               {addingExercise ? "Close" : "Add Exercise"}
               <Dumbbell className="inline ml-1" size={16} color="green" />
             </Button>
+            {blankExercises && <p className="text-sm text-red-500">WOD need at least one exercise</p>}
             {addingExercise && (
               <div className="mt-4 border-2 rounded-xl p-2">
                 <div className="flex gap-2 mb-2">
                   <Input
-                    min={0}
+                    min={1}
                     max={500}
                     type="number"
                     className="w-20"
@@ -272,6 +290,7 @@ export default function WorkCrossfit() {
             className="w-32"
             onChange={(e) => setTimeCap(+e.target.value)}
           />
+          {blankTimeCap && <p className="text-sm text-red-500">WOD need to have a time cap</p>}
           <Button type="button" onClick={handleNewWod}>
             Create WOD
           </Button>

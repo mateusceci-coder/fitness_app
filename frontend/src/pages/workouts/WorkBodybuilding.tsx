@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { calculateWeightReps } from "@/lib/calculators";
-import { capitalize } from "@/lib/utils";
+import { capitalizeText } from "@/lib/utils";
 
 import {
   addNewBodybuildingWorkout,
@@ -39,6 +39,8 @@ export default function WorkBodybuilding() {
   const [workoutItem, setWorkoutItem] = useState<bodybuildingExercise[]>([]);
   const [noSelectingExercise, setNoSelectingExercise] = useState(true);
   const [noNewExercise, setNoNewExercise] = useState(true);
+  const [blankWorkout, setBlankWorkout] = useState(false)
+  const [blankExercise, setBlankExercise] = useState(false)
   const { workoutsBodybuilding } = useSelector(
     (store: RootReducer) => store.workout
   );
@@ -48,6 +50,9 @@ export default function WorkBodybuilding() {
   const dispatch = useDispatch();
 
   const handleNewExercise = () => {
+
+    if(!nameExercise) return
+
     const suggestedWeight = calculateSuggestedWeight(
       nameExercise,
       equipment,
@@ -68,10 +73,15 @@ export default function WorkBodybuilding() {
     setNameExercise("");
     setRepsExercise(1);
     setSeriesExercise(1);
+    setBlankExercise(false)
   };
 
   const handleNewWorkout = () => {
-    if (!nameWorkout || workoutItem.length === 0) return;
+    if(!nameWorkout || workoutItem.length === 0) {
+      setBlankWorkout(!nameWorkout)
+      setBlankExercise(workoutItem.length === 0)
+      return
+    }
 
     dispatch(
       addNewBodybuildingWorkout({
@@ -86,6 +96,8 @@ export default function WorkBodybuilding() {
     setSeriesExercise(1);
     setIsFormWorkOpen(false);
     setWorkoutItem([]);
+    setBlankExercise(false)
+    setBlankWorkout(false)
   };
 
   const handleDeleteWorkout = (id: string) => {
@@ -153,6 +165,7 @@ export default function WorkBodybuilding() {
               id="workout"
               onChange={(e) => setNameWorkout(e.target.value)}
             />
+            {blankWorkout && <p className="text-sm text-red-500">Workout needs a title</p>}
             <div className="mt-4">
               <Button
                 type="button"
@@ -163,6 +176,7 @@ export default function WorkBodybuilding() {
                 {addingExercise ? "Close" : "Add Exercise"}
                 <Dumbbell className="inline ml-1" size={16} color="green" />
               </Button>
+              {blankExercise && <p className="text-sm text-red-500">Workout needs at least one exercise</p>}
             </div>
             {addingExercise && (
               <div className="mt-4 border-2 rounded-xl p-3">
@@ -189,7 +203,7 @@ export default function WorkBodybuilding() {
                       <Input
                         type="text"
                         placeholder="Exercise"
-                        onChange={(e) => setNameExercise(e.target.value)}
+                        onChange={(e) => setNameExercise(capitalizeText(e.target.value))}
                       />
                       <Undo2 size={36} className="inline ml-1 cursor-pointer" color="green" onClick={handleFormText} />
                     </div>
@@ -246,7 +260,7 @@ export default function WorkBodybuilding() {
                 <li>
                   <span>{exercise.seriesExercise}</span>x
                   <span>{exercise.repsExercise}</span>{" "}
-                  {capitalize(exercise.nameExercise)}{" "}
+                  {(exercise.nameExercise)}{" "}
                   {exercise.equipment !== "Bodyweight" &&
                     `(${exercise.equipment})`}
                 </li>

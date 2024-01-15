@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { capitalizeText } from "@/lib/utils";
 import {
   addExerciseBodybuilding,
   addExerciseCrossfit,
@@ -82,7 +83,7 @@ export default function DialogButton() {
             </Label>
             <Input
               id="exercise"
-              onChange={(e) => setExercise(e.target.value)}
+              onChange={(e) => setExercise(capitalizeText(e.target.value))}
               className="col-span-3"
             />
           </div>
