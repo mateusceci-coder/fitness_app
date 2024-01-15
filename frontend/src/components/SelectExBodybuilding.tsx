@@ -27,7 +27,7 @@ interface nameExerciseProps {
   noSelectingExercise: boolean
 }
 
-export default function SelectExCrossfit({
+export default function SelectExBodybuilding({
   nameExercise,
   setNameExercise,
   setNoNewExercise,
@@ -36,7 +36,7 @@ export default function SelectExCrossfit({
 }: nameExerciseProps) {
   const [open, setOpen] = React.useState(false);
 
-  const { crossfitList } = useSelector((store: RootReducer) => store.exercise);
+  const { bodybuildingList } = useSelector((store: RootReducer) => store.exercise);
 
   const handleFormText = () => {
     setNoNewExercise(true)
@@ -54,7 +54,7 @@ export default function SelectExCrossfit({
             className="w-[200px] justify-between"
           >
             {nameExercise
-              ? crossfitList.find(
+              ? bodybuildingList.find(
                   (ex) =>
                     ex.exercise.toLowerCase() === nameExercise.toLowerCase()
                 )?.exercise
@@ -67,7 +67,7 @@ export default function SelectExCrossfit({
             <CommandInput placeholder="Search Exercise..." />
             <CommandEmpty>No exercise found.</CommandEmpty>
             <CommandGroup>
-              {crossfitList.map((ex) => (
+              {bodybuildingList.map((ex) => (
                 <CommandItem
                   key={ex.id}
                   value={ex.exercise}

@@ -204,7 +204,7 @@ export default function WorkCrossfit() {
                       <Undo2
                       size={36}
                         className="inline ml-1 cursor-pointer"
-                        color="blue"
+                        color="green"
                         onClick={handleTextForm}
                       />
                     </>
