@@ -297,7 +297,7 @@ export default function WorkCrossfit() {
         </form>
       )}
       {workoutsCrossfit.map((workout) => (
-        <Collapsible className="border-2 p-2 rounded-xl w-96 relative">
+        <Collapsible className="bg-grayBg p-2 rounded-xl shadow-xl w-96 relative">
           <X
             color="red"
             className="absolute bottom-3 right-2 cursor-pointer"
@@ -305,7 +305,7 @@ export default function WorkCrossfit() {
           />
           <div className="flex justify-center">
             <CollapsibleTrigger>
-              <h2 className="text-2xl">{capitalize(workout.name)}</h2>
+              <h2 className="text-2xl"><b>{capitalize(workout.name)}</b></h2>
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="flex gap-2 flex-col">
@@ -317,7 +317,7 @@ export default function WorkCrossfit() {
                 </p>
               )}
             </h1>
-            <ul>
+            <ul className="mb-2">
               {workout.exercise.map((ex) => (
                 <li>
                   <span>{ex.repsExercise}</span> {capitalize(ex.nameExercise)}{" "}

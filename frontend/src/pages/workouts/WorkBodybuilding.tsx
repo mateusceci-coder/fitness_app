@@ -223,12 +223,16 @@ export default function WorkBodybuilding() {
                     className="w-20"
                     placeholder="Series"
                     onChange={(e) => setSeriesExercise(+e.target.value)}
+                    min={1}
+                    max={500}
                   />
                   <Input
                     type="number"
                     className="w-20"
                     placeholder="Reps"
                     onChange={(e) => setRepsExercise(+e.target.value)}
+                    min={1}
+                    max={500}
                   />
 
                   </div>
@@ -274,7 +278,7 @@ export default function WorkBodybuilding() {
         {workoutsBodybuilding.map((workout) => (
           <Collapsible
             key={workout.id}
-            className="flex flex-col border-2 p-4 rounded-xl w-96 relative"
+            className="flex flex-col bg-grayBg p-2 shadow-xl rounded-xl w-96 relative"
           >
             <X
               color="red"
@@ -283,7 +287,7 @@ export default function WorkBodybuilding() {
             />
             <div className="flex justify-center">
               <CollapsibleTrigger>
-                <h2 className="text-2xl mb-3">{workout.name}</h2>
+                <h2 className="text-2xl mb-3"><b>{workout.name}</b></h2>
               </CollapsibleTrigger>
             </div>
             <CollapsibleContent className="flex gap-2 flex-col">

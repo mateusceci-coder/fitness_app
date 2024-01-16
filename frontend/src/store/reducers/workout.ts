@@ -61,7 +61,7 @@ const crossfitExample = [
 const bodybuildingExample = [
   {
     id: "1",
-    name: "Upper Body (suggestion)",
+    name: "Upper Body",
     exercise: [
       {
         nameExercise: "Bench Press",
