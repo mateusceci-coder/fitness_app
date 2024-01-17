@@ -15,7 +15,7 @@ export default function CarouselDemo() {
 
   return (
     <div className="flex justify-center">
-      <Carousel className="max-w-xs sm:max-w-md mt-20 mb-4 w-9/12 sm:w-full">
+      <Carousel className="max-w-xs sm:max-w-md mt-20 mb-4 w-8/12 sm:w-full">
         <CarouselContent>
           <CarouselItem>
             <Link to={cardProfile.page}>
