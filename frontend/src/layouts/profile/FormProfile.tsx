@@ -41,18 +41,8 @@ const formSchema = z.object({
     message: "Name must be at least 3 characters.",
   }),
   age: z
-    .number({
-      required_error: "Age is required",
-      invalid_type_error: "Age must be a number",
-    })
-    .gte(10, {
-      message: "Must be older than 10 years old",
-    })
-    .int({
-      message: "Must be an integer number",
-    })
-    .lte(100, {
-      message: "Must be younger than 100 years old",
+    .coerce.string().includes("-",{
+      message: "Must include birthday"
     }),
   height: z
     .number({
@@ -97,7 +87,7 @@ export default function FormProfile() {
     defaultValues: {
       firstname: "",
       lastname: "",
-      age: undefined,
+      age: "",
       height: undefined,
       weight: undefined,
       gender: "",
@@ -183,10 +173,11 @@ export default function FormProfile() {
                 <FormLabel>Age</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    placeholder="22"
+                    type="date"
+                    min="1900-01-01"
+                    max="2022-01-01"
                     {...field}
-                    onChange={(event) => field.onChange(+event.target.value)}
+                    onChange={(event) => field.onChange(event.target.value)}
                   />
                 </FormControl>
                 <FormMessage />

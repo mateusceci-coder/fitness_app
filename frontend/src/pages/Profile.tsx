@@ -11,9 +11,8 @@ export default function Profile() {
 
     const renderForm = updatingProfile || firstProfile
 
-
     return (
-    <div className={`${!renderForm ? "flex justify-center items-center" : "grid lg:grid-cols-2" } mb-4 p-1 bg-grayBg`}>
+    <div className={`${!renderForm ? "flex justify-center items-center" : "grid lg:grid-cols-2" } p-1 bg-grayBg`}>
       {firstProfile ? <CreateProfileText /> : <ProfileInfo />}
       {renderForm && <FormProfile />}
     </div>
