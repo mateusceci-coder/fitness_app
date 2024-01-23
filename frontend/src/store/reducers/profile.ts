@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 interface ProfileParams {
   firstname: string;
   lastname: string;
-  age: number;
+  age: string;
   height: number;
   weightUser: number;
   gender: string;
@@ -15,7 +15,7 @@ interface ProfileParams {
 interface Profile {
   firstname: string;
   lastname: string;
-  age: number;
+  age: string;
   height: number;
   weightUser: number;
   gender: string;
@@ -25,7 +25,7 @@ interface Profile {
 const initialState: ProfileParams = {
   firstname: "",
   lastname: "",
-  age: 0,
+  age: "",
   height: 0,
   weightUser: 0,
   gender: "",

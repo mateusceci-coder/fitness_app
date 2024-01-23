@@ -41,26 +41,14 @@ const formSchema = z.object({
     message: "Name must be at least 3 characters.",
   }),
   age: z
-    .number({
-      required_error: "Age is required",
-      invalid_type_error: "Age must be a number",
-    })
-    .gte(10, {
-      message: "Must be older than 10 years old",
-    })
-    .int({
-      message: "Must be an integer number",
-    })
-    .lte(100, {
-      message: "Must be younger than 100 years old",
-    }),
+    .string().regex(/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d{2}$/),
   height: z
     .number({
       required_error: "Height is required",
       invalid_type_error: "Height must be a number",
     })
-    .gte(50, {
-      message: "Must be higher than 50 cm",
+    .gte(20, {
+      message: "Must be higher than 20 cm",
     })
     .lte(250, {
       message: "Must be lower than 250 cm",
@@ -91,6 +79,7 @@ const formSchema = z.object({
 export default function FormProfile() {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -183,10 +172,10 @@ export default function FormProfile() {
                 <FormLabel>Age</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    placeholder="22"
+                    placeholder="mm-dd-yyyy"
+                    type="text"
                     {...field}
-                    onChange={(event) => field.onChange(+event.target.value)}
+                    onChange={(event) => field.onChange(event.target.value)}
                   />
                 </FormControl>
                 <FormMessage />
