@@ -40,7 +40,7 @@ const formSchema = z.object({
   lastname: z.string().min(3, {
     message: "Name must be at least 3 characters.",
   }),
-  age: z
+  birthday: z
     .coerce.string().includes("-",{
       message: "Must include birthday"
     }),
@@ -87,7 +87,7 @@ export default function FormProfile() {
     defaultValues: {
       firstname: "",
       lastname: "",
-      age: "",
+      birthday: "",
       height: undefined,
       weight: undefined,
       gender: "",
@@ -100,7 +100,7 @@ export default function FormProfile() {
     const profileData = {
       firstname: values.firstname,
       lastname: values.lastname,
-      age: values.age,
+      birthday: values.birthday,
       height: values.height,
       weightUser: values.weight,
       gender: values.gender,
@@ -167,7 +167,7 @@ export default function FormProfile() {
           />
           <FormField
             control={form.control}
-            name="age"
+            name="birthday"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Age</FormLabel>
