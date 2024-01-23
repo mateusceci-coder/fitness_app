@@ -43,3 +43,19 @@ export function calculateWeightReps(repMax: number, numReps: number) {
 
     return repMax * table[numReps];
 }
+
+export function calculateAge(dateOfBirth: string): number {
+
+
+    const today = new Date();
+    const dobDate = new Date(dateOfBirth);
+
+    // Calcula a diferença em milissegundos
+    const ageDiffMilliseconds = today.getTime() - dobDate.getTime();
+
+    // Converte a diferença em anos
+    const ageDate = new Date(ageDiffMilliseconds);
+    const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+    return calculatedAge;
+  }

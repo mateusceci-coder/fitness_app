@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { bmiCalculator, caloriesCalculator } from "@/lib/calculators";
+import { bmiCalculator, calculateAge, caloriesCalculator } from "@/lib/calculators";
 import { capitalize } from "@/lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducer } from "@/store/store";
@@ -10,7 +10,7 @@ export default function ProfileInfo() {
   const {
     firstname,
     lastname,
-    age,
+    birthday,
     height,
     weightUser,
     gender,
@@ -26,6 +26,7 @@ export default function ProfileInfo() {
     dispatch(isUpdating(true));
   };
 
+  const age = calculateAge(birthday)
   const bmi = bmiCalculator(height, weightUser);
   const calories = caloriesCalculator(height, weightUser, age, gender);
 
@@ -74,9 +75,9 @@ export default function ProfileInfo() {
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">
-              <b>Age:</b>
+              <b>Age</b>
             </p>
-            <p>{age} years old</p>
+            <p>{calculateAge(birthday)}</p>
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">

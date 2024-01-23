@@ -40,7 +40,7 @@ const formSchema = z.object({
   lastname: z.string().min(3, {
     message: "Name must be at least 3 characters.",
   }),
-  age: z
+  birthday: z
     .string().regex(/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)\d{2}$/),
   height: z
     .number({
@@ -86,7 +86,7 @@ export default function FormProfile() {
     defaultValues: {
       firstname: "",
       lastname: "",
-      age: undefined,
+      birthday: "",
       height: undefined,
       weight: undefined,
       gender: "",
@@ -99,7 +99,7 @@ export default function FormProfile() {
     const profileData = {
       firstname: values.firstname,
       lastname: values.lastname,
-      age: values.age,
+      birthday: values.birthday,
       height: values.height,
       weightUser: values.weight,
       gender: values.gender,
@@ -166,13 +166,13 @@ export default function FormProfile() {
           />
           <FormField
             control={form.control}
-            name="age"
+            name="birthday"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Age</FormLabel>
+                <FormLabel>Birthday</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="mm-dd-yyyy"
+                    placeholder="mm/dd/yyyy"
                     type="text"
                     {...field}
                     onChange={(event) => field.onChange(event.target.value)}
