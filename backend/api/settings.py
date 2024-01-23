@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     "rest_framework.authtoken", # token authentication
     "djoser", # authentication library
     "corsheaders", # library for cors
-    "autentication", # app autentication
+    "authentication", # app authentication
+    "bodybuilder"
 ]
 
 MIDDLEWARE = [
@@ -91,7 +92,7 @@ REST_FRAMEWORK = {
 # https://djoser.readthedocs.io/en/latest/settings.html
 # DJOSER = {
 #     "SERIALIZERS": {
-#         "user_create": "autentication.serializers.CustomUserCreateSerializer",
+#         "user_create": "authentication.serializers.CustomUserCreateSerializer",
 #     }
 # }
 
