@@ -3,12 +3,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate()
 
   const apiUrl = "http://127.0.0.1:8000/auth/token/login/";
 
@@ -23,23 +26,22 @@ export default function Login() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const username = userData.username;
+    const password = userData.password;
 
     try {
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
+      const res = await axios.post(apiUrl, {
+        username,
+        password,
       });
-      if (!res.ok) {
-        throw new Error(`Erro na requisição: ${res.status}`);
-      }
-      const data = await res.json();
-      sessionStorage.setItem("auth_token", data);
+
+      sessionStorage.setItem("auth_token", res.data.auth_token);
+      navigate("/")
+
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
+
   };
 
   return (
@@ -69,7 +71,12 @@ export default function Login() {
         <Button className="w-full mb-2" type="submit">
           Login
         </Button>
-        <p className="text-sm text-center">Don't have an account? <Link to="/signin" className="text-mainBlue">Create now!</Link>  </p>
+        <p className="text-sm text-center">
+          Don't have an account?{" "}
+          <Link to="/signin" className="text-mainBlue">
+            Create now!
+          </Link>{" "}
+        </p>
       </form>
     </section>
   );
