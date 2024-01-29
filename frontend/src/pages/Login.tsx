@@ -39,6 +39,7 @@ export default function Login() {
       });
 
       sessionStorage.setItem("auth_token", res.data.auth_token);
+      sessionStorage.setItem("username", username)
       toast.success("Logged in successfully!");
       setTimeout(() => {
         navigate("/");
