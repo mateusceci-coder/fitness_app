@@ -5,6 +5,9 @@ import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Login() {
   const [userData, setUserData] = useState({
@@ -36,16 +39,21 @@ export default function Login() {
       });
 
       sessionStorage.setItem("auth_token", res.data.auth_token);
-      navigate("/")
+      toast.success("Logged in successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
 
     } catch (err) {
       console.log(err);
+      toast.error("Login failed. Please try again.");
     }
 
   };
 
   return (
     <section className="h-screen bg-grayBg flex flex-col gap-10 justify-center items-center">
+      <ToastContainer />
       <h1 className="head-text">Welcome to the App!</h1>
       <form
         onSubmit={handleSubmit}
