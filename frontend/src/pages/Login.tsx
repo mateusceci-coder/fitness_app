@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +13,7 @@ export default function Login() {
     username: "",
     password: "",
   });
-  const navigate = useNavigate()
+
 
   const apiUrl = "http://127.0.0.1:8000/auth/token/login/";
 
@@ -41,7 +40,7 @@ export default function Login() {
       sessionStorage.setItem("auth_token", res.data.auth_token);
       toast.success("Logged in successfully!");
       setTimeout(() => {
-        navigate("/");
+        window.location.href = "/";
       }, 3000);
 
     } catch (err) {
