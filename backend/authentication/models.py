@@ -7,6 +7,7 @@ class Profile(models.Model):
     height = models.FloatField(null=True, blank=True)
     weight = models.FloatField(null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    gender = models.CharField(max_length=6, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
