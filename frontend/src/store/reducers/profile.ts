@@ -13,8 +13,6 @@ interface ProfileParams {
 }
 
 interface Profile {
-  firstname: string;
-  lastname: string;
   birthday: string;
   height: number;
   weightUser: number;
