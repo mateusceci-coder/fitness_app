@@ -78,20 +78,28 @@ const formSchema = z.object({
     ).optional(),
 });
 
-export default function FormProfile() {
+export interface dataUser {
+    id: number,
+    user: number,
+    birthday: string,
+    height: number,
+    weight: number,
+    profile_picture: string,
+    gender: string
+}
+
+export default function FormProfile({dataUser}: {dataUser: dataUser}) {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
-      birthday: "",
-      height: undefined,
-      weight: undefined,
-      gender: "",
-      image: undefined,
+      birthday: dataUser.birthday,
+      height: dataUser.height,
+      weight: dataUser.weight,
+      gender: dataUser.gender,
+      image: dataUser.profile_picture,
     },
   });
 
