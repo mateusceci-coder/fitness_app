@@ -2,15 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setName } from "@/store/reducers/profile";
 
 export default function Signin() {
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [userData, setUserData] = useState({
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userData, setUserData] = useState({
+    firstname: "",
+    lastname: "",
     username: "",
     email: "",
     password: "",
   });
-  const [samePassword, setSamePassword] = useState(true)
+  const [samePassword, setSamePassword] = useState(true);
+  const dispatch = useDispatch();
 
   const apiUrl = "http://127.0.0.1:8000/auth/users/";
 
@@ -27,8 +32,8 @@ export default function Signin() {
     event.preventDefault();
 
     if (userData.password !== confirmPassword) {
-        setSamePassword(false)
-        return
+      setSamePassword(false);
+      return;
     }
 
     try {
@@ -42,9 +47,15 @@ export default function Signin() {
       if (!res.ok) {
         throw new Error(`Erro na requisição: ${res.status}`);
       }
-      setSamePassword(true)
+      setSamePassword(true);
       const data = await res.json();
       sessionStorage.setItem("auth_token", data);
+      dispatch(
+        setName({
+          firstname: userData.firstname,
+          lastname: userData.lastname,
+        })
+      );
     } catch (err) {
       console.error(err);
     }
@@ -63,6 +74,22 @@ export default function Signin() {
           className="mb-8"
           name="email"
           type="email"
+          onChange={handleInputChange}
+          required
+        />
+        <Label htmlFor="username">First Name:</Label>
+        <Input
+          className="mb-8"
+          name="firstname"
+          type="text"
+          onChange={handleInputChange}
+          required
+        />
+        <Label htmlFor="lastname">Last Name:</Label>
+        <Input
+          className="mb-8"
+          name="lastname"
+          type="text"
           onChange={handleInputChange}
           required
         />
@@ -90,7 +117,9 @@ export default function Signin() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        {!samePassword && <p className="text-sm text-red-500 pb-1">Passwords does not match</p>}
+        {!samePassword && (
+          <p className="text-sm text-red-500 pb-1">Passwords does not match</p>
+        )}
         <Button className="w-full" type="submit">
           Sign in
         </Button>
