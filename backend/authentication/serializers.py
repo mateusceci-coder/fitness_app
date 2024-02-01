@@ -23,6 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'date_joined']
 
 class ProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.SerializerMethodField(read_only=True)
+    last_name = serializers.SerializerMethodField(read_only=True)
+    username = serializers.SerializerMethodField(read_only=True)
     birthday = serializers.DateField(required=True)
     height = serializers.FloatField(min_value=100, max_value=300, required=False)
     weight = serializers.FloatField(min_value=40, max_value=300, required=False)
@@ -37,7 +40,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'birthday', 'height', 'weight', 'profile_picture', 'gender']
+        fields = ['id', 'username','first_name', 'last_name', 'birthday', 'height', 'weight', 'profile_picture', 'gender']
 
         extra_kwargs = {
             'profile_picture': {
@@ -45,3 +48,12 @@ class ProfileSerializer(serializers.ModelSerializer):
                 'allow_null': True
             }
         }
+
+    def get_first_name(self, obj):
+        return obj.user.first_name
+
+    def get_last_name(self, obj):
+        return obj.user.last_name
+    
+    def get_username(self, obj):
+        return obj.user.username
