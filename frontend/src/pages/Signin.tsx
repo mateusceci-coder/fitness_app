@@ -2,22 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setName } from "@/store/reducers/profile";
+import { useRegister } from "@/api/register/useRegister";
+import { RegisterData } from "@/api/register/types";
 
 export default function Signin() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userData, setUserData] = useState({
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     username: "",
     email: "",
     password: "",
   });
   const [samePassword, setSamePassword] = useState(true);
-  const dispatch = useDispatch();
 
-  const apiUrl = "http://127.0.0.1:8000/auth/users/";
+  const { registerUser } = useRegister()
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -36,29 +35,8 @@ export default function Signin() {
       return;
     }
 
-    try {
-      const res = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-      if (!res.ok) {
-        throw new Error(`Erro na requisição: ${res.status}`);
-      }
-      setSamePassword(true);
-      const data = await res.json();
-      sessionStorage.setItem("auth_token", data);
-      dispatch(
-        setName({
-          firstname: userData.firstname,
-          lastname: userData.lastname,
-        })
-      );
-    } catch (err) {
-      console.error(err);
-    }
+    registerUser(userData as RegisterData);
+
   };
 
   return (
@@ -80,7 +58,7 @@ export default function Signin() {
         <Label htmlFor="username">First Name:</Label>
         <Input
           className="mb-8"
-          name="firstname"
+          name="first_name"
           type="text"
           onChange={handleInputChange}
           required
@@ -88,7 +66,7 @@ export default function Signin() {
         <Label htmlFor="lastname">Last Name:</Label>
         <Input
           className="mb-8"
-          name="lastname"
+          name="last_name"
           type="text"
           onChange={handleInputChange}
           required
