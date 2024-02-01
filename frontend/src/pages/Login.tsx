@@ -4,7 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -38,6 +38,7 @@ export default function Login() {
       });
 
       sessionStorage.setItem("auth_token", res.data.auth_token);
+      sessionStorage.setItem("username", username);
       toast.success("Logged in successfully!");
       setTimeout(() => {
         window.location.href = "/";
@@ -52,7 +53,6 @@ export default function Login() {
 
   return (
     <section className="h-screen bg-grayBg flex flex-col gap-10 justify-center items-center">
-      <ToastContainer />
       <h1 className="head-text">Welcome to the App!</h1>
       <form
         onSubmit={handleSubmit}

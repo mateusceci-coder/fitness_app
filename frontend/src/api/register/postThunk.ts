@@ -11,9 +11,10 @@ export const registerUserThunk = createAsyncThunk<RegisterResponse, RegisterData
       toast.success('Registro realizado com sucesso!');
       return response.data;
     } catch (error) {
+      toast.error('Falha no registro');
       if (axios.isAxiosError(error) && error.response) {
         const passwordErros = error.response.data.password;
-        if (passwordErros == error.response.data.password as string) {
+        if (passwordErros) {
             passwordErros.forEach((element: string) => {
             toast.error(element);
           });

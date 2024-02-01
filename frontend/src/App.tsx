@@ -12,10 +12,12 @@ import WorkCrossfit from "./pages/workouts/WorkCrossfit";
 import WorkBodybuilding from "./pages/workouts/WorkBodybuilding";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   return (
     <Router>
+      <ToastContainer />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
