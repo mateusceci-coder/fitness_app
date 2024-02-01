@@ -1,11 +1,15 @@
 from django.http import Http404
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from authentication.serializers import ProfileSerializer
 from django.shortcuts import get_object_or_404
 from .models import Profile
+import logging
+
+logger = logging.getLogger('API')
 
 class ProfileDetail(RetrieveAPIView):
     """
@@ -29,26 +33,29 @@ class ProfileList(ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
+class IsOwnerOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
+        return obj.user == request.user
+
 class ProfileUpdateView(APIView):
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     def put(self, request, pk, format=None):
         """
-        Updates and returns a profile by its primary key using the provided request data.
-        
-        Args:
-            self: the instance of the class
-            request: the request data
-            pk: the primary key of the profile
-            format: the format of the data
-        
-        Returns:
-            Response: the response containing the updated profile data or any errors
+        Update the profile with the given primary key using the data from the request.
+    
+        :param request: The request object
+        :param pk: The primary key of the profile to be updated
+        :param format: The format of the data
+        :return: Response with the updated profile data or errors if the data is invalid
         """
-        try:
-            profile = Profile.objects.get(pk=pk)
-        except Profile.DoesNotExist:
-            raise Http404
-        
-        serializer = ProfileSerializer(profile, data=request.data)
+
+        profile = get_object_or_404(Profile, pk=pk) # Get the profile with the given primary key
+
+        logger.info(f"Updating profile with pk={pk}", extra={'profile_id': profile.pk, 'user_id': request.user.pk})
+
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

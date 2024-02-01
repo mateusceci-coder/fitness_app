@@ -7,7 +7,7 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = User
 
     username = factory.Sequence(lambda n: f'user{n}')
-    password = factory.PostGenerationMethodCall('set_password', 'defaultpassword')
+    password = factory.PostGenerationMethodCall('set_password', 'defaultpassword!@#$123')
 
 class ProfileFactory(factory.django.DjangoModelFactory):
     class Meta:

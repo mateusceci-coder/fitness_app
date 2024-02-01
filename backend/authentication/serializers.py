@@ -24,9 +24,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     birthday = serializers.DateField(required=True)
-    height = serializers.FloatField(min_value=0, max_value=300, required=False)
-    weight = serializers.FloatField(min_value=0, max_value=300, required=False)
-    gender = serializers.ChoiceField(choices=['Male', 'Female', 'Other'])
+    height = serializers.FloatField(min_value=100, max_value=300, required=False)
+    weight = serializers.FloatField(min_value=40, max_value=300, required=False)
+    gender = serializers.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')])
 
     def validate_birthday(self, value):
         if value < datetime.date(year=1950, month=1, day=1):
@@ -34,12 +34,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         elif value > datetime.date.today():
             raise serializers.ValidationError("Birthday cannot be in the future.")
         return value
-    
-    def validate_height(self, value):
-        if value < 140:
-            raise serializers.ValidationError("Height cannot be less than 140cm.")
-        elif value > 250:
-            raise serializers.ValidationError("Height cannot be greater than 250cm.")
             
     class Meta:
         model = Profile
