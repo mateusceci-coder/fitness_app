@@ -13,8 +13,6 @@ interface ProfileParams {
 }
 
 interface Profile {
-  firstname: string;
-  lastname: string;
   birthday: string;
   height: number;
   weightUser: number;
@@ -45,20 +43,20 @@ const profileSlice = createSlice({
       state.updatingProfile = action.payload;
     },
     updateUser: (state, action: PayloadAction<Profile>) => {
-      const { firstname, lastname, birthday, height, weightUser, gender, image } =
-        action.payload;
-
-      (state.firstname = firstname),
-        (state.lastname = lastname),
-        (state.birthday = birthday),
+      const { birthday, height, weightUser, gender, image } = action.payload;
+      (state.birthday = birthday),
         (state.height = height),
         (state.weightUser = weightUser),
         (state.gender = gender);
       state.image = image;
     },
+    setName: (state, action: PayloadAction<{firstname:string, lastname: string}>) => {
+      (state.firstname = action.payload.firstname),
+        (state.lastname = action.payload.lastname);
+    },
   },
 });
 
-export const { updateUser, isUpdating, isFirstProfile } = profileSlice.actions;
+export const { updateUser, isUpdating, isFirstProfile, setName } = profileSlice.actions;
 
 export default profileSlice.reducer;

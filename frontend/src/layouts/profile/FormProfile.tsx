@@ -34,12 +34,6 @@ const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
 
 const formSchema = z.object({
-  firstname: z.string().min(3, {
-    message: "Name must be at least 3 characters.",
-  }),
-  lastname: z.string().min(3, {
-    message: "Name must be at least 3 characters.",
-  }),
   birthday: z
     .coerce.string().includes("-",{
       message: "Must include birthday"
@@ -78,37 +72,47 @@ const formSchema = z.object({
     ).optional(),
 });
 
-export default function FormProfile() {
+export interface dataUser {
+    id: number,
+    user: number,
+    birthday: string,
+    height: number,
+    weight: number,
+    profile_picture: string,
+    gender: string
+}
+
+export default function FormProfile({dataUser}: {dataUser: dataUser}) {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
-
+  console.log(dataUser);
+  if (!dataUser.profile_picture) {
+    dataUser.profile_picture = "";
+  }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstname: "",
-      lastname: "",
-      birthday: "",
-      height: undefined,
-      weight: undefined,
-      gender: "",
-      image: undefined,
+      birthday: dataUser.birthday,
+      height: dataUser.height,
+      weight: dataUser.weight,
+      gender: dataUser.gender
     },
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     const profileData = {
-      firstname: values.firstname,
-      lastname: values.lastname,
       birthday: values.birthday,
       height: values.height,
       weightUser: values.weight,
       gender: values.gender,
-      image: selectedImage ? URL.createObjectURL(selectedImage) : ""
+      image: selectedImage ? URL.createObjectURL(selectedImage) : './src/images/profile-home.jpg',
     };
+    
+    console.log(profileData);
 
     dispatch(isFirstProfile(false));
-    dispatch(isUpdating(false));
+    dispatch(isUpdating(false));  
     dispatch(updateUser(profileData));
     dispatch(newUserWeight(values.weight));
   }
@@ -134,32 +138,6 @@ export default function FormProfile() {
                     field.onChange(e.target.files);
                     setSelectedImage(e.target.files?.[0] || null);
                   }} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="firstname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lastname"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Doe" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
