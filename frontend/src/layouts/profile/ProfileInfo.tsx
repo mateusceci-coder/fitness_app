@@ -37,8 +37,8 @@ export default function ProfileInfo() {
         Here is your informations. You can update whenever you want!
       </h2>
       <div
-        className={`flex flex-col md:flex-row ${
-          renderForm ? "justify-center" : "md:justify-between"
+        className={`flex flex-col lg:flex-row ${
+          renderForm ? "justify-center" : "lg:justify-between"
         }`}
       >
         {!renderForm && (
@@ -56,7 +56,7 @@ export default function ProfileInfo() {
             </div>
           </div>
         )}
-        <ul className="flex flex-col text-center gap-4 mt-16 p-4 rounded-xl bg-white shadow-xl w-112">
+        <ul className="flex flex-col text-center gap-4 mt-16 p-4 rounded-xl bg-white shadow-xl w-80 xs:w-112 mx-auto">
           <li className="flex flex-col items-center gap-1">
             {image ? (
               <img
