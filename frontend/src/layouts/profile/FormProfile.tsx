@@ -128,7 +128,6 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
         : "./src/images/profile-home.jpg",
     };
 
-
     dispatch(isFirstProfile(false));
     dispatch(isUpdating(false));
     dispatch(updateUser(profileData));
