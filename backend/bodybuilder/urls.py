@@ -1,8 +1,10 @@
-from django.urls import path
-
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
 
+router = DefaultRouter()
+router.register(r'exercises', views.ExerciseViewSet)
+
 urlpatterns = [
-    path('exercises/', views.ListExercises.as_view(), name='list-exercises'),
-    path('exercises/create/', views.CreateExercises.as_view(), name='create-exercises'),
+    path('', include(router.urls)),
 ]
