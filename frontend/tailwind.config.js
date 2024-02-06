@@ -82,8 +82,9 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       spacing: {
-        '128': '32rem',
-        '112': '28rem'
+        '152': '38rem', //608px
+        '128': '32rem', //512px
+        '112': '28rem'  //448px
       },
       fontFamily: {
         playfair: ['Playfair Display','sans-serif']

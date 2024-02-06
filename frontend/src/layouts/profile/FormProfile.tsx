@@ -31,13 +31,23 @@ import { newUserWeight } from "@/store/reducers/exercise";
 import { useState } from "react";
 
 const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 
 const formSchema = z.object({
-  birthday: z
-    .coerce.string().includes("-",{
-      message: "Must include birthday"
-    }),
+  first_name: z.string().min(3,{
+    message: "Must include at least 3 letters"
+  }),
+  last_name: z.string().min(3, {
+    message: "Must include at least 3 letters"
+  }),
+  birthday: z.coerce.string().includes("-", {
+    message: "Must include birthday",
+  }),
   height: z
     .number({
       required_error: "Height is required",
@@ -65,26 +75,31 @@ const formSchema = z.object({
   }),
   image: z
     .any()
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+    .refine(
+      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      `Max image size is 5MB.`
+    )
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ).optional(),
+    )
+    .optional(),
 });
 
 export interface dataUser {
-    id: number,
-    user: number,
-    birthday: string,
-    height: number,
-    weight: number,
-    profile_picture: string,
-    gender: string
+  id: number;
+  first_name: string;
+  last_name: string;
+  birthday: string;
+  height: number;
+  weight: number;
+  profile_picture: string;
+  gender: string;
 }
 
-export default function FormProfile({dataUser}: {dataUser: dataUser}) {
+export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   const dispatch = useDispatch();
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   console.log(dataUser);
   if (!dataUser.profile_picture) {
     dataUser.profile_picture = "";
@@ -92,10 +107,12 @@ export default function FormProfile({dataUser}: {dataUser: dataUser}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      first_name: dataUser.first_name,
+      last_name: dataUser.last_name,
       birthday: dataUser.birthday,
       height: dataUser.height,
       weight: dataUser.weight,
-      gender: dataUser.gender
+      gender: dataUser.gender,
     },
   });
 
@@ -106,19 +123,19 @@ export default function FormProfile({dataUser}: {dataUser: dataUser}) {
       height: values.height,
       weightUser: values.weight,
       gender: values.gender,
-      image: selectedImage ? URL.createObjectURL(selectedImage) : './src/images/profile-home.jpg',
+      image: selectedImage
+        ? URL.createObjectURL(selectedImage)
+        : "./src/images/profile-home.jpg",
     };
-    
-    console.log(profileData);
 
     dispatch(isFirstProfile(false));
-    dispatch(isUpdating(false));  
+    dispatch(isUpdating(false));
     dispatch(updateUser(profileData));
     dispatch(newUserWeight(values.weight));
   }
 
   return (
-    <div className="px-1 pb-16 mt-10">
+    <div className="px-1 pb-16 mt-10 bg-grayBg">
       <h2 className="subtitle mb-8">Form Profile</h2>
 
       <Form {...form}>
@@ -133,11 +150,13 @@ export default function FormProfile({dataUser}: {dataUser: dataUser}) {
               <FormItem>
                 <FormLabel>Profile Image</FormLabel>
                 <FormControl>
-                  <Input type="file"
-                  onChange={(e) => {
-                    field.onChange(e.target.files);
-                    setSelectedImage(e.target.files?.[0] || null);
-                  }} />
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      field.onChange(e.target.files);
+                      setSelectedImage(e.target.files?.[0] || null);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

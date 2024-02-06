@@ -34,7 +34,7 @@ export function DialogLogout() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="hover:bg-white hover:text-black absolute top-2 right-5 underline">
+        <Button className="hover:bg-white hover:text-black absolute top-2 right-3 underline">
           Logout
         </Button>
       </DialogTrigger>

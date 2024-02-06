@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -9,63 +9,63 @@
 
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
- 
+
     --primary: 220.9 39.3% 11%;
     --primary-foreground: 210 20% 98%;
- 
+
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
- 
+
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
- 
+
     --accent: 220 14.3% 95.9%;
     --accent-foreground: 220.9 39.3% 11%;
- 
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
     --ring: 224 71.4% 4.1%;
- 
+
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
- 
+
     --card: 224 71.4% 4.1%;
     --card-foreground: 210 20% 98%;
- 
+
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
- 
+
     --primary: 210 20% 98%;
     --primary-foreground: 220.9 39.3% 11%;
- 
+
     --secondary: 215 27.9% 16.9%;
     --secondary-foreground: 210 20% 98%;
- 
+
     --muted: 215 27.9% 16.9%;
     --muted-foreground: 217.9 10.6% 64.9%;
- 
+
     --accent: 215 27.9% 16.9%;
     --accent-foreground: 210 20% 98%;
- 
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 20% 98%;
- 
+
     --border: 215 27.9% 16.9%;
     --input: 215 27.9% 16.9%;
     --ring: 216 12.2% 83.9%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -87,6 +87,33 @@
   .nav-button {
     @apply border-2 border-primary rounded-xl hover:bg-secondary hover:text-primary hover:cursor-pointer p-2
   }
+
+  .highlighted-text {
+    position: relative; /* Necessário para a posição da sombra */
+    background-color: yellow; /* Cor de fundo amarela para a marcação */
+    padding: 0 5px; /* Espaçamento interno para não colar o texto nas bordas */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para dar destaque */
+  }
+
+  .highlighted-text::before {
+    content: ""; /* Conteúdo vazio para o pseudo-elemento */
+    position: absolute; /* Posicionamento absoluto dentro do elemento relativo */
+    top: 2px; /* Deslocamento para começar um pouco abaixo do topo das letras */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Coloca a sombra abaixo do texto */
+    background-color: inherit; /* Herda a cor de fundo do elemento pai */
+    box-shadow: inherit; /* Herda a sombra do elemento pai */
+  }
+
+
+  .article:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    transition: all 0.3s ease-in-out;
+  }
+
 }
 
 @keyframes infiniteScale {
@@ -100,6 +127,15 @@
     transform: scale(1);
   }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+img {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
 
 .infinite-scale {
   animation: infiniteScale 2s infinite;
