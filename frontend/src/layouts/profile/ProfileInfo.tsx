@@ -31,7 +31,7 @@ export default function ProfileInfo() {
   const calories = caloriesCalculator(height, weightUser, age, gender);
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-grayBg">
       <h1 className="head-text">Hello, {firstname}!</h1>
       <h2 className="subtitle">
         Here is your informations. You can update whenever you want!

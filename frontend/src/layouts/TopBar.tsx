@@ -13,7 +13,7 @@ export default function TopBar() {
   }, [token]);
 
   return (
-    <nav className="hidden sm:inline-block top-0 z-10 w-full bg-primary text-secondary rounded-b-3xl py-2 px-6 backdrop-blur-lg xs:px-7 relative">
+    <nav className="hidden sm:inline-block top-0 z-10 w-full bg-primary text-secondary  py-2 px-6 backdrop-blur-lg xs:px-7 relative">
       <div className="flex justify-evenly">
         <NavLink className="nav-button" to="/">Home</NavLink>
         <NavLink className="nav-button" to="exercises">Exercises</NavLink>

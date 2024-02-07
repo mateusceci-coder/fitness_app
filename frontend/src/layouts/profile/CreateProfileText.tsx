@@ -4,7 +4,7 @@ export default function CreateProfileText() {
   return (
     <div>
       <div className="flex gap-4 mb-20 flex-col p-10">
-        <h1 className="head-text infinite-scale">Create Your Profile!</h1>
+        <h1 className="head-text">Create Your Profile!</h1>
         <h2 className="subtitle">
           By creating your profile, you will have access to:
         </h2>
