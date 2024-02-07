@@ -3,10 +3,11 @@ import { ProfileParams } from './types'
 import { updateUserThunk } from './postThunk'
 import { AppDispatch } from '@/store/store'
 
+
 export const useProfile = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const updateUser = async (data: ProfileParams) => {
-        const response = dispatch(updateUserThunk(data))
+    const updateUser = async (profileParams: ProfileParams, id: number) => {
+        const response = await dispatch(updateUserThunk({profileParams, id}))
         return response
     }
     return { updateUser }
