@@ -3,6 +3,7 @@ import profileReducer from './reducers/profile'
 import exerciseReducer from './reducers/exercise'
 import workoutReducer from './reducers/workout'
 import registerReducer from "@/api/register/registerSlice";
+import updateReducer  from "@/api/profile/profileSlice"
 
 
 const store = configureStore({
@@ -10,7 +11,8 @@ const store = configureStore({
         profile: profileReducer,
         exercise: exerciseReducer,
         workout: workoutReducer,
-        register: registerReducer
+        register: registerReducer,
+        update: updateReducer,
     }
 })
 
