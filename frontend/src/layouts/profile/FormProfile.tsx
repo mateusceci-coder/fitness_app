@@ -24,11 +24,11 @@ import { useDispatch } from "react-redux";
 import {
   isFirstProfile,
   isUpdating,
-  updateUser,
 } from "@/store/reducers/profile";
 
 import { newUserWeight } from "@/store/reducers/exercise";
 import { useState } from "react";
+import { useProfile } from "@/api/profile/useProfile";
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -39,12 +39,6 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const formSchema = z.object({
-  first_name: z.string().min(3,{
-    message: "Must include at least 3 letters"
-  }),
-  last_name: z.string().min(3, {
-    message: "Must include at least 3 letters"
-  }),
   birthday: z.coerce.string().includes("-", {
     message: "Must include birthday",
   }),
@@ -73,7 +67,7 @@ const formSchema = z.object({
   gender: z.string({
     required_error: "Please select a gender",
   }),
-  image: z
+  profile_picture: z
     .any()
     .refine(
       (files) => files?.[0]?.size <= MAX_FILE_SIZE,
@@ -100,6 +94,7 @@ export interface dataUser {
 export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const { updateUser } = useProfile()
   console.log(dataUser);
   if (!dataUser.profile_picture) {
     dataUser.profile_picture = "";
@@ -107,8 +102,6 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      first_name: dataUser.first_name,
-      last_name: dataUser.last_name,
       birthday: dataUser.birthday,
       height: dataUser.height,
       weight: dataUser.weight,
@@ -121,16 +114,17 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     const profileData = {
       birthday: values.birthday,
       height: values.height,
-      weightUser: values.weight,
+      weight: values.weight,
       gender: values.gender,
-      image: selectedImage
+      profile_picture: selectedImage
         ? URL.createObjectURL(selectedImage)
         : "./src/images/profile-home.jpg",
     };
 
+    updateUser(profileData, dataUser.id)
+
     dispatch(isFirstProfile(false));
     dispatch(isUpdating(false));
-    dispatch(updateUser(profileData));
     dispatch(newUserWeight(values.weight));
   }
 
@@ -145,7 +139,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
         >
           <FormField
             control={form.control}
-            name="image"
+            name="profile_picture"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Profile Image</FormLabel>
