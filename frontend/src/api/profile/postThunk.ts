@@ -2,18 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { toast } from "react-toastify";
-import { ProfileParams } from "./types";
 
 export const updateUserThunk = createAsyncThunk(
 
   "auth/updateProfile",
   async (
-    { profileParams, id }: { profileParams: ProfileParams; id: number },
+    { profileParams, id }: { profileParams: FormData; id: number },
     { rejectWithValue }
   ) => {
     try {
       const token = sessionStorage.getItem("auth_token")
-      const response = await axios.put(
+      const response = await axios.patch(
         `http://127.0.0.1:8000/api/profile/update/${id}/`,
         profileParams,
         {

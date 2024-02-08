@@ -111,18 +111,19 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const profileData = {
-      birthday: values.birthday,
-      height: values.height,
-      weight: values.weight,
-      gender: values.gender,
-      profile_picture: selectedImage
-        ? URL.createObjectURL(selectedImage)
-        : "./src/images/profile-home.jpg",
-    };
-
-    updateUser(profileData, dataUser.id)
-
+    const formData = new FormData();
+  
+    formData.append('birthday', values.birthday);
+    formData.append('height', values.height.toString());
+    formData.append('weight', values.weight.toString());
+    formData.append('gender', values.gender);
+  
+    if (selectedImage) {
+      formData.append('profile_picture', selectedImage);
+    }
+  
+    updateUser(formData, dataUser.id);
+  
     dispatch(isFirstProfile(false));
     dispatch(isUpdating(false));
     dispatch(newUserWeight(values.weight));
@@ -224,8 +225,8 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="women">Female</SelectItem>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Women">Female</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

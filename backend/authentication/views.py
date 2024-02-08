@@ -41,7 +41,7 @@ class IsOwnerOrReadOnly(BasePermission):
 
 class ProfileUpdateView(APIView):
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    def put(self, request, pk, format=None):
+    def patch(self, request, pk, format=None):
         """
         Update the profile with the given primary key using the data from the request.
     
