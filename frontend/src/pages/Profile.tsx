@@ -36,7 +36,7 @@ export default function Profile() {
   }, [username]); // Dependency array, the effect will run again if `username` changes
 
   return (
-    <div className={`${!renderForm ? "flex justify-center items-center" : "grid lg:grid-cols-2" } p-1 h-screen bg-grayBg`}>
+    <div className={`${!renderForm ? "flex justify-center items-center" : "grid lg:grid-cols-2" } h-screen bg-grayBg`}>
       {firstProfile ? <CreateProfileText /> : <ProfileInfo />}
       {renderForm && userData && <FormProfile dataUser={userData} />}
     </div>

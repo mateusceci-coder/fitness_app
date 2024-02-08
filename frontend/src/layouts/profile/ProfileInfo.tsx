@@ -33,11 +33,11 @@ export default function ProfileInfo() {
   return (
     <div className="w-full bg-grayBg">
       <h1 className="head-text">Hello, {firstname}!</h1>
-      <h2 className="subtitle">
+      <h2 className="subtitle mb-12">
         Here is your informations. You can update whenever you want!
       </h2>
       <div
-        className={`flex flex-col lg:flex-row ${
+        className={`flex flex-col gap-4 lg:flex-row ${
           renderForm ? "justify-center" : "lg:justify-between"
         }`}
       >
@@ -56,7 +56,7 @@ export default function ProfileInfo() {
             </div>
           </div>
         )}
-        <ul className="flex flex-col text-center gap-4 mt-16 p-4 rounded-xl bg-white shadow-xl w-80 xs:w-112 mx-auto">
+        <ul className="flex flex-col text-center gap-4 p-4 rounded-xl bg-white shadow-xl w-80 xs:w-112 mx-auto">
           <li className="flex flex-col items-center gap-1">
             {image ? (
               <img
