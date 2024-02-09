@@ -1,66 +1,35 @@
 import { Button } from "@/components/ui/button";
 import { bmiCalculator, calculateAge, caloriesCalculator } from "@/lib/calculators";
 import { capitalize } from "@/lib/utils";
-import { useDispatch, useSelector } from "react-redux";
-import { RootReducer } from "@/store/store";
-import { CheckCircle } from "lucide-react";
+import { dataUser } from './FormProfile';
+import { useDispatch } from "react-redux";
+import { isUpdating } from "@/store/reducers/profile";
 
-export default function ProfileInfo() {
-  const {
-    first_name,
-    last_name,
-    birthday,
-    height,
-    weight,
-    gender,
-    profile_picture,
-    updatingProfile,
-    firstProfile,
-  } = useSelector((store: RootReducer) => store.profile);
+export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
+
   const dispatch = useDispatch();
-  console.log(first_name)
-
-  const renderForm = updatingProfile || firstProfile;
-
   const handleUpdate = () => {
-    window.location.href="/profile/update"
+    dispatch(isUpdating(false));
       };
 
-  const age = calculateAge(birthday)
-  const bmi = bmiCalculator(height, weight);
-  const calories = caloriesCalculator(height, weight, age, gender);
+  const age = calculateAge(dataUser.birthday)
+  const bmi = bmiCalculator(dataUser.height, dataUser.weight);
+  const calories = caloriesCalculator(dataUser.height, dataUser.weight, age, dataUser.gender);
 
   return (
     <div className="w-full bg-grayBg">
-      <h1 className="head-text">Hello, {first_name}!</h1>
+      <h1 className="head-text">Hello, {dataUser.first_name}!</h1>
       <h2 className="subtitle mb-12">
         Here is your informations. You can update whenever you want!
       </h2>
       <div
-        className={`flex flex-col gap-4 lg:flex-row ${
-          renderForm ? "justify-center" : "lg:justify-between"
-        }`}
+        className={`flex flex-col gap-4 lg:flex-row`}
       >
-        {!renderForm && (
-          <div className="flex flex-col gap-12 lg:gap-24 text-center items-center p-8 bg-white shadow-xl rounded-2xl max-w-xs m-auto">
-            <div>
-              <CheckCircle className="inline mr-1" />{" "}
-              <span className="text-lg head-text">Body Mass Index (BMI)</span>
-              <p className="text-sm mt-2">
-                Quick measure of body weight in relation to height. It
-                categorizes individuals into groups like underweight, normal
-                weight, overweight, or obese, serving as a basic indicator of
-                healthy body weight. However, it doesn't directly assess body
-                fat or distribution.
-              </p>
-            </div>
-          </div>
-        )}
         <ul className="flex flex-col text-center gap-4 p-4 rounded-xl bg-white shadow-xl w-80 xs:w-112 mx-auto">
           <li className="flex flex-col items-center gap-1">
-            {profile_picture ? (
+            {dataUser.profile_picture ? (
               <img
-                src={profile_picture}
+                src={dataUser.profile_picture || 'src/images/profile-home.jpg'}
                 alt="Profile Photo"
                 className="rounded-full h-40 w-40 object-cover"
               />
@@ -69,7 +38,7 @@ export default function ProfileInfo() {
             )}
             <p>
               <b>
-                {capitalize(first_name)} {capitalize(last_name)}
+                {capitalize(dataUser.first_name)} {capitalize(dataUser.last_name)}
               </b>
             </p>
           </li>
@@ -83,19 +52,19 @@ export default function ProfileInfo() {
             <p className="text-mainBlue">
               <b>Height:</b>
             </p>
-            <p>{height} cm</p>
+            <p>{dataUser.height} cm</p>
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">
               <b>Weight:</b>
             </p>
-            <p>{weight} kg</p>
+            <p>{dataUser.weight} kg</p>
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">
               <b>Gender:</b>
             </p>
-            <p>{gender}</p>
+            <p>{dataUser.gender}</p>
           </li>
 
           <li className="border-b-2 pb-2">
@@ -117,30 +86,10 @@ export default function ProfileInfo() {
           </li>
           <li>
             <div>
-              {!updatingProfile && (
                 <Button onClick={() => handleUpdate()}>Update Profile</Button>
-              )}
             </div>
           </li>
         </ul>
-
-        {!renderForm && (
-          <div className="flex flex-col gap-12 lg:gap-24 text-center items-center p-8 bg-white shadow-xl rounded-2xl max-w-xs m-auto">
-            <div>
-              <CheckCircle className="inline mr-1" />{" "}
-              <span className="text-lg head-text">
-                Basal Metabolic Rate (BMR)
-              </span>
-              <p className="text-sm mt-2">
-                {" "}
-                Calculates how much calories your body needs at rest to maintain
-                basic functions. It's the energy required for essential
-                processes like breathing and circulation. BMR varies based on
-                factors like age and body composition.
-              </p>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

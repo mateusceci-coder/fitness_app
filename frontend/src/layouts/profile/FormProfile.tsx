@@ -136,7 +136,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
 
     dispatch(userUpdate(updatedProfile))
 
-    dispatch(isUpdating(!isUpdating));
+    dispatch(isUpdating(true));
     dispatch(newUserWeight(values.weight));
 
     window.location.href= "/profile"
