@@ -3,7 +3,7 @@ import Footer from "@/layouts/Footer";
 
 export default function Home() {
   return (
-    <section className="flex flex-col items-center max-w-5xl mx-auto p-1">
+    <section className="flex flex-col items-center max-w-5xl mx-auto">
       <h1 className="mb-4 mt-2 text-center text-6xl text-mainBlue font-playfair">
         My Fitness App
       </h1>

@@ -20,7 +20,7 @@ export function bmiCalculator(height: number, weight: number) {
 
 export function caloriesCalculator(height: number, weight:number, age:number, sex:string) {
     let result
-    if (sex === "male") {
+    if (sex === "Male") {
         result = 88.362 + (13.397 * weight) + (4.799*height) - (5.677 * age)
     } else {
         result = 447.593 + (9.247 * weight) + (3.098*height) - (4.330 * age)
@@ -45,15 +45,12 @@ export function calculateWeightReps(repMax: number, numReps: number) {
 }
 
 export function calculateAge(dateOfBirth: string): number {
-    const today = new Date();
-    const dobDate = new Date(dateOfBirth);
-
-    // Calcula a diferença em milissegundos
-    const ageDiffMilliseconds = today.getTime() - dobDate.getTime();
-
-    // Converte a diferença em anos
-    const ageDate = new Date(ageDiffMilliseconds);
-    const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-
-    return calculatedAge;
+    const today = new Date()
+    const birthday = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthday.getFullYear();
+    const m = today.getMonth() - birthday.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+        age--;
+    }
+    return age;
   }

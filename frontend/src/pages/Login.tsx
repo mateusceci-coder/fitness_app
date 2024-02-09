@@ -41,7 +41,7 @@ export default function Login() {
       sessionStorage.setItem("username", username);
       toast.success("Logged in successfully!");
       setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = "/profile/update";
       }, 3000);
 
     } catch (err) {

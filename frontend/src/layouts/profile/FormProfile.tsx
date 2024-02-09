@@ -21,14 +21,12 @@ import {
 } from "@/components/ui/select";
 
 import { useDispatch } from "react-redux";
-import {
-  isFirstProfile,
-  isUpdating,
-} from "@/store/reducers/profile";
+import { isUpdating, userUpdate } from "@/store/reducers/profile";
 
 import { newUserWeight } from "@/store/reducers/exercise";
 import { useState } from "react";
 import { useProfile } from "@/api/profile/useProfile";
+
 
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -94,8 +92,9 @@ export interface dataUser {
 export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const { updateUser } = useProfile()
-  console.log(dataUser);
+  const { updateUser } = useProfile();
+
+
   if (!dataUser.profile_picture) {
     dataUser.profile_picture = "";
   }
@@ -112,21 +111,35 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
-  
-    formData.append('birthday', values.birthday);
-    formData.append('height', values.height.toString());
-    formData.append('weight', values.weight.toString());
-    formData.append('gender', values.gender);
-  
+
+    formData.append("birthday", values.birthday);
+    formData.append("height", values.height.toString());
+    formData.append("weight", values.weight.toString());
+    formData.append("gender", values.gender);
+
     if (selectedImage) {
-      formData.append('profile_picture', selectedImage);
+      formData.append("profile_picture", selectedImage);
     }
-  
+
     updateUser(formData, dataUser.id);
-  
-    dispatch(isFirstProfile(false));
-    dispatch(isUpdating(false));
+
+
+    const updatedProfile = {
+      gender : values.gender,
+      weight : values.weight,
+      height : values.height,
+      birthday : values.birthday,
+      first_name : "Mateus",
+      last_name : "Souza",
+      profile_picture : "",
+    }
+
+    dispatch(userUpdate(updatedProfile))
+
+    dispatch(isUpdating(!isUpdating));
     dispatch(newUserWeight(values.weight));
+
+    window.location.href= "/profile"
   }
 
   return (

@@ -1,35 +1,37 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface ProfileParams {
-  firstname: string;
-  lastname: string;
+  first_name: string;
+  last_name: string;
   birthday: string;
   height: number;
-  weightUser: number;
+  weight: number;
   gender: string;
   firstProfile: boolean;
   updatingProfile: boolean;
-  image?: string;
+  profile_picture?: string;
 }
 
 interface Profile {
+  first_name: string;
+  last_name: string;
   birthday: string;
   height: number;
-  weightUser: number;
+  weight: number;
   gender: string;
-  image?: string;
+  profile_picture?: string;
 }
 
 const initialState: ProfileParams = {
-  firstname: "",
-  lastname: "",
+  first_name: "",
+  last_name: "",
   birthday: "",
   height: 0,
-  weightUser: 0,
+  weight: 0,
   gender: "",
   firstProfile: true,
   updatingProfile: false,
-  image: "",
+  profile_picture: "",
 };
 
 const profileSlice = createSlice({
@@ -42,21 +44,19 @@ const profileSlice = createSlice({
     isUpdating: (state, action: PayloadAction<boolean>) => {
       state.updatingProfile = action.payload;
     },
-    updateUser: (state, action: PayloadAction<Profile>) => {
-      const { birthday, height, weightUser, gender, image } = action.payload;
+    userUpdate: (state, action: PayloadAction<Profile>) => {
+      const { birthday, height, weight, gender, profile_picture, first_name, last_name } = action.payload;
+      state.first_name = first_name
+      state.last_name = last_name,
       (state.birthday = birthday),
         (state.height = height),
-        (state.weightUser = weightUser),
+        (state.weight = weight),
         (state.gender = gender);
-      state.image = image;
-    },
-    setName: (state, action: PayloadAction<{firstname:string, lastname: string}>) => {
-      (state.firstname = action.payload.firstname),
-        (state.lastname = action.payload.lastname);
-    },
+      state.profile_picture = profile_picture;
+    }
   },
 });
 
-export const { updateUser, isUpdating, isFirstProfile, setName } = profileSlice.actions;
+export const { userUpdate, isUpdating, isFirstProfile } = profileSlice.actions;
 
 export default profileSlice.reducer;
