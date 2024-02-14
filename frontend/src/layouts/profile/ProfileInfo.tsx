@@ -4,6 +4,7 @@ import { capitalize } from "@/lib/utils";
 import { dataUser } from './FormProfile';
 import { useDispatch } from "react-redux";
 import { isUpdating } from "@/store/reducers/profile";
+import { CheckCircle } from "lucide-react";
 
 export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
 
@@ -23,8 +24,12 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
         Here is your informations. You can update whenever you want!
       </h2>
       <div
-        className={`flex flex-col gap-4 lg:flex-row`}
+        className="flex flex-col gap-4 lg:flex-row pb-12"
       >
+        <div className="flex flex-col  text-center items-center p-4 bg-white shadow-xl rounded-2xl w-80 md:w-64 m-auto">
+          <CheckCircle className="inline mr-1" /> <span className="text-lg head-text">Body Mass Index (BMI)</span>
+          <p className="text-sm mt-2">Quick measure of body weight in relation to height. It categorizes individuals into groups like underweight, normal weight, overweight, or obese, serving as a basic indicator of healthy body weight. However, it doesn't directly assess body fat or distribution.</p>
+        </div>
         <ul className="flex flex-col text-center gap-4 p-4 rounded-xl bg-white shadow-xl w-80 xs:w-112 mx-auto">
           <li className="flex flex-col items-center gap-1">
             {dataUser.profile_picture ? (
@@ -90,6 +95,10 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
             </div>
           </li>
         </ul>
+        <div className="flex flex-col text-center items-center p-4 bg-white shadow-xl rounded-2xl w-80 md:w-64 m-auto">
+          <CheckCircle className="inline mr-1" /> <span className="text-lg head-text">Basal Metabolic Rate (BMR)</span>
+          <p className="text-sm mt-2"> Calculates how much calories your body needs at rest to maintain basic functions. It's the energy required for essential processes like breathing and circulation. BMR varies based on factors like age and body composition.</p>
+        </div>
       </div>
     </div>
   );

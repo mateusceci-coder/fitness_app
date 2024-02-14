@@ -26,7 +26,7 @@ export default function App() {
         <Route path="exercises" element={<Exercises />} />
         <Route path="/exercises/crossfit" element={<ExCrossfit />} />
         <Route path="/exercises/bodybuilding" element={<ExBodybuilding />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="workouts" element={<Workouts />} />
         <Route path="workouts/crossfit" element={<WorkCrossfit />} />
         <Route path="workouts/bodybuilding" element={<WorkBodybuilding />} />

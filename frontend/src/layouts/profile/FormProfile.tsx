@@ -143,7 +143,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   }
 
   return (
-    <div className="px-1 pb-16 mt-10 bg-grayBg">
+    <div className="px-1 py-16 bg-grayBg">
       <h2 className="subtitle mb-8">Form Profile</h2>
 
       <Form {...form}>

@@ -20,12 +20,10 @@ export const FormExercises = () => {
           Authorization: `Token ${token}`
         }
       });
-
       toast.success("Logged in successfully!");
       setTimeout(() => {
       }, 3000);
     } catch (err) {
-      console.log(err);
       toast.error("Login failed. Please try again.");
     }
   };
