@@ -15,10 +15,10 @@ export default function TopBar() {
   return (
     <nav className="hidden sm:inline-block top-0 z-10 w-full bg-primary text-secondary  py-2 px-6 backdrop-blur-lg xs:px-7 relative">
       <div className="flex justify-evenly">
-        <NavLink className="nav-button" to="/">Home</NavLink>
-        <NavLink className="nav-button" to="exercises">Exercises</NavLink>
-        <NavLink className="nav-button" to="workouts">Workouts</NavLink>
-        <NavLink className="nav-button" to="profile">Profile</NavLink>
+        <a className="nav-button" href="/">Home</a>
+        <a className="nav-button" href="/exercises">Exercises</a>
+        <a className="nav-button" href="/workouts">Workouts</a>
+        <a className="nav-button" href="/profile">Profile</a>
       </div>
       {
         isLogged ?

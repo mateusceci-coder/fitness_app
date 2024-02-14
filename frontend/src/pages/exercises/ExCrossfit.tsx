@@ -1,4 +1,4 @@
-import DialogButton from "@/components/DialogButton";
+import DialogButton from "@/components/DialogButtonCF";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

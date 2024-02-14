@@ -1,4 +1,4 @@
-import DialogButton from "@/components/DialogButton";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,6 +27,7 @@ import {
 import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import DialogButtonBB from "@/components/DialogButtonBB";
 
 export default function ExBodybuilding() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
@@ -105,13 +106,14 @@ export default function ExBodybuilding() {
             <SelectValue placeholder="Equipment" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="All">All</SelectItem>
-            <SelectItem value="Bar">Bar</SelectItem>
+            <SelectItem value="Barbell">Barbell</SelectItem>
             <SelectItem value="Dumbbell">Dumbell</SelectItem>
-            <SelectItem value="Kettlebell">Kettlebell</SelectItem>
+            <SelectItem value="Machine">Machine</SelectItem>
+            <SelectItem value="Bodyweight">BodyWeight</SelectItem>
+            <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
-        <DialogButton />
+        <DialogButtonBB />
         <div></div>
       </div>
       <Table className="max-w-5xl mx-auto">

@@ -1,3 +1,4 @@
+import { useExercise } from "@/api/exercise/useExercise";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -30,8 +31,10 @@ export default function DialogButton() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { weightUser } = useSelector((store: RootReducer) => store.profile);
+  const { createExercise } = useExercise()
 
   const handleNewExercise = () => {
+
     let relation: number;
 
     if (!exercise) {
@@ -45,12 +48,12 @@ export default function DialogButton() {
     }
 
     const newExercise = {
-      id: crypto.randomUUID(),
-      exercise: exercise,
+      name: exercise,
       equipment: equipment,
-      weight: Number(maxRep.toFixed(2)),
-      relation: relation,
+      rep_max: Number(maxRep.toFixed(2)),
     };
+
+    createExercise(newExercise)
 
     if (location.pathname === "/exercises/crossfit") {
       dispatch(addExerciseCrossfit(newExercise));
@@ -59,7 +62,7 @@ export default function DialogButton() {
     }
 
     setExercise("");
-    setEquipment("Bar");
+    setEquipment("Barbell");
     setMaxRep(0);
   };
 
@@ -91,16 +94,16 @@ export default function DialogButton() {
             <Label htmlFor="equipment" className="text-right">
               Equipment
             </Label>
-            <RadioGroup className="flex" defaultValue="Bar">
-              <div className="flex items-center space-x-2">
+            <RadioGroup className="flex flex-wrap" defaultValue="Barbell">
+              <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Bar"
-                  id="bar"
-                  onClick={() => setEquipment("Bar")}
+                  value="Barbell"
+                  id="Barbell"
+                  onClick={() => setEquipment("Barbell")}
                 />
-                <Label htmlFor="bar">Bar</Label>
+                <Label htmlFor="Barbell">Barbell</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
                 <RadioGroupItem
                   value="Dumbbell"
                   id="dumbbell"
@@ -108,13 +111,29 @@ export default function DialogButton() {
                 />
                 <Label htmlFor="dumbbell">Dumbbell</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Kettlebell"
-                  id="kettlebell"
-                  onClick={() => setEquipment("Kettlebell")}
+                  value="Machine"
+                  id="Machine"
+                  onClick={() => setEquipment("Machine")}
                 />
-                <Label htmlFor="kettlebell">Kettlebell</Label>
+                <Label htmlFor="Machine">Machine</Label>
+              </div>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem
+                  value="Bodyweight"
+                  id="Bodyweight"
+                  onClick={() => setEquipment("Bodyweight")}
+                />
+                <Label htmlFor="Bodyweight">Bodyweight</Label>
+              </div>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem
+                  value="Other"
+                  id="Other"
+                  onClick={() => setEquipment("Other")}
+                />
+                <Label htmlFor="Other">Other</Label>
               </div>
             </RadioGroup>
           </div>
