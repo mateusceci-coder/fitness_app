@@ -25,7 +25,7 @@ class ProfileUpdateTestCase(APITestCase):
             'gender': 'Male'
         }
         
-        response = self.client.put(self.update_url, data)
+        response = self.client.patch(self.update_url, data)
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.profile.refresh_from_db()
