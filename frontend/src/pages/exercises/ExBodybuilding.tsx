@@ -28,11 +28,13 @@ import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogButtonBB from "@/components/DialogButtonBB";
+import { exerciseParams } from "@/api/exercise/types";
 
-export default function ExBodybuilding() {
+export default function ExBodybuilding({exercisesData} : {exercisesData: exerciseParams } ) {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
   );
+    console.log(exercisesData)
 
   const { bodybuildingList, exerciseId } = useSelector(
     (store: RootReducer) => store.exercise

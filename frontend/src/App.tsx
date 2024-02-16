@@ -13,6 +13,7 @@ import WorkBodybuilding from "./pages/workouts/WorkBodybuilding";
 import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import { ToastContainer } from "react-toastify";
+import ApiBB from "./pages/exercises/ApiBB";
 
 export default function App() {
   return (
@@ -25,7 +26,7 @@ export default function App() {
         <Route path="signin" element={<Signin />} />
         <Route path="exercises" element={<Exercises />} />
         <Route path="/exercises/crossfit" element={<ExCrossfit />} />
-        <Route path="/exercises/bodybuilding" element={<ExBodybuilding />} />
+        <Route path="/exercises/bodybuilding" element={<ApiBB />} />
         <Route path="profile" element={<Profile />} />
         <Route path="workouts" element={<Workouts />} />
         <Route path="workouts/crossfit" element={<WorkCrossfit />} />

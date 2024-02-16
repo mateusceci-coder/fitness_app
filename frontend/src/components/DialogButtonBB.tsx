@@ -26,7 +26,7 @@ import { useLocation } from "react-router-dom";
 
 export default function DialogButton() {
   const [exercise, setExercise] = useState("");
-  const [equipment, setEquipment] = useState("Bar");
+  const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
   const location = useLocation();
   const dispatch = useDispatch();
