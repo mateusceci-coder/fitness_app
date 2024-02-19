@@ -10,12 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { capitalize } from "@/lib/utils";
-import exercise, {
-  delExBodybuilding,
-  editingExerciseId,
-  updateWeightBodybuilding,
+import {
+  editingExerciseId
 } from "@/store/reducers/exercise";
-import { updateRepMax } from "@/store/reducers/workout";
 import { RootReducer } from "@/store/store";
 import {
   Select,
@@ -28,7 +25,7 @@ import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogButtonBB from "@/components/DialogButtonBB";
-import { exerciseParams, getExerciseList } from "@/api/exercise/types";
+import { getExerciseList } from "@/api/exercise/types";
 import { useExercise } from "@/api/exercise/useExercise";
 
 export default function ExBodybuilding({exercisesData} : {exercisesData: getExerciseList[] } ) {
@@ -44,20 +41,11 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
 
   const handleInputRM = (
     event: ChangeEvent<HTMLInputElement>,
-    exerciseId: number,
-    exerciseName: string,
-    equipment: string
+    exerciseId: number
   ) => {
     const newWeight = Number((+event.target.value).toFixed(2));
 
-    const exercise = {
-      id: exerciseId,
-      name: exerciseName,
-      rep_max: newWeight,
-      equipment: equipment
-    }
-
-    updateExercise(exercise, exerciseId)
+    updateExercise(newWeight, exerciseId)
 
   };
 
@@ -134,7 +122,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
                           type="number"
                           value={exercise.rep_max}
                           onChange={(event) =>
-                            handleInputRM(event, exercise.id, exercise.name, exercise.equipment)
+                            handleInputRM(event, exercise.id)
                           }
                           min={0}
                           max={500}
@@ -152,7 +140,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
                     )}
                   </TableCell>
                   <TableCell className="text-right">
-                    {exercise.relation}
+                    {exerciseId === exercise.id}
                   </TableCell>
                   <TableCell className="text-right">
                     {exerciseId === exercise.id ? (

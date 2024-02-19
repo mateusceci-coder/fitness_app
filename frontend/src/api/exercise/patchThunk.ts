@@ -8,14 +8,14 @@ export const updateExerciseThunk = createAsyncThunk(
 
   "update/exercise",
   async (
-    { exerciseParams, id }: { exerciseParams: exerciseParams, id:number },
+    { "rep_max": rep_max, id }: { rep_max: number,  id:number },
     { rejectWithValue }
   ) => {
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.patch(
-        `http://127.0.0.1:8000/api/exercises/${id}`,
-        exerciseParams,
+        `http://127.0.0.1:8000/api/exercises/${id}/`,
+        { rep_max },
         {
           headers: {
             Authorization: `Token ${token}`

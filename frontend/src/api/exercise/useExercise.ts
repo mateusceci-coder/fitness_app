@@ -12,8 +12,8 @@ export const useExercise = () => {
         const response = await dispatch(createExerciseThunk({exerciseParams}))
         return response
     }
-    const updateExercise = async (exerciseParams: exerciseParams, id: number) => {
-        const response = await dispatch(updateExerciseThunk({exerciseParams, id}))
+    const updateExercise = async (rep_max: number, id: number) => {
+        const response = await dispatch(updateExerciseThunk({rep_max, id}))
         return response
     }
 
