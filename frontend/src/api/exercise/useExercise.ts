@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import { createExerciseThunk } from './postThunk'
 import { AppDispatch } from '@/store/store'
 import { exerciseParams } from './types'
+import { updateExerciseThunk } from './patchThunk'
 
 
 export const useExercise = () => {
@@ -10,5 +11,9 @@ export const useExercise = () => {
         const response = await dispatch(createExerciseThunk({exerciseParams}))
         return response
     }
-    return { createExercise }
+    const updateExercise = async (exerciseParams: exerciseParams, id: number) => {
+        const response = await dispatch(updateExerciseThunk({exerciseParams, id}))
+        return response
+    }
+    return { createExercise, updateExercise }
 }

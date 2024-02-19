@@ -50,19 +50,14 @@ export default function DialogButton() {
     const newExercise = {
       name: exercise,
       equipment: equipment,
-      rep_max: Number(maxRep.toFixed(2)),
+      rep_max: maxRep,
     };
 
     createExercise(newExercise)
 
-    if (location.pathname === "/exercises/crossfit") {
-      dispatch(addExerciseCrossfit(newExercise));
-    } else {
-      dispatch(addExerciseBodybuilding(newExercise));
-    }
 
     setExercise("");
-    setEquipment("Barbell");
+    setEquipment("BB");
     setMaxRep(0);
   };
 
@@ -97,17 +92,17 @@ export default function DialogButton() {
             <RadioGroup className="flex flex-wrap" defaultValue="Barbell">
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Barbell"
+                  value="BB"
                   id="Barbell"
-                  onClick={() => setEquipment("Barbell")}
+                  onClick={() => setEquipment("BB")}
                 />
                 <Label htmlFor="Barbell">Barbell</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Dumbbell"
+                  value="DB"
                   id="dumbbell"
-                  onClick={() => setEquipment("Dumbbell")}
+                  onClick={() => setEquipment("DB")}
                 />
                 <Label htmlFor="dumbbell">Dumbbell</Label>
               </div>
@@ -115,23 +110,23 @@ export default function DialogButton() {
                 <RadioGroupItem
                   value="Machine"
                   id="Machine"
-                  onClick={() => setEquipment("Machine")}
+                  onClick={() => setEquipment("MM")}
                 />
                 <Label htmlFor="Machine">Machine</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Bodyweight"
+                  value="BW"
                   id="Bodyweight"
-                  onClick={() => setEquipment("Bodyweight")}
+                  onClick={() => setEquipment("BW")}
                 />
                 <Label htmlFor="Bodyweight">Bodyweight</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Other"
+                  value="OT"
                   id="Other"
-                  onClick={() => setEquipment("Other")}
+                  onClick={() => setEquipment("OT")}
                 />
                 <Label htmlFor="Other">Other</Label>
               </div>

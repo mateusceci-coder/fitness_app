@@ -43,6 +43,7 @@ export default function SelectExBodybuilding({
     setNoSelectingExercise(true)
   }
 
+
   return (
     <div>
       <Popover open={open} onOpenChange={setOpen}>

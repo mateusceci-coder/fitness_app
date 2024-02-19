@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { capitalize } from "@/lib/utils";
-import {
+import exercise, {
   delExBodybuilding,
   editingExerciseId,
   updateWeightBodybuilding,
@@ -29,12 +29,14 @@ import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogButtonBB from "@/components/DialogButtonBB";
 import { exerciseParams } from "@/api/exercise/types";
+import { useExercise } from "@/api/exercise/useExercise";
 
-export default function ExBodybuilding({exercisesData} : {exercisesData: exerciseParams } ) {
+export default function ExBodybuilding({exercisesData} : {exercisesData: exerciseParams[] } ) {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
   );
-    console.log(exercisesData)
+
+  const { updateExercise } = useExercise()
 
   const { bodybuildingList, exerciseId } = useSelector(
     (store: RootReducer) => store.exercise
@@ -49,21 +51,8 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
   ) => {
     const newWeight = Number((+event.target.value).toFixed(2));
 
-    const updatedList = bodybuildingList.map((exercise) =>
-    exercise.id === exerciseId
-    ? {
-      ...exercise,
-      weight: newWeight,
-      relation:
-      weightUser === 0 || newWeight < 0
-      ? 0
-      : Number((+event.target.value / weightUser).toFixed(2)),
-    }
+    
 
-    : exercise
-    );
-
-    dispatch(updateWeightBodybuilding(updatedList));
     dispatch(
       updateRepMax({
         name: exerciseName,
@@ -82,11 +71,8 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
   };
 
   const handleDelExerciseBodybuilding = (id: string) => {
-    dispatch(
-      delExBodybuilding(
-        bodybuildingList.filter((exercise) => exercise.id !== id)
-      )
-    );
+      exercisesData.filter((exercise) => exercise.id !== id)
+
   };
 
   const handleSelect = (e: string | null) => {
@@ -128,7 +114,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bodybuildingList
+          {exercisesData
             .filter(
               (exercise) =>
                 !selectedEquipment || exercise.equipment === selectedEquipment
@@ -137,7 +123,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
               return (
                 <TableRow key={exercise.id}>
                   <TableCell className="font-medium">
-                    {capitalize(exercise.exercise)}
+                    {capitalize(exercise.name)}
                   </TableCell>
                   <TableCell className="text-right">
                     {exercise.equipment}
@@ -148,9 +134,9 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
                         <Input
                           className="w-16"
                           type="number"
-                          value={exercise.weight}
+                          value={exercise.rep_max}
                           onChange={(event) =>
-                            handleInputRM(event, exercise.id, exercise.exercise)
+                            handleInputRM(event, exercise.id, exercise.name)
                           }
                           min={0}
                           max={500}
@@ -161,10 +147,10 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
                           onClick={handleFinishEditing}
                         />
                       </div>
-                    ) : exercise.weight < 0 ? (
+                    ) : exercise.rep_max < 0 ? (
                       0
                     ) : (
-                      Number(exercise.weight.toFixed(2))
+                      Number(exercise.rep_max.toFixed(2))
                     )}
                   </TableCell>
                   <TableCell className="text-right">
