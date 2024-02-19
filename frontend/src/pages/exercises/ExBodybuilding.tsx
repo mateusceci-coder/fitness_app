@@ -34,6 +34,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
   );
     const dispatch = useDispatch()
 
+    console.log (exercisesData)
   const { updateExercise } = useExercise()
 
   const { exerciseId } = useSelector((store: RootReducer) => store.exercise)
