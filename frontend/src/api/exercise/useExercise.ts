@@ -3,6 +3,7 @@ import { createExerciseThunk } from './postThunk'
 import { AppDispatch } from '@/store/store'
 import { exerciseParams } from './types'
 import { updateExerciseThunk } from './patchThunk'
+import { getExerciseThunk } from './getThunk'
 
 
 export const useExercise = () => {
@@ -15,5 +16,10 @@ export const useExercise = () => {
         const response = await dispatch(updateExerciseThunk({exerciseParams, id}))
         return response
     }
-    return { createExercise, updateExercise }
+
+    const getExercise = async () => {
+        const response = await dispatch(getExerciseThunk())
+        return response
+    }
+    return { createExercise, updateExercise, getExercise }
 }

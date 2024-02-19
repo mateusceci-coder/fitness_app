@@ -28,51 +28,46 @@ import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogButtonBB from "@/components/DialogButtonBB";
-import { exerciseParams } from "@/api/exercise/types";
+import { exerciseParams, getExerciseList } from "@/api/exercise/types";
 import { useExercise } from "@/api/exercise/useExercise";
 
-export default function ExBodybuilding({exercisesData} : {exercisesData: exerciseParams[] } ) {
+export default function ExBodybuilding({exercisesData} : {exercisesData: getExerciseList[] } ) {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
   );
+    const dispatch = useDispatch()
 
   const { updateExercise } = useExercise()
 
-  const { bodybuildingList, exerciseId } = useSelector(
-    (store: RootReducer) => store.exercise
-  );
-  const { weightUser } = useSelector((store: RootReducer) => store.profile);
-  const dispatch = useDispatch();
 
   const handleInputRM = (
     event: ChangeEvent<HTMLInputElement>,
-    exerciseId: string,
-    exerciseName: string
+    exerciseId: number,
+    exerciseName: string,
+    equipment: string
   ) => {
     const newWeight = Number((+event.target.value).toFixed(2));
 
-    
+    const exercise = {
+      name: exerciseName,
+      equipment: equipment,
+      rep_max: newWeight
+    }
 
-    dispatch(
-      updateRepMax({
-        name: exerciseName,
-        newWeight: newWeight,
-      })
-    );
+    updateExercise(exercise, exerciseId)
 
   };
 
-  const handleUpdateRM = (exerciseId: string) => {
+  const handleUpdateRM = (exerciseId: number) => {
     dispatch(editingExerciseId(exerciseId));
   };
 
   const handleFinishEditing = () => {
-    dispatch(editingExerciseId(""));
+    dispatch(editingExerciseId(0));
   };
 
-  const handleDelExerciseBodybuilding = (id: string) => {
+  const handleDelExerciseBodybuilding = (id: number) => {
       exercisesData.filter((exercise) => exercise.id !== id)
-
   };
 
   const handleSelect = (e: string | null) => {
@@ -136,7 +131,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: exercis
                           type="number"
                           value={exercise.rep_max}
                           onChange={(event) =>
-                            handleInputRM(event, exercise.id, exercise.name)
+                            handleInputRM(event, exercise.id, exercise.name, exercise.equipment)
                           }
                           min={0}
                           max={500}

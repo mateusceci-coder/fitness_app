@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface ExerciseParams {
-    id: string;
+    id: number;
     exercise: string;
     equipment: string;
     weight: number;
@@ -12,32 +12,32 @@ export interface ExerciseParams {
 interface exercisesList {
     crossfitList: ExerciseParams[]
     bodybuildingList: ExerciseParams[]
-    exerciseId: string
+    exerciseId: number
 }
 
 const initialState: exercisesList = {
     crossfitList: [{
-      id: "4",
+      id: 4,
       exercise: "Squat Clean",
       equipment: "Bar",
       weight: 0,
       relation: 0,
     }],
     bodybuildingList: [{
-      id: "1",
+      id: 1,
       exercise: "Bench Press",
       equipment: "Bar",
       weight: 0,
       relation: 0,
     }],
-    exerciseId: "",
+    exerciseId: 0,
 }
 
   const exerciseSlice = createSlice({
     name: "exercise",
     initialState,
     reducers: {
-      editingExerciseId: (state, action: PayloadAction<string>) => {
+      editingExerciseId: (state, action: PayloadAction<number>) => {
         state.exerciseId = action.payload
       },
       updateWeightBodybuilding: (state, action: PayloadAction<ExerciseParams[]>) => {
