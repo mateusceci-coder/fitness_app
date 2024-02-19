@@ -39,6 +39,8 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
 
   const { updateExercise } = useExercise()
 
+  const { exerciseId } = useSelector((store: RootReducer) => store.exercise)
+
 
   const handleInputRM = (
     event: ChangeEvent<HTMLInputElement>,
@@ -49,9 +51,10 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
     const newWeight = Number((+event.target.value).toFixed(2));
 
     const exercise = {
+      id: exerciseId,
       name: exerciseName,
-      equipment: equipment,
-      rep_max: newWeight
+      rep_max: newWeight,
+      equipment: equipment
     }
 
     updateExercise(exercise, exerciseId)

@@ -7,8 +7,8 @@ export interface exerciseParams {
 }
 
 export interface getExerciseList {
-    name: string,
-    equipment: string,
     rep_max: number,
     id: number
+    name: string,
+    equipment: string,
 }
