@@ -41,7 +41,7 @@ export default function ExBodybuilding() {
 
   const dispatch = useDispatch()
 
-  const { updateExercise } = useExercise()
+  const { updateExercise, deleteExercise } = useExercise()
 
   const { exerciseId } = useSelector((store: RootReducer) => store.exercise)
 
@@ -98,7 +98,7 @@ export default function ExBodybuilding() {
   };
 
   const handleDelExerciseBodybuilding = (id: number) => {
-      exercisesData && exercisesData.filter((exercise) => exercise.id !== id)
+      deleteExercise(id, fetchData)
   };
 
   const handleSelect = (e: string | null) => {

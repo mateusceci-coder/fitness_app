@@ -1,27 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 import { toast } from "react-toastify";
 
-export const updateExerciseThunk = createAsyncThunk(
-
-  "update/exercise",
-  async (
-    { "rep_max": rep_max, id }: { rep_max: number,  id:number },
-    { rejectWithValue }
-  ) => {
+export const deleteExerciseThunk = createAsyncThunk(
+  "delete/exercise",
+  async ({ id }: { id: number }, { rejectWithValue }) => {
     try {
-      const token = sessionStorage.getItem("auth_token")
-      const response = await axios.patch(
+      const token = sessionStorage.getItem("auth_token");
+      const response = await axios.delete(
         `http://127.0.0.1:8000/api/exercises/${id}/`,
-        { rep_max },
         {
-          headers: {
-            Authorization: `Token ${token}`
-          }
-        });
-      toast.success("Updated Exercise!");
+            headers: {
+                Authorization: `Token ${token}`
+            }
+        }
+      );
+      toast.success("Exercise Deleted!");
       return response.data;
     } catch (error) {
       toast.error("Falha no registro");
