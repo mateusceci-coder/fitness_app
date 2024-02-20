@@ -24,12 +24,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-export default function DialogButton() {
+export default function DialogButton({fetchData}) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
-  const location = useLocation();
-  const dispatch = useDispatch();
   const { weightUser } = useSelector((store: RootReducer) => store.profile);
   const { createExercise } = useExercise()
 
@@ -53,7 +51,7 @@ export default function DialogButton() {
       rep_max: maxRep,
     };
 
-    createExercise(newExercise)
+    createExercise(newExercise, fetchData)
 
 
     setExercise("");

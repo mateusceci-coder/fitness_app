@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { exerciseParams } from "./types";
+
 
 import { toast } from "react-toastify";
 

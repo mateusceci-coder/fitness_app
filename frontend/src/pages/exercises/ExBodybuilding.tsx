@@ -22,44 +22,83 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Check, Lightbulb } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogButtonBB from "@/components/DialogButtonBB";
-import { getExerciseList } from "@/api/exercise/types";
+import {  getExerciseList } from "@/api/exercise/types";
 import { useExercise } from "@/api/exercise/useExercise";
+import axios from "axios"
+import Loading from "../Loading";
 
-export default function ExBodybuilding({exercisesData} : {exercisesData: getExerciseList[] } ) {
+
+
+export default function ExBodybuilding() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
   );
-    const dispatch = useDispatch()
+  const [exercisesData, setExercisesData] = useState<getExerciseList[] | null>(null)
+  const [listExercises, setListExercises] = useState<getExerciseList[] | null>(exercisesData)
 
-    console.log (exercisesData)
+  const dispatch = useDispatch()
+
   const { updateExercise } = useExercise()
 
   const { exerciseId } = useSelector((store: RootReducer) => store.exercise)
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/exercises/`, {
+          headers : {Authorization: `Token ${sessionStorage.getItem("auth_token")}`}
+      })
+      if (response.status === 200) {
+        setExercisesData(response.data)
+        setListExercises(response.data)
+      } else {
+        throw new Error("Profile not found");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+
+    fetchData();
+
+    // Cleanup function to handle component unmounting
+    return () => {
+      // Any cleanup actions go here
+    };
+  }, []);
 
   const handleInputRM = (
-    event: ChangeEvent<HTMLInputElement>,
-    exerciseId: number
+    event: ChangeEvent<HTMLInputElement>, id: number
   ) => {
+
     const newWeight = Number((+event.target.value).toFixed(2));
-
-    updateExercise(newWeight, exerciseId)
-
+    setListExercises(listExercises && listExercises.map((exercise) => {
+      if(exercise.id === id) {
+        exercise.rep_max = newWeight
+      }
+      return exercise
+    }  ))
   };
 
   const handleUpdateRM = (exerciseId: number) => {
     dispatch(editingExerciseId(exerciseId));
   };
 
-  const handleFinishEditing = () => {
+  const handleFinishEditing = (id: number) => {
+    const findExercise = listExercises && listExercises.find((exercise) => exercise.id === id)
+    const newRepMax = findExercise ? findExercise.rep_max : 0
+
+    updateExercise(newRepMax, id)
+
     dispatch(editingExerciseId(0));
   };
 
   const handleDelExerciseBodybuilding = (id: number) => {
-      exercisesData.filter((exercise) => exercise.id !== id)
+      exercisesData && exercisesData.filter((exercise) => exercise.id !== id)
   };
 
   const handleSelect = (e: string | null) => {
@@ -70,7 +109,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
     }
   };
 
-  return (
+  return exercisesData ? (
     <section className="relative">
       <header className="my-16">
         <h1 className="head-text">Bodybuilding Exercises</h1>
@@ -88,7 +127,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
             <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
-        <DialogButtonBB />
+        <DialogButtonBB fetchData={fetchData} />
         <div></div>
       </div>
       <Table className="max-w-5xl mx-auto">
@@ -101,7 +140,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
           </TableRow>
         </TableHeader>
         <TableBody>
-          {exercisesData
+           {listExercises && listExercises
             .filter(
               (exercise) =>
                 !selectedEquipment || exercise.equipment === selectedEquipment
@@ -131,7 +170,7 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
                         <Check
                           color="green"
                           className="ml-1 cursor-pointer"
-                          onClick={handleFinishEditing}
+                          onClick={() => handleFinishEditing(exercise.id)}
                         />
                       </div>
                     ) : exercise.rep_max < 0 ? (
@@ -197,6 +236,8 @@ export default function ExBodybuilding({exercisesData} : {exercisesData: getExer
           </div>
         </article>
       </div>
-    </section>
-  );
+    </section> ) : (
+      <Loading />
+    )
+
 }

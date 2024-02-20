@@ -8,8 +8,9 @@ import { getExerciseThunk } from './getThunk'
 
 export const useExercise = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const createExercise = async (exerciseParams: exerciseParams) => {
+    const createExercise = async (exerciseParams: exerciseParams, callback: Function) => {
         const response = await dispatch(createExerciseThunk({exerciseParams}))
+        callback()
         return response
     }
     const updateExercise = async (rep_max: number, id: number) => {
