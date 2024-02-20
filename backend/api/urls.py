@@ -23,4 +23,5 @@ urlpatterns = [
     re_path(r'^auth/', include('djoser.urls.authtoken')),
     path("api/", include("authentication.urls")),
     path("api/", include("bodybuilder.urls")),
+    path("api/", include("crossfit.urls")),
 ]

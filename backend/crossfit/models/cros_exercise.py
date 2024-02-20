@@ -6,11 +6,11 @@ from django.utils.text import slugify
 class EquipmentChoices(models.TextChoices):
     DUMBBELL = 'Dumbbell'
     BARBELL = 'Barbell'
-    MACHINE = 'Machine'
+    KETTLEBELL = 'Kettlebell'
     BODYWEIGHT = 'Bodyweight'
     OTHER = 'Other'
 
-class Exercise(models.Model):
+class CrossExercise(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=150, unique=True, blank=True)
