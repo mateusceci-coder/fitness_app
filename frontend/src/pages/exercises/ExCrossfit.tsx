@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import DialogButtonCF from "@/components/DialogButtonCF";
 
 export default function ExCrossfit() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
@@ -98,7 +99,7 @@ export default function ExCrossfit() {
             <SelectItem value="Kettlebell">Kettlebell</SelectItem>
           </SelectContent>
         </Select>
-        <DialogButton />
+        <DialogButtonCF />
         <div></div>
       </div>
       <Table className="max-w-5xl mx-auto">

@@ -1,4 +1,4 @@
-import { useExercise } from "@/api/exercise/useExercise";
+import { useExercise } from "@/api/exerciseBB/useExercise";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -31,21 +31,16 @@ export default function DialogButton() {
   const location = useLocation();
   const dispatch = useDispatch();
   const { weightUser } = useSelector((store: RootReducer) => store.profile);
-  const { createExercise } = useExercise()
+  const { createExercise } = useExercise();
 
   const handleNewExercise = () => {
-
     let relation: number;
 
     if (!exercise) {
       return;
     }
 
-    if (weightUser) {
-      relation = Number((maxRep / weightUser).toFixed(2));
-    } else {
-      relation = 0;
-    }
+    
 
     const newExercise = {
       name: exercise,
@@ -53,13 +48,7 @@ export default function DialogButton() {
       rep_max: Number(maxRep.toFixed(2)),
     };
 
-    createExercise(newExercise)
-
-    if (location.pathname === "/exercises/crossfit") {
-      dispatch(addExerciseCrossfit(newExercise));
-    } else {
-      dispatch(addExerciseBodybuilding(newExercise));
-    }
+    createExercise(newExercise);
 
     setExercise("");
     setEquipment("Barbell");
@@ -113,11 +102,11 @@ export default function DialogButton() {
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="Machine"
-                  id="Machine"
-                  onClick={() => setEquipment("Machine")}
+                  value="Kettlebell"
+                  id="Kettlebell"
+                  onClick={() => setEquipment("Kettlebell")}
                 />
-                <Label htmlFor="Machine">Machine</Label>
+                <Label htmlFor="Machine">Kettlebell</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem

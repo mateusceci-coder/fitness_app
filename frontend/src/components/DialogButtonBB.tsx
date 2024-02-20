@@ -1,4 +1,4 @@
-import { useExercise } from "@/api/exercise/useExercise";
+import { useExercise } from "@/api/exerciseBB/useExercise";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,15 +24,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-export default function DialogButton({fetchData}) {
+export default function DialogButton({ fetchData }) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
   const { weightUser } = useSelector((store: RootReducer) => store.profile);
-  const { createExercise } = useExercise()
+  const { createExercise } = useExercise();
 
   const handleNewExercise = () => {
-
     let relation: number;
 
     if (!exercise) {
@@ -51,8 +50,7 @@ export default function DialogButton({fetchData}) {
       rep_max: maxRep,
     };
 
-    createExercise(newExercise, fetchData)
-
+    createExercise(newExercise, fetchData);
 
     setExercise("");
     setEquipment("BB");
@@ -90,9 +88,9 @@ export default function DialogButton({fetchData}) {
             <RadioGroup className="flex flex-wrap" defaultValue="Barbell">
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="BB"
+                  value="Barbell"
                   id="Barbell"
-                  onClick={() => setEquipment("BB")}
+                  onClick={() => setEquipment("Barbell")}
                 />
                 <Label htmlFor="Barbell">Barbell</Label>
               </div>
