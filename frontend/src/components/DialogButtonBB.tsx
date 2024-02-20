@@ -1,4 +1,4 @@
-import { useExercise } from "@/api/exerciseBB/useExercise";
+import { useExerciseBB } from "@/api/exerciseBB/useExerciseBB";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,34 +15,15 @@ import { Label } from "@/components/ui/label";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { capitalizeText } from "@/lib/utils";
-import {
-  addExerciseBodybuilding,
-  addExerciseCrossfit,
-} from "@/store/reducers/exercise";
-import { RootReducer } from "@/store/store";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
 export default function DialogButton({ fetchData }) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
-  const { weightUser } = useSelector((store: RootReducer) => store.profile);
-  const { createExercise } = useExercise();
+  const { createExerciseBB } = useExerciseBB();
 
   const handleNewExercise = () => {
-    let relation: number;
-
-    if (!exercise) {
-      return;
-    }
-
-    if (weightUser) {
-      relation = Number((maxRep / weightUser).toFixed(2));
-    } else {
-      relation = 0;
-    }
 
     const newExercise = {
       name: exercise,
@@ -50,7 +31,7 @@ export default function DialogButton({ fetchData }) {
       rep_max: maxRep,
     };
 
-    createExercise(newExercise, fetchData);
+    createExerciseBB(newExercise, fetchData);
 
     setExercise("");
     setEquipment("BB");

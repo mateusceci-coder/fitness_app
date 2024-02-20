@@ -1,4 +1,3 @@
-import DialogButton from "@/components/DialogButtonCF";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,7 +16,7 @@ import {
 } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
 import { Check, Lightbulb } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Select,
@@ -27,6 +26,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DialogButtonCF from "@/components/DialogButtonCF";
+import axios from "axios"
+import { getExerciseList } from "@/api/exerciseBB/types";
+import Loading from "../Loading";
 
 export default function ExCrossfit() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
@@ -35,8 +37,58 @@ export default function ExCrossfit() {
   const { crossfitList, exerciseId } = useSelector(
     (store: RootReducer) => store.exercise
   );
-  const { weightUser } = useSelector((store: RootReducer) => store.profile);
+  const [exercisesData, setExercisesData] = useState<getExerciseList[] | null>(null)
+  const [listExercises, setListExercises] = useState<getExerciseList[] | null>(exercisesData)
+
   const dispatch = useDispatch();
+
+  const [userWeight, setUserWeight] = useState<number | null>(null)
+
+  const fetchProfile = async () => {
+    try {
+      const username = sessionStorage.getItem("username")
+      const response = await axios.get(`http://127.0.0.1:8000/api/profile/${username}/`, {
+        headers: {
+          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+        },
+      });
+      if (response.status === 200) {
+        setUserWeight(response.data.weight)
+      } else {
+        throw new Error("Profile not found");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/exercises/`, {
+        headers: {
+          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+        },
+      });
+      if (response.status === 200) {
+        setExercisesData(response.data);
+        setListExercises(response.data);
+      } else {
+        throw new Error("Profile not found");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchProfile()
+
+    // Cleanup function to handle component unmounting
+    return () => {
+      // Any cleanup actions go here
+    };
+  }, []);
 
   const handleDelExerciseCrossfit = (id: string) => {
     dispatch(
@@ -82,8 +134,8 @@ export default function ExCrossfit() {
   };
 
 
-  return (
-    <section className="relative">
+  return exercisesData ? (
+  <section className="relative">
       <header className="my-16">
         <h1 className="head-text">Crossfit Exercises</h1>
       </header>
@@ -112,7 +164,7 @@ export default function ExCrossfit() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {crossfitList
+          {listExercises && listExercises
             .filter(
               (exercise) =>
                 !selectedEquipment || exercise.equipment === selectedEquipment
@@ -121,7 +173,7 @@ export default function ExCrossfit() {
               return (
                 <TableRow key={exercise.id}>
                   <TableCell className="font-medium">
-                    {capitalize(exercise.exercise)}
+                    {capitalize(exercise.name)}
                   </TableCell>
                   <TableCell className="text-right">
                     {exercise.equipment}
@@ -132,7 +184,7 @@ export default function ExCrossfit() {
                         <Input
                           className="w-16"
                           type="number"
-                          value={exercise.weight}
+                          value={exercise.rep_max}
                           onChange={(event) =>
                             handleInputRM(event, exercise.id)
                           }
@@ -145,10 +197,10 @@ export default function ExCrossfit() {
                           onClick={handleFinishEditing}
                         />
                       </div>
-                    ) : exercise.weight < 0 ? (
+                    ) : exercise.rep_max < 0 ? (
                       0
                     ) : (
-                      Number(exercise.weight.toFixed(2))
+                      Number(exercise.rep_max.toFixed(2))
                     )}
                   </TableCell>
                   <TableCell className="text-right">
@@ -208,6 +260,8 @@ export default function ExCrossfit() {
           </div>
         </article>
       </div>
-    </section>
-  );
+    </section>) : (
+      <Loading />
+    )
+
 }

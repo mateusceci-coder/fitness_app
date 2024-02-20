@@ -4,9 +4,9 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-export const updateExerciseThunk = createAsyncThunk(
+export const updateExerciseThunkBB = createAsyncThunk(
 
-  "update/exercise",
+  "update/exerciseBB",
   async (
     { "rep_max": rep_max, id }: { rep_max: number,  id:number },
     { rejectWithValue }

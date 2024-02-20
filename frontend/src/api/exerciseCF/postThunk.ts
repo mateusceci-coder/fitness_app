@@ -1,12 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { exerciseParams } from "./types";
-
+import { exerciseParams } from "../exerciseBB/types";
 import { toast } from "react-toastify";
 
-export const createExerciseThunkBB = createAsyncThunk(
+export const createExerciseThunkCF = createAsyncThunk(
 
-  "create/exerciseBB",
+  "create/exerciseCF",
   async (
     { exerciseParams }: { exerciseParams: exerciseParams },
     { rejectWithValue }
@@ -14,7 +13,7 @@ export const createExerciseThunkBB = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/exercises/`,
+        `http://127.0.0.1:8000/api/exercises/crossfit`,
         exerciseParams,
         {
           headers: {

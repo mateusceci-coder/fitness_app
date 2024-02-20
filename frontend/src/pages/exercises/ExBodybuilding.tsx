@@ -23,9 +23,9 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogButtonBB from "@/components/DialogButtonBB";
 import { getExerciseList } from "@/api/exerciseBB/types";
-import { useExercise } from "@/api/exerciseBB/useExercise";
 import axios from "axios";
 import Loading from "../Loading";
+import { useExerciseBB } from "@/api/exerciseBB/useExerciseBB";
 
 
 
@@ -44,7 +44,7 @@ export default function ExBodybuilding() {
 
   const dispatch = useDispatch();
 
-  const { updateExercise, deleteExercise } = useExercise();
+  const { updateExerciseBB, deleteExerciseBB } = useExerciseBB();
 
   const { exerciseId } = useSelector((store: RootReducer) => store.exercise);
 
@@ -118,13 +118,13 @@ export default function ExBodybuilding() {
       listExercises && listExercises.find((exercise) => exercise.id === id);
     const newRepMax = findExercise ? findExercise.rep_max : 0;
 
-    updateExercise(newRepMax, id);
+    updateExerciseBB(newRepMax, id);
 
     dispatch(editingExerciseId(0));
   };
 
   const handleDelExerciseBodybuilding = (id: number) => {
-    deleteExercise(id, fetchData);
+    deleteExerciseBB(id, fetchData);
   };
 
   const handleSelect = (e: string | null) => {

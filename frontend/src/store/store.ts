@@ -4,7 +4,8 @@ import exerciseReducer from "./reducers/exercise";
 import workoutReducer from "./reducers/workout";
 import registerReducer from "@/api/register/registerSlice";
 import updateReducer from "@/api/profile/profileSlice";
-import exercisesReducer from "@/api/exerciseBB/exerciseSlice";
+import exercisesReducerBB from "@/api/exerciseBB/exerciseSliceBB";
+import exercisesReducerCF from "@/api/exerciseCF/exerciseSliceCF"
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     workout: workoutReducer,
     register: registerReducer,
     update: updateReducer,
-    exercises: exercisesReducer,
+    exercisesBB: exercisesReducerBB,
+    exercisesCF: exercisesReducerCF,
   },
 });
 

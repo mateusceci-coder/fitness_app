@@ -3,8 +3,8 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-export const deleteExerciseThunk = createAsyncThunk(
-  "delete/exercise",
+export const deleteExerciseThunkBB = createAsyncThunk(
+  "delete/exerciseBB",
   async ({ id }: { id: number }, { rejectWithValue }) => {
     try {
       const token = sessionStorage.getItem("auth_token");

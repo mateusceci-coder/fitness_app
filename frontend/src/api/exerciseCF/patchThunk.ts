@@ -1,27 +1,27 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { exerciseParams } from "./types";
+
 
 import { toast } from "react-toastify";
 
-export const createExerciseThunkBB = createAsyncThunk(
+export const updateExerciseThunkCF = createAsyncThunk(
 
-  "create/exerciseBB",
+  "update/exerciseCF",
   async (
-    { exerciseParams }: { exerciseParams: exerciseParams },
+    { "rep_max": rep_max, id }: { rep_max: number,  id:number },
     { rejectWithValue }
   ) => {
     try {
       const token = sessionStorage.getItem("auth_token")
-      const response = await axios.post(
-        `http://127.0.0.1:8000/api/exercises/`,
-        exerciseParams,
+      const response = await axios.patch(
+        `http://127.0.0.1:8000/api/exercises/${id}/`,
+        { rep_max },
         {
           headers: {
             Authorization: `Token ${token}`
           }
         });
-      toast.success("Exercise Created Successfully!");
+      toast.success("Updated Exercise!");
       return response.data;
     } catch (error) {
       toast.error("Falha no registro");
