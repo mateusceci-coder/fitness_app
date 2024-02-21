@@ -4,7 +4,7 @@ import { Instagram, Twitter, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-mainBlue text-white px-2 pt-8 pb-16 md:pb-2 w-screen">
+    <footer className="bg-mainBlue text-white px-2 pt-8 pb-16 md:pb-2 w-full">
       <div className="flex flex-col items-center md:flex-row md:justify-between lg:justify-evenly">
         <ul>
         <h1 className="text-2xl lg:text-3xl mb-2">Contact Us</h1>
