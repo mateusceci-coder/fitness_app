@@ -14,7 +14,7 @@ export const createExerciseThunkBB = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/exercises/`,
+        `http://127.0.0.1:8000/api/exercises/bodybuilding/`,
         exerciseParams,
         {
           headers: {

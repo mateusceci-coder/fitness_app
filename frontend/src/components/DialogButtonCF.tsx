@@ -17,14 +17,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { capitalizeText } from "@/lib/utils";
 
 
-import { RootReducer } from "@/store/store";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
-export default function DialogButton() {
+import { useState } from "react";
+
+
+export default function DialogButton({fetchData}) {
   const [exercise, setExercise] = useState("");
-  const [equipment, setEquipment] = useState("Bar");
+  const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
 
 
@@ -44,7 +43,7 @@ export default function DialogButton() {
       rep_max: Number(maxRep.toFixed(2)),
     };
 
-    createExerciseCF(newExercise);
+    createExerciseCF(newExercise, fetchData);
 
     setExercise("");
     setEquipment("Barbell");
@@ -60,7 +59,7 @@ export default function DialogButton() {
         <DialogHeader>
           <DialogTitle>Add New Exercise</DialogTitle>
           <DialogDescription>
-            Add the name of the exercise, the equipament that is used and (if
+            Add the name of the exercise, the equipment that is used and (if
             you want) your 1 rep max
           </DialogDescription>
         </DialogHeader>
@@ -102,7 +101,7 @@ export default function DialogButton() {
                   id="Kettlebell"
                   onClick={() => setEquipment("Kettlebell")}
                 />
-                <Label htmlFor="Machine">Kettlebell</Label>
+                <Label htmlFor="Kettlebell">Kettlebell</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem

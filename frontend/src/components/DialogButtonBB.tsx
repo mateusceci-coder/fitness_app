@@ -34,7 +34,7 @@ export default function DialogButton({ fetchData }) {
     createExerciseBB(newExercise, fetchData);
 
     setExercise("");
-    setEquipment("BB");
+    setEquipment("Barbbell");
     setMaxRep(0);
   };
 
@@ -77,9 +77,9 @@ export default function DialogButton({ fetchData }) {
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="DB"
+                  value="Dumbbell"
                   id="dumbbell"
-                  onClick={() => setEquipment("DB")}
+                  onClick={() => setEquipment("Dumbbell")}
                 />
                 <Label htmlFor="dumbbell">Dumbbell</Label>
               </div>
@@ -87,23 +87,23 @@ export default function DialogButton({ fetchData }) {
                 <RadioGroupItem
                   value="Machine"
                   id="Machine"
-                  onClick={() => setEquipment("MM")}
+                  onClick={() => setEquipment("Machine")}
                 />
                 <Label htmlFor="Machine">Machine</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="BW"
+                  value="Bodyweight"
                   id="Bodyweight"
-                  onClick={() => setEquipment("BW")}
+                  onClick={() => setEquipment("Bodyweight")}
                 />
                 <Label htmlFor="Bodyweight">Bodyweight</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="OT"
+                  value="Other"
                   id="Other"
-                  onClick={() => setEquipment("OT")}
+                  onClick={() => setEquipment("Other")}
                 />
                 <Label htmlFor="Other">Other</Label>
               </div>

@@ -14,7 +14,7 @@ export const updateExerciseThunkCF = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.patch(
-        `http://127.0.0.1:8000/api/exercises/${id}/`,
+        `http://127.0.0.1:8000/api/exercises/crossfit/${id}/`,
         { rep_max },
         {
           headers: {

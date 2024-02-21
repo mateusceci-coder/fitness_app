@@ -14,12 +14,12 @@ export const updateExerciseThunkBB = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.patch(
-        `http://127.0.0.1:8000/api/exercises/${id}/`,
+        `http://127.0.0.1:8000/api/exercises/bodybuilding/${id}/`,
         { rep_max },
         {
           headers: {
             Authorization: `Token ${token}`
-          }
+        }
         });
       toast.success("Updated Exercise!");
       return response.data;

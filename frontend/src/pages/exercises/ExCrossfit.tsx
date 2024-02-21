@@ -9,11 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { capitalize } from "@/lib/utils";
-import {
-  delExCrossfit,
-  editingExerciseId,
-  updateWeightCrossfit,
-} from "@/store/reducers/exercise";
+import { editingExerciseId } from "@/store/reducers/exercise";
 import { RootReducer } from "@/store/store";
 import { Check, Lightbulb } from "lucide-react";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -26,34 +22,42 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DialogButtonCF from "@/components/DialogButtonCF";
-import axios from "axios"
+import axios from "axios";
 import { getExerciseList } from "@/api/exerciseBB/types";
 import Loading from "../Loading";
+import { useExerciseCF } from "@/api/exerciseCF/useExerciseCF";
 
 export default function ExCrossfit() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
   );
-  const { crossfitList, exerciseId } = useSelector(
-    (store: RootReducer) => store.exercise
+  const { exerciseId } = useSelector((store: RootReducer) => store.exercise);
+  const [exercisesData, setExercisesData] = useState<getExerciseList[] | null>(
+    null
   );
-  const [exercisesData, setExercisesData] = useState<getExerciseList[] | null>(null)
-  const [listExercises, setListExercises] = useState<getExerciseList[] | null>(exercisesData)
+  const [listExercises, setListExercises] = useState<getExerciseList[] | null>(
+    exercisesData
+  );
+
+  const { deleteExerciseCF, updateExerciseCF } = useExerciseCF();
 
   const dispatch = useDispatch();
 
-  const [userWeight, setUserWeight] = useState<number | null>(null)
+  const [userWeight, setUserWeight] = useState<number | null>(null);
 
   const fetchProfile = async () => {
     try {
-      const username = sessionStorage.getItem("username")
-      const response = await axios.get(`http://127.0.0.1:8000/api/profile/${username}/`, {
-        headers: {
-          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
-        },
-      });
+      const username = sessionStorage.getItem("username");
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/profile/${username}/`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
       if (response.status === 200) {
-        setUserWeight(response.data.weight)
+        setUserWeight(response.data.weight);
       } else {
         throw new Error("Profile not found");
       }
@@ -64,11 +68,14 @@ export default function ExCrossfit() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/exercises/`, {
-        headers: {
-          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
-        },
-      });
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/exercises/crossfit`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
       if (response.status === 200) {
         setExercisesData(response.data);
         setListExercises(response.data);
@@ -82,7 +89,7 @@ export default function ExCrossfit() {
 
   useEffect(() => {
     fetchData();
-    fetchProfile()
+    fetchProfile();
 
     // Cleanup function to handle component unmounting
     return () => {
@@ -90,39 +97,35 @@ export default function ExCrossfit() {
     };
   }, []);
 
-  const handleDelExerciseCrossfit = (id: string) => {
-    dispatch(
-      delExCrossfit(crossfitList.filter((exercise) => exercise.id !== id))
-    );
+  const handleDelExerciseCrossfit = (id: number) => {
+    deleteExerciseCF(id, fetchData);
   };
 
-  const handleUpdateRM = (exerciseId: string) => {
+  const handleUpdateRM = (exerciseId: number) => {
     dispatch(editingExerciseId(exerciseId));
   };
 
-  const handleInputRM = (
-    event: ChangeEvent<HTMLInputElement>,
-    exerciseId: string
-  ) => {
+  const handleInputRM = (event: ChangeEvent<HTMLInputElement>, id: number) => {
     const newWeight = Number((+event.target.value).toFixed(2));
-    const updatedList = crossfitList.map((exercise) =>
-      exercise.id === exerciseId
-        ? {
-            ...exercise,
-            weight: newWeight,
-            relation:
-              weightUser === 0 || newWeight < 0
-                ? 0
-                : Number((+event.target.value / weightUser).toFixed(2)),
+    setListExercises(
+      listExercises &&
+        listExercises.map((exercise) => {
+          if (exercise.id === id) {
+            exercise.rep_max = newWeight;
           }
-        : exercise
+          return exercise;
+        })
     );
-    dispatch(updateWeightCrossfit(updatedList));
-
   };
 
-  const handleFinishEditing = () => {
-    dispatch(editingExerciseId(""));
+  const handleFinishEditing = (id: number) => {
+    const findExercise =
+      listExercises && listExercises.find((exercise) => exercise.id === id);
+    const newRepMax = findExercise ? findExercise.rep_max : 0;
+
+    updateExerciseCF(newRepMax, id);
+
+    dispatch(editingExerciseId(0));
   };
 
   const handleSelect = (e: string | null) => {
@@ -133,25 +136,28 @@ export default function ExCrossfit() {
     }
   };
 
-
   return exercisesData ? (
-  <section className="relative">
+    <section className="relative">
       <header className="my-16">
         <h1 className="head-text">Crossfit Exercises</h1>
       </header>
       <div className="flex justify-evenly pb-5 max-w-5xl mx-auto">
-        <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Equipment" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All">All</SelectItem>
-            <SelectItem value="Bar">Bar</SelectItem>
-            <SelectItem value="Dumbbell">Dumbell</SelectItem>
-            <SelectItem value="Kettlebell">Kettlebell</SelectItem>
-          </SelectContent>
-        </Select>
-        <DialogButtonCF />
+        <div className="flex gap-2">
+          <span className="text-sm mt-2">Select Equipment</span>
+          <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Equipment" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All</SelectItem>
+              <SelectItem value="Barbell">Barbell</SelectItem>
+              <SelectItem value="Dumbbell">Dumbell</SelectItem>
+              <SelectItem value="Kettlebell">Kettlebell</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <DialogButtonCF fetchData={fetchData} />
         <div></div>
       </div>
       <Table className="max-w-5xl mx-auto">
@@ -164,68 +170,69 @@ export default function ExCrossfit() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {listExercises && listExercises
-            .filter(
-              (exercise) =>
-                !selectedEquipment || exercise.equipment === selectedEquipment
-            )
-            .map((exercise) => {
-              return (
-                <TableRow key={exercise.id}>
-                  <TableCell className="font-medium">
-                    {capitalize(exercise.name)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {exercise.equipment}
-                  </TableCell>
-                  <TableCell className="text-right ">
-                    {exerciseId === exercise.id ? (
-                      <div className="flex justify-end">
-                        <Input
-                          className="w-16"
-                          type="number"
-                          value={exercise.rep_max}
-                          onChange={(event) =>
-                            handleInputRM(event, exercise.id)
-                          }
-                          min={0}
-                          max={500}
-                        />{" "}
-                        <Check
-                          color="green"
-                          className="ml-1 cursor-pointer"
-                          onClick={handleFinishEditing}
-                        />
-                      </div>
-                    ) : exercise.rep_max < 0 ? (
-                      0
-                    ) : (
-                      Number(exercise.rep_max.toFixed(2))
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {exercise.relation}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {exerciseId === exercise.id ? (
-                      ""
-                    ) : (
-                      <Button onClick={() => handleUpdateRM(exercise.id)}>
-                        Update
+          {listExercises &&
+            listExercises
+              .filter(
+                (exercise) =>
+                  !selectedEquipment || exercise.equipment === selectedEquipment
+              )
+              .map((exercise) => {
+                return (
+                  <TableRow key={exercise.id}>
+                    <TableCell className="font-medium">
+                      {capitalize(exercise.name)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {exercise.equipment}
+                    </TableCell>
+                    <TableCell className="text-right ">
+                      {exerciseId === exercise.id ? (
+                        <div className="flex justify-end">
+                          <Input
+                            className="w-16"
+                            type="number"
+                            value={exercise.rep_max}
+                            onChange={(event) =>
+                              handleInputRM(event, exercise.id)
+                            }
+                            min={0}
+                            max={500}
+                          />{" "}
+                          <Check
+                            color="green"
+                            className="ml-1 cursor-pointer"
+                            onClick={() => handleFinishEditing(exercise.id)}
+                          />
+                        </div>
+                      ) : exercise.rep_max < 0 ? (
+                        0
+                      ) : (
+                        Number(exercise.rep_max.toFixed(2))
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {userWeight && (exercise.rep_max / userWeight).toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {exerciseId === exercise.id ? (
+                        ""
+                      ) : (
+                        <Button onClick={() => handleUpdateRM(exercise.id)}>
+                          Update
+                        </Button>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        className="bg-destructive"
+                        onClick={() => handleDelExerciseCrossfit(exercise.id)}
+                      >
+                        Delete
                       </Button>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      className="bg-destructive"
-                      onClick={() => handleDelExerciseCrossfit(exercise.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
         </TableBody>
       </Table>
       <div className="flex flex-col items-center gap-2 mt-20">
@@ -260,8 +267,8 @@ export default function ExCrossfit() {
           </div>
         </article>
       </div>
-    </section>) : (
-      <Loading />
-    )
-
+    </section>
+  ) : (
+    <Loading />
+  );
 }

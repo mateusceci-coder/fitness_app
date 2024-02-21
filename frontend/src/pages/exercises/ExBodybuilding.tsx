@@ -26,6 +26,7 @@ import { getExerciseList } from "@/api/exerciseBB/types";
 import axios from "axios";
 import Loading from "../Loading";
 import { useExerciseBB } from "@/api/exerciseBB/useExerciseBB";
+import { Label } from "@/components/ui/label";
 
 
 
@@ -69,7 +70,7 @@ export default function ExBodybuilding() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/exercises/`, {
+      const response = await axios.get(`http://127.0.0.1:8000/api/exercises/bodybuilding`, {
         headers: {
           Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
         },
@@ -141,11 +142,15 @@ export default function ExBodybuilding() {
         <h1 className="head-text">Bodybuilding Exercises</h1>
       </header>
       <div className="flex justify-evenly max-w-5xl mx-auto pb-5">
+        <div className="flex gap-2">
+
+        <span className="text-sm mt-2">Select Equipment</span>
         <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Equipment" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="All">All</SelectItem>
             <SelectItem value="Barbell">Barbell</SelectItem>
             <SelectItem value="Dumbbell">Dumbell</SelectItem>
             <SelectItem value="Machine">Machine</SelectItem>
@@ -153,6 +158,7 @@ export default function ExBodybuilding() {
             <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
+        </div>
         <DialogButtonBB fetchData={fetchData} />
         <div></div>
       </div>
