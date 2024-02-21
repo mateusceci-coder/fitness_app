@@ -51,7 +51,7 @@ export default function WorkCrossfit() {
   const [womenWeight, setWomenWeight] = useState(0);
   const [menWeight, setMenWeight] = useState(0);
   const [wodItem, setWodItem] = useState<crossfitExercise[]>([]);
-  const [equipment, setEquipment] = useState("Bar");
+  const [equipment, setEquipment] = useState("Barbell");
   const [noSelectingExercise, setNoSelectingExercise] = useState(true);
   const [noNewExercise, setNoNewExercise] = useState(true);
   const [blankNameWod, setBlankNameWod] = useState(false);
@@ -115,7 +115,7 @@ export default function WorkCrossfit() {
         equipment: equipment,
       },
     ]);
-    setEquipment("Bar");
+    setEquipment("Barbell");
     setNameExercise("");
     setRepsExercise(0);
     setWomenWeight(0);
@@ -272,10 +272,11 @@ export default function WorkCrossfit() {
                     <SelectValue placeholder="Equipment" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Bar">Bar</SelectItem>
+                    <SelectItem value="Barbell">Barbell</SelectItem>
                     <SelectItem value="Dumbbell">Dumbbell</SelectItem>
                     <SelectItem value="Kettlebell">Kettlebell</SelectItem>
                     <SelectItem value="Bodyweight">Bodyweight</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button
@@ -288,7 +289,7 @@ export default function WorkCrossfit() {
               </div>
             )}
           </div>
-          <ul className="flex gap-1 flex-col my-2">
+          <ul className="flex gap-1 flex-col my-2 text-white">
             {wodItem.map((exercise) => (
               <li>
                 <span>{exercise.repsExercise}</span> {capitalizeText(exercise.nameExercise)}{" "}
