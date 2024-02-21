@@ -5,9 +5,12 @@ from crossfit.models.cros_workout import CrosWorkout, WorkoutExercise
 
 class WorkoutExerciseSerializer(serializers.ModelSerializer):
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
+    workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
+    workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     exercise = CrosExerciseSerializer()
     class Meta:
         model = WorkoutExercise
+        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men']
         fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men']
 
 class WorkoutSerializer(serializers.ModelSerializer):
@@ -21,28 +24,17 @@ class WorkoutSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
-        exercises_data = validated_data.pop('workoutexercise_set', [])
         workout = CrosWorkout.objects.create(**validated_data)
-    
+
         for exercise_data in exercises_data:
-            exercise_serializer = CrosExerciseSerializer(data=exercise_data['exercise'])
-            if exercise_serializer.is_valid():
-                exercise = exercise_serializer.save(created_by=workout.created_by)
-                WorkoutExercise.objects.create(
-                    workout=workout,
-                    exercise=exercise,
-                    weight_for_women=exercise_data.get('weight_for_women'),
-                    weight_for_men=exercise_data.get('weight_for_men'),
-                    reps=exercise_data.get('reps')
-                )
-            else:
-                raise serializers.ValidationError(exercise_serializer.errors)
-    
+            exercise_data['workout'] = workout
+            WorkoutExercise.objects.create(**exercise_data)
+            exercise_data['workout'] = workout
+            WorkoutExercise.objects.create(**exercise_data)
         return workout
 
 
     def update(self, instance, validated_data):
-        exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
         instance.name = validated_data.get('name', instance.name)
@@ -51,6 +43,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
         instance.time_cap = validated_data.get('time_cap', instance.time_cap)
         instance.save()
 
+        existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         for exercise_data in exercises_data:
