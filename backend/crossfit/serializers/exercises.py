@@ -10,3 +10,8 @@ class CrosExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = CrossExercise
         fields = ['id', 'created_by', 'name', 'equipment', 'rep_max', 'created_at']
+
+    def validate_rep_max(self, value):
+        if value < 0:
+            raise ValidationError("Rep max cannot be negative")
+        return value
