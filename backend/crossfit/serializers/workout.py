@@ -3,9 +3,10 @@ from crossfit.models.cros_workout import CrosWorkout, WorkoutExercise
 
 class WorkoutExerciseSerializer(serializers.ModelSerializer):
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
+    workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     class Meta:
         model = WorkoutExercise
-        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men', 'reps']
+        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men']
 
 class WorkoutSerializer(serializers.ModelSerializer):
     exercises = WorkoutExerciseSerializer(source='workoutexercise_set', many=True)
@@ -17,13 +18,17 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         exercises_data = validated_data.pop('workoutexercise_set', [])
+        exercises_data = validated_data.pop('workoutexercise_set', [])
         workout = CrosWorkout.objects.create(**validated_data)
         for exercise_data in exercises_data:
+            exercise_data['workout'] = workout
+            WorkoutExercise.objects.create(**exercise_data)
             exercise_data['workout'] = workout
             WorkoutExercise.objects.create(**exercise_data)
         return workout
 
     def update(self, instance, validated_data):
+        exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
         instance.name = validated_data.get('name', instance.name)
         instance.execution_type = validated_data.get('execution_type', instance.execution_type)
@@ -32,13 +37,13 @@ class WorkoutSerializer(serializers.ModelSerializer):
         instance.save()
 
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
+        existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         for exercise_data in exercises_data:
             exercise_id = exercise_data.get('exercise').id
             if exercise_id in existing_exercises_ids:
                 workout_exercise = WorkoutExercise.objects.get(workout=instance, exercise_id=exercise_id)
                 workout_exercise.weight_for_women = exercise_data.get('weight_for_women', workout_exercise.weight_for_women)
                 workout_exercise.weight_for_men = exercise_data.get('weight_for_men', workout_exercise.weight_for_men)
-                workout_exercise.reps = exercise_data.get('reps', workout_exercise.reps)
                 workout_exercise.save()
             else:
                 WorkoutExercise.objects.create(workout=instance,**exercise_data)
