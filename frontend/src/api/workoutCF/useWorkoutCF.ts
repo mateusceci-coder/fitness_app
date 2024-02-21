@@ -1,16 +1,16 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { workoutParamsCF } from "./types";
+import { postWorkoutCF } from "./types";
 import { createWorkoutThunkCF } from "./postThunk";
 import { deleteWorkoutThunkCF } from "./deleteThunk";
 
-export const useExerciseCF = () => {
+export const useWorkoutCF = () => {
   const dispatch = useDispatch<AppDispatch>();
   const createWorkoutCF = async (
-    workoutParamsCF: workoutParamsCF,
+    postWorkoutCF: postWorkoutCF,
     callback: Function
   ) => {
-    const response = await dispatch(createWorkoutThunkCF({ workoutParamsCF }));
+    const response = await dispatch(createWorkoutThunkCF({ postWorkoutCF }));
     callback();
     return response;
   };

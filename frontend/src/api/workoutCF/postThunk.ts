@@ -2,20 +2,20 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import { toast } from "react-toastify";
-import { workoutParamsCF } from "./types";
+import { postWorkoutCF } from "./types";
 
 export const createWorkoutThunkCF = createAsyncThunk(
 
   "create/workoutCF",
   async (
-    { workoutParamsCF }: { workoutParamsCF: workoutParamsCF },
+    { postWorkoutCF}: { postWorkoutCF: postWorkoutCF },
     { rejectWithValue }
   ) => {
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.post(
         `http://127.0.0.1:8000/api/exercises/crossfit/`,
-        workoutParamsCF,
+        postWorkoutCF,
         {
           headers: {
             Authorization: `Token ${token}`
