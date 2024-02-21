@@ -16,26 +16,19 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { capitalizeText } from "@/lib/utils";
 
-
-
 import { useState } from "react";
 
-
-export default function DialogButton({fetchData}) {
+export default function DialogButton({ fetchData }) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
 
-
   const { createExerciseCF } = useExerciseCF();
 
   const handleNewExercise = () => {
-
     if (!exercise) {
       return;
     }
-
-
 
     const newExercise = {
       name: exercise,
@@ -59,8 +52,8 @@ export default function DialogButton({fetchData}) {
         <DialogHeader>
           <DialogTitle>Add New Exercise</DialogTitle>
           <DialogDescription>
-            Add the name of the exercise, the equipment that is used and (if
-            you want) your 1 rep max
+            Add the name of the exercise, the equipment that is used and (if you
+            want) your 1 rep max
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

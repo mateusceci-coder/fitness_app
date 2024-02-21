@@ -1,26 +1,27 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { exerciseParams } from "../exerciseBB/types";
+
 import { toast } from "react-toastify";
+import { workoutParamsCF } from "./types";
 
-export const createExerciseThunkCF = createAsyncThunk(
+export const createWorkoutThunkCF = createAsyncThunk(
 
-  "create/exerciseCF",
+  "create/workoutCF",
   async (
-    { exerciseParams }: { exerciseParams: exerciseParams },
+    { workoutParamsCF }: { workoutParamsCF: workoutParamsCF },
     { rejectWithValue }
   ) => {
     try {
       const token = sessionStorage.getItem("auth_token")
       const response = await axios.post(
         `http://127.0.0.1:8000/api/exercises/crossfit/`,
-        exerciseParams,
+        workoutParamsCF,
         {
           headers: {
             Authorization: `Token ${token}`
           }
         });
-      toast.success("Exercise Created Successfully!");
+      toast.success("Workout Created Successfully!");
       return response.data;
     } catch (error) {
       toast.error("Registration Failed");
