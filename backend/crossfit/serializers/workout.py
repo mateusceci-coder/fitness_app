@@ -5,7 +5,7 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     class Meta:
         model = WorkoutExercise
-        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men']
+        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men', 'reps']
 
 class WorkoutSerializer(serializers.ModelSerializer):
     exercises = WorkoutExerciseSerializer(source='workoutexercise_set', many=True)
@@ -38,6 +38,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
                 workout_exercise = WorkoutExercise.objects.get(workout=instance, exercise_id=exercise_id)
                 workout_exercise.weight_for_women = exercise_data.get('weight_for_women', workout_exercise.weight_for_women)
                 workout_exercise.weight_for_men = exercise_data.get('weight_for_men', workout_exercise.weight_for_men)
+                workout_exercise.reps = exercise_data.get('reps', workout_exercise.reps)
                 workout_exercise.save()
             else:
                 WorkoutExercise.objects.create(workout=instance,**exercise_data)
