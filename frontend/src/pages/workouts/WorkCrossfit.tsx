@@ -204,11 +204,11 @@ export default function WorkCrossfit() {
               <SelectValue placeholder="WOD Style" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="amrap">AMRAP</SelectItem>
-              <SelectItem value="forTime">For Time</SelectItem>
+              <SelectItem value="AMRAP">AMRAP</SelectItem>
+              <SelectItem value="FT">For Time</SelectItem>
             </SelectContent>
           </Select>
-          {typeWod !== "amrap" && (
+          {typeWod !== "AMRAP" && (
             <div>
               <Input
                 type="number"
@@ -386,7 +386,7 @@ export default function WorkCrossfit() {
           <CollapsibleContent className="flex gap-2 flex-col">
             <h1 className="text-lg mt-5 mb-2">
               <p>
-                <b>{workout.execution_type === "amrap" ? "AMRAP" : "For Time"}</b>
+                <b>{workout.execution_type === "AMRAP" ? "AMRAP" : "For Time"}</b>
               </p>
               {workout.rounds && workout.rounds > 1 && (
                 <p className="text-center">
