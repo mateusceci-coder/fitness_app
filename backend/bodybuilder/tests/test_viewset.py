@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from bodybuilder.models import Exercise
-from authentication.factories.test_factories import UserFactory
+from factories.test_factories import UserFactory
 from rest_framework.authtoken.models import Token
 
 class ExerciseViewSetTest(APITestCase):
@@ -13,10 +13,10 @@ class ExerciseViewSetTest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
 
     def test_create_exercise(self):
-        url = reverse('exercise-list')
+        url = reverse('bodybuilding-exercise-list')
         data = {
             'name': 'Push Up',
-            'equipment': 'BW',
+            'equipment': 'Bodyweight',
             'rep_max': 10.0
         }
         response = self.client.post(url, data, format='json')

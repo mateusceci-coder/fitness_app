@@ -5,7 +5,7 @@ from authentication.models import Profile
 from authentication.serializers import ProfileSerializer
 import datetime
 
-from authentication.factories.test_factories import UserFactory
+from factories.test_factories import UserFactory
 
 class ProfileSerializerTestCase(APITestCase):
 
