@@ -3,10 +3,13 @@ from .cros_exercise import CrossExercise
 from crossfit.models.cros_exercise import CrossExercise
 from django.contrib.auth.models import User
 class CrosWorkout(models.Model):
+    class ExecutionType(models.TextChoices):
+        FOR_TIME = 'FT', 'For Time'
+        AMRAP = 'AMRAP', 'As Many Rounds as Possible'
     name = models.CharField(max_length=100)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_workouts')
     exercises = models.ManyToManyField('CrossExercise', through='WorkoutExercise')
-    execution_type = models.CharField(max_length=10, choices=[('FT', 'For Time'), ('AMRAP', 'As Many Rounds as Possible')])
+    execution_type = models.CharField(max_length=10, choices=ExecutionType.choices)
     rounds = models.IntegerField(null=True, blank=True)
     time_cap = models.DurationField()
 
