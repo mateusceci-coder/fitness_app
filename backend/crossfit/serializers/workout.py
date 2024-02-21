@@ -6,7 +6,7 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     class Meta:
         model = WorkoutExercise
-        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men']
+        fields = ['exercise', 'weight_for_women', 'weight_for_men']
 
 class WorkoutSerializer(serializers.ModelSerializer):
     exercises = WorkoutExerciseSerializer(source='workoutexercise_set', many=True)
@@ -40,13 +40,9 @@ class WorkoutSerializer(serializers.ModelSerializer):
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         for exercise_data in exercises_data:
             exercise_id = exercise_data.get('exercise').id
-            if exercise_id in existing_exercises_ids:
-                workout_exercise = WorkoutExercise.objects.get(workout=instance, exercise_id=exercise_id)
-                workout_exercise.weight_for_women = exercise_data.get('weight_for_women', workout_exercise.weight_for_women)
-                workout_exercise.weight_for_men = exercise_data.get('weight_for_men', workout_exercise.weight_for_men)
-                workout_exercise.save()
-            else:
-                WorkoutExercise.objects.create(workout=instance,**exercise_data)
-        instance.workoutexercise_set.exclude(exercise_id__in=[data['exercise'].id for data in exercises_data]).delete()
+            exercise = WorkoutExercise.objects.get(workout=instance, exercise_id=exercise_id)
+            exercise.weight_for_women = exercise_data.get('weight_for_women', exercise.weight_for_women)
+            exercise.weight_for_men = exercise_data.get('weight_for_men', exercise.weight_for_men)
+            exercise.save()
 
         return instance
