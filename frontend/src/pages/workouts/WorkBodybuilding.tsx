@@ -18,15 +18,9 @@ import {
 import { calculateWeightReps } from "@/lib/calculators";
 import { capitalizeText } from "@/lib/utils";
 
-import {
-  addNewBodybuildingWorkout,
-  bodybuildingExercise,
-  deleteBodybuildingWorkout,
-} from "@/store/reducers/workout";
-import { RootReducer } from "@/store/store";
+
 import { Dumbbell, Lightbulb, Undo2, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   Table,
@@ -40,6 +34,7 @@ import { exerciseBB, workoutParamsBB } from "@/api/workoutBB/types";
 import axios from "axios";
 import { useWorkoutBB } from "@/api/workoutBB/useWorkoutBB";
 import Loading from "../Loading";
+import { getExerciseList } from "@/api/exerciseBB/types";
 
 export default function WorkBodybuilding() {
   const [isFormWorkOpen, setIsFormWorkOpen] = useState(false);
@@ -57,8 +52,10 @@ export default function WorkBodybuilding() {
   const [bodybuildingWorkouts, setBodybuildingWorkouts] = useState<
     workoutParamsBB[] | null
   >(null);
-  const dispatch = useDispatch();
+  const [exercisesList, setExercisesList] = useState<getExerciseList[] | null>(null)
+
   const { createWorkoutBB, deleteWorkoutBB } = useWorkoutBB();
+
 
   const fetchData = async () => {
     try {
@@ -84,14 +81,24 @@ export default function WorkBodybuilding() {
     fetchData();
   }, []);
 
-  const handleNewExercise = () => {
+  const handleNewExercise = async () => {
     if (!nameExercise) return;
 
-    const suggestedWeight = calculateSuggestedWeight(
-      nameExercise,
-      equipment,
-      repsExercise
-    );
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/exercises/bodybuilding`, {
+        headers: {
+          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+        },
+      });
+      if (response.status === 200) {
+        setExercisesList(response.data)
+      }
+      } catch (error) {
+        console.log(error)
+      }
+
+      const repMax = exercisesList ? exercisesList.find((exercise) => exercise.name === nameExercise && exercise.equipment === equipment)?.rep_max : 0
+
 
     setWorkoutItem((workoutItem) => [
       ...workoutItem,
@@ -100,6 +107,7 @@ export default function WorkBodybuilding() {
         repetitions: repsExercise,
         series: seriesExercise,
         equipment: equipment,
+        rep_max: repMax
       },
     ]);
     setAddingExercise(false);
@@ -116,7 +124,12 @@ export default function WorkBodybuilding() {
       return;
     }
 
-    createWorkoutBB(bodybuildingWorkouts, fetchData);
+    const newWorkout = {
+      name: nameWorkout,
+      exercises: workoutItem
+    }
+
+    createWorkoutBB(newWorkout, fetchData);
 
     setAddingExercise(false);
     setNameExercise("");
@@ -132,23 +145,6 @@ export default function WorkBodybuilding() {
     deleteWorkoutBB(id, fetchData);
   };
 
-  const calculateSuggestedWeight = (
-    exerciseName: string,
-    equipment: string,
-    numReps: number
-  ) => {
-    const repMax =
-      bodybuildingWorkouts.exercises
-        .filter(
-          (exercise) =>
-            exercise.name.toLowerCase() === exerciseName.toLowerCase() &&
-            exercise.equipment === equipment
-        )
-        .map((exercise) => exercise.rep_max || 0)
-        .find(Boolean) || 0;
-
-    return calculateWeightReps(repMax, numReps);
-  };
 
   const textExercise = noNewExercise && noSelectingExercise;
 
@@ -344,7 +340,7 @@ export default function WorkBodybuilding() {
                       <TableCell>{ex.repetitions}</TableCell>
                       <TableCell>{ex.equipment}</TableCell>
                       <TableCell className="text-right">
-                        {ex.suggestedWeight !== 0 && ex.suggestedWeight}
+                        {ex.rep_max ? calculateWeightReps(ex.rep_max, ex.repetitions) : 0}
                       </TableCell>
                     </TableRow>
                   ))}

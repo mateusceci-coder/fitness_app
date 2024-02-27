@@ -15,16 +15,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useSelector } from "react-redux";
-import { RootReducer } from "@/store/store";
-import { Dispatch } from "react";
+import { Dispatch, useEffect, useState } from "react";
+import { getExerciseList } from "@/api/exerciseBB/types";
+import axios from "axios";
 
 interface nameExerciseProps {
   nameExercise: string;
   setNameExercise: Dispatch<React.SetStateAction<string>>;
-  setNoNewExercise: Dispatch<React.SetStateAction<boolean>>
-  setNoSelectingExercise: Dispatch<React.SetStateAction<boolean>>
-  noSelectingExercise: boolean
+  setNoNewExercise: Dispatch<React.SetStateAction<boolean>>;
+  setNoSelectingExercise: Dispatch<React.SetStateAction<boolean>>;
+  noSelectingExercise: boolean;
 }
 
 export default function SelectExBodybuilding({
@@ -36,13 +36,36 @@ export default function SelectExBodybuilding({
 }: nameExerciseProps) {
   const [open, setOpen] = React.useState(false);
 
-  const { bodybuildingList } = useSelector((store: RootReducer) => store.exercise);
+  const [bodybuildingList, setBodybuildingList] = useState<getExerciseList[]>(
+    []
+  );
+
+  const fetchList = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setBodybuildingList(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFormText = () => {
-    setNoNewExercise(true)
-    setNoSelectingExercise(true)
-  }
+    setNoNewExercise(true);
+    setNoSelectingExercise(true);
+  };
 
+  useEffect(() => {
+    fetchList();
+  }, []);
 
   return (
     <div>
@@ -56,9 +79,8 @@ export default function SelectExBodybuilding({
           >
             {nameExercise
               ? bodybuildingList.find(
-                  (ex) =>
-                    ex.exercise.toLowerCase() === nameExercise.toLowerCase()
-                )?.exercise
+                  (ex) => ex.name.toLowerCase() === nameExercise.toLowerCase()
+                )?.name
               : "Select Exercise..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -71,7 +93,7 @@ export default function SelectExBodybuilding({
               {bodybuildingList.map((ex) => (
                 <CommandItem
                   key={ex.id}
-                  value={ex.exercise}
+                  value={ex.name}
                   onSelect={(currentValue) => {
                     setNameExercise(
                       currentValue === nameExercise ? "" : currentValue
@@ -82,17 +104,24 @@ export default function SelectExBodybuilding({
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      nameExercise === ex.exercise ? "opacity-100" : "opacity-0"
+                      nameExercise === ex.name ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {ex.exercise}
+                  {ex.name}
                 </CommandItem>
               ))}
             </CommandGroup>
           </Command>
         </PopoverContent>
       </Popover>
-     {!noSelectingExercise && <Undo2 size={24} className="inline ml-1 cursor-pointer" color="green" onClick={handleFormText} />}
+      {!noSelectingExercise && (
+        <Undo2
+          size={24}
+          className="inline ml-1 cursor-pointer"
+          color="green"
+          onClick={handleFormText}
+        />
+      )}
     </div>
   );
 }

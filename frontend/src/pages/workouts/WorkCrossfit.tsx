@@ -16,15 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { capitalize, capitalizeText } from "@/lib/utils";
-import {
-  addNewCrossfitWorkout,
-  crossfitExercise,
-  deleteCrossfitWorkout,
-} from "@/store/reducers/workout";
-import { RootReducer } from "@/store/store";
 import { Dumbbell, Undo2, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 
 import {
   Table,
@@ -37,7 +31,6 @@ import {
 import { useWorkoutCF } from "@/api/workoutCF/useWorkoutCF";
 import {
   exercisesParamsCF,
-  postWorkoutCF,
   workoutParamsCF,
 } from "@/api/workoutCF/types";
 import axios from "axios";
@@ -45,10 +38,6 @@ import axios from "axios";
 import Loading from "../Loading";
 
 export default function WorkCrossfit() {
-  const { workoutsCrossfit } = useSelector(
-    (store: RootReducer) => store.workout
-  );
-  const dispatch = useDispatch();
   const [isFormWorkOpen, setIsFormWorkOpen] = useState(false);
   const [addingExercise, setAddingExercise] = useState(false);
   const [nameWod, setNameWod] = useState("");
@@ -128,7 +117,7 @@ export default function WorkCrossfit() {
 
     createWorkoutCF(newWod, fetchData);
 
-  
+
     setIsFormWorkOpen(false);
     setNameExercise("");
     setRepsExercise(0);
