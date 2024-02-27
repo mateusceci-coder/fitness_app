@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from bodybuilder.models import BodyExercise
+from bodybuilder.models.body_exercise import BodyExercise
 from factories.test_factories import UserFactory
 from rest_framework.authtoken.models import Token
 

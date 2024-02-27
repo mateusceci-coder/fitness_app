@@ -6,12 +6,12 @@ from django.contrib.auth.models import User
 class BodyWorkout(models.Model):
     name = models.CharField(max_length=100)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_body_workouts')
-    exercises = models.ManyToManyField('BodyExercise', through='WorkoutExercise')
+    exercises = models.ManyToManyField('BodyExercise', through='BodyWorkoutExercise')
 
     def __str__(self):
         return self.name
     
-class WorkoutExercise(models.Model):
+class BodyWorkoutExercise(models.Model):
     workout = models.ForeignKey(BodyWorkout, on_delete=models.CASCADE)
     exercise = models.ForeignKey(BodyExercise, on_delete=models.CASCADE)
     series = models.IntegerField()

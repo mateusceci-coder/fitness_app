@@ -2,7 +2,7 @@ import factory
 from django.contrib.auth.models import User
 from authentication.models import Profile
 from bodybuilder.models.body_exercise import BodyExercise
-from bodybuilder.models.body_workout import WorkoutExercise, BodyWorkout
+from bodybuilder.models.body_workout import BodyWorkoutExercise, BodyWorkout
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -37,7 +37,7 @@ class BodyExerciseFactory(factory.django.DjangoModelFactory):
 
 class WorkoutExerciseFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = WorkoutExercise
+        model = BodyWorkoutExercise
 
     workout = factory.SubFactory('factories.BodyWorkoutFactory')
     exercise = factory.SubFactory('factories.BodyExerciseFactory')

@@ -1,2 +1,2 @@
-from .body_exercise import BodyExercise
-from .body_workout import BodyWorkout
+from . import body_exercise
+from . import body_workout

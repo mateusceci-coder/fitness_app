@@ -14,10 +14,10 @@ class BodyExerciseSerializer(serializers.ModelSerializer):
             raise ValidationError("Rep max cannot be negative")
         return value
     
-    def create(self, validated_data):
-        # Acessa o usuário autenticado a partir do contexto do request
-        user = self.context['request'].user
-        validated_data.pop('created_by', None)
-        # Define o usuário autenticado como `created_by` ao criar o objeto BodyExercise
-        body_exercise = BodyExercise.objects.create(created_by=user, **validated_data)
-        return body_exercise
+    # def create(self, validated_data):
+    #     # Acessa o usuário autenticado a partir do contexto do request
+    #     user = self.context['request'].user
+    #     validated_data.pop('created_by', None)
+    #     # Define o usuário autenticado como `created_by` ao criar o objeto BodyExercise
+    #     body_exercise = BodyExercise.objects.create(created_by=user, **validated_data)
+    #     return body_exercise
