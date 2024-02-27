@@ -69,7 +69,7 @@ export default function ExCrossfit() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/exercises/crossfit`,
+        `http://127.0.0.1:8000/api/exercises/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,

@@ -20,6 +20,8 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         exercises_data = validated_data.pop('workoutexercise_set', [])
+        exercises_data = validated_data.pop('workoutexercise_set', [])
+        exercises_data = validated_data.pop('workoutexercise_set', [])
         workout = CrosWorkout.objects.create(**validated_data)
     
         for exercise_data in exercises_data:
@@ -41,12 +43,15 @@ class WorkoutSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         exercises_data = validated_data.pop('workoutexercise_set', [])
+        exercises_data = validated_data.pop('workoutexercise_set', [])
+        exercises_data = validated_data.pop('workoutexercise_set', [])
         instance.name = validated_data.get('name', instance.name)
         instance.execution_type = validated_data.get('execution_type', instance.execution_type)
         instance.rounds = validated_data.get('rounds', instance.rounds)
         instance.time_cap = validated_data.get('time_cap', instance.time_cap)
         instance.save()
 
+        existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         for exercise_data in exercises_data:
             exercise_id = exercise_data.get('exercise').id

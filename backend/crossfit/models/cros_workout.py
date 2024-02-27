@@ -24,8 +24,9 @@ class CrosWorkout(models.Model):
 class WorkoutExercise(models.Model):
     workout = models.ForeignKey(CrosWorkout, on_delete=models.CASCADE)
     exercise = models.ForeignKey(CrossExercise, on_delete=models.CASCADE)
-    weight_for_women = models.FloatField()
-    weight_for_men = models.FloatField()
+    weight_for_women = models.FloatField(null=True, blank=True)
+    weight_for_men = models.FloatField(null=True, blank=True)
+    reps = models.IntegerField()
 
     def __str__(self):
         return f"{self.workout.name} - {self.exercise.name}"

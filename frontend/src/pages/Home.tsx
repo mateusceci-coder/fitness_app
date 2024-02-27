@@ -2,6 +2,17 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/layouts/Footer";
 
 export default function Home() {
+
+  const user = sessionStorage.getItem("auth_token")
+
+  const handleNewAccount = () => {
+    window.location.href = "/signin"
+  }
+
+  const handleLogin = () => {
+    window.location.href = "/login"
+  }
+
   return (
     <main>
       <section className="flex flex-col items-center max-w-5xl mx-auto">
@@ -12,7 +23,10 @@ export default function Home() {
           Your information about crossfit and bodybuilding all in one place
         </h2>
         <div className="my-6">
-          <Button>Create or Account</Button> or <Button>Log In</Button>
+          {!user &&
+          <>
+            <Button onClick={handleNewAccount}>Create your Account</Button> or <Button onClick={handleLogin}>Log In</Button>
+          </>}
         </div>
         <div className="flex flex-col">
           <article className="grid md:grid-cols-2 gap-2 article mb-12 md:mb-2">
