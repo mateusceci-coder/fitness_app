@@ -25,7 +25,7 @@ import {
 } from "@/store/reducers/workout";
 import { RootReducer } from "@/store/store";
 import { Dumbbell, Lightbulb, Undo2, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -36,6 +36,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { exerciseBB, workoutParamsBB } from "@/api/workoutBB/types";
+import axios from "axios";
+import { useWorkoutBB } from "@/api/workoutBB/useWorkoutBB";
+import Loading from "../Loading";
 
 export default function WorkBodybuilding() {
   const [isFormWorkOpen, setIsFormWorkOpen] = useState(false);
@@ -44,19 +48,41 @@ export default function WorkBodybuilding() {
   const [nameExercise, setNameExercise] = useState("");
   const [repsExercise, setRepsExercise] = useState(1);
   const [seriesExercise, setSeriesExercise] = useState(1);
-  const [equipment, setEquipment] = useState("Bar");
-  const [workoutItem, setWorkoutItem] = useState<bodybuildingExercise[]>([]);
+  const [equipment, setEquipment] = useState("Barbell");
+  const [workoutItem, setWorkoutItem] = useState<exerciseBB[]>([]);
   const [noSelectingExercise, setNoSelectingExercise] = useState(true);
   const [noNewExercise, setNoNewExercise] = useState(true);
   const [blankWorkout, setBlankWorkout] = useState(false);
   const [blankExercise, setBlankExercise] = useState(false);
-  const { workoutsBodybuilding } = useSelector(
-    (store: RootReducer) => store.workout
-  );
-  const { bodybuildingList } = useSelector(
-    (store: RootReducer) => store.exercise
-  );
+  const [bodybuildingWorkouts, setBodybuildingWorkouts] = useState<
+    workoutParamsBB[] | null
+  >(null);
   const dispatch = useDispatch();
+  const { createWorkoutBB, deleteWorkoutBB } = useWorkoutBB();
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setBodybuildingWorkouts(response.data);
+      } else {
+        throw new Error("Profile not found");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleNewExercise = () => {
     if (!nameExercise) return;
@@ -70,11 +96,10 @@ export default function WorkBodybuilding() {
     setWorkoutItem((workoutItem) => [
       ...workoutItem,
       {
-        nameExercise: nameExercise,
-        repsExercise: repsExercise,
-        seriesExercise: seriesExercise,
+        name: nameExercise,
+        repetitions: repsExercise,
+        series: seriesExercise,
         equipment: equipment,
-        suggestedWeight: suggestedWeight,
       },
     ]);
     setAddingExercise(false);
@@ -91,13 +116,8 @@ export default function WorkBodybuilding() {
       return;
     }
 
-    dispatch(
-      addNewBodybuildingWorkout({
-        id: crypto.randomUUID(),
-        name: nameWorkout,
-        exercise: workoutItem,
-      })
-    );
+    createWorkoutBB(bodybuildingWorkouts, fetchData);
+
     setAddingExercise(false);
     setNameExercise("");
     setRepsExercise(1);
@@ -108,8 +128,8 @@ export default function WorkBodybuilding() {
     setBlankWorkout(false);
   };
 
-  const handleDeleteWorkout = (id: string) => {
-    dispatch(deleteBodybuildingWorkout(id));
+  const handleDeleteWorkout = (id: number) => {
+    deleteWorkoutBB(id, fetchData);
   };
 
   const calculateSuggestedWeight = (
@@ -118,13 +138,13 @@ export default function WorkBodybuilding() {
     numReps: number
   ) => {
     const repMax =
-      bodybuildingList
+      bodybuildingWorkouts.exercises
         .filter(
           (exercise) =>
-            exercise.exercise.toLowerCase() === exerciseName.toLowerCase() &&
+            exercise.name.toLowerCase() === exerciseName.toLowerCase() &&
             exercise.equipment === equipment
         )
-        .map((exercise) => exercise.weight || 0)
+        .map((exercise) => exercise.rep_max || 0)
         .find(Boolean) || 0;
 
     return calculateWeightReps(repMax, numReps);
@@ -137,9 +157,8 @@ export default function WorkBodybuilding() {
     setNoSelectingExercise(true);
   };
 
-  return (
+  return bodybuildingWorkouts ? (
     <section className="flex flex-col items-center p-4">
-
       <div className="flex flex-col items-center p-5 gap-2">
         <header>
           <h1 className="head-text mb-8 break-words">Bodybuilding Workouts</h1>
@@ -248,10 +267,11 @@ export default function WorkBodybuilding() {
                       <SelectValue placeholder="Equipment" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Bar">Bar</SelectItem>
+                      <SelectItem value="Barbell">Barbell</SelectItem>
                       <SelectItem value="Dumbbell">Dumbbell</SelectItem>
-                      <SelectItem value="Kettlebell">Kettlebell</SelectItem>
+                      <SelectItem value="Machine">Kettlebell</SelectItem>
                       <SelectItem value="Bodyweight">Bodyweight</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -267,19 +287,24 @@ export default function WorkBodybuilding() {
             <ul className="flex gap-1 flex-col my-5">
               {workoutItem.map((exercise) => (
                 <li className="text-white">
-                  <span>{exercise.seriesExercise}</span>x
-                  <span>{exercise.repsExercise}</span> {capitalizeText(exercise.nameExercise)}{" "}
+                  <span>{exercise.series}</span>x
+                  <span>{exercise.repetitions}</span>{" "}
+                  {capitalizeText(exercise.name)}{" "}
                   {exercise.equipment !== "Bodyweight" &&
                     `(${exercise.equipment})`}
                 </li>
               ))}
             </ul>
-            <Button type="button" className="bg-secondary text-black hover:bg-muted-foreground" onClick={handleNewWorkout}>
+            <Button
+              type="button"
+              className="bg-secondary text-black hover:bg-muted-foreground"
+              onClick={handleNewWorkout}
+            >
               Create Workout
             </Button>
           </form>
         )}
-        {workoutsBodybuilding.map((workout) => (
+        {bodybuildingWorkouts.map((workout) => (
           <Collapsible
             key={workout.id}
             className="flex flex-col bg-grayBg p-2 shadow-xl rounded-xl w-72 xs:w-128 relative mb-5"
@@ -304,18 +329,24 @@ export default function WorkBodybuilding() {
                     <TableHead>Series</TableHead>
                     <TableHead>Reps</TableHead>
                     <TableHead>Equipment</TableHead>
-                    <TableHead className="text-right">Suggested Weight</TableHead>
+                    <TableHead className="text-right">
+                      Suggested Weight
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {workout.exercise.map((ex) => (
-                  <TableRow>
-                    <TableCell className="font-medium">{capitalizeText(ex.nameExercise)}</TableCell>
-                    <TableCell>{ex.seriesExercise}</TableCell>
-                    <TableCell>{ex.repsExercise}</TableCell>
-                    <TableCell>{ex.equipment}</TableCell>
-                    <TableCell className="text-right">{ex.suggestedWeight !== 0 && ex.suggestedWeight}</TableCell>
-                  </TableRow>
+                  {workout.exercises.map((ex) => (
+                    <TableRow>
+                      <TableCell className="font-medium">
+                        {capitalizeText(ex.name)}
+                      </TableCell>
+                      <TableCell>{ex.series}</TableCell>
+                      <TableCell>{ex.repetitions}</TableCell>
+                      <TableCell>{ex.equipment}</TableCell>
+                      <TableCell className="text-right">
+                        {ex.suggestedWeight !== 0 && ex.suggestedWeight}
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>
@@ -341,5 +372,7 @@ export default function WorkBodybuilding() {
         </div>
       </article>
     </section>
+  ) : (
+    <Loading />
   );
 }

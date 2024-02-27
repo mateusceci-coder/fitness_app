@@ -107,6 +107,8 @@ export default function WorkCrossfit() {
     setNoSelectingExercise(true);
   };
 
+  console.log(wodItem)
+
   const handleNewWod = () => {
     if (!nameWod || !typeWod || wodItem.length === 0 || timeCap === 0) {
       setBlankNameWod(!nameWod);
@@ -126,16 +128,7 @@ export default function WorkCrossfit() {
 
     createWorkoutCF(newWod, fetchData);
 
-    dispatch(
-      addNewCrossfitWorkout({
-        id: crypto.randomUUID(),
-        name: nameWod,
-        type: typeWod,
-        timeCap: timeCap,
-        exercise: wodItem,
-        rounds: rounds,
-      })
-    );
+  
     setIsFormWorkOpen(false);
     setNameExercise("");
     setRepsExercise(0);

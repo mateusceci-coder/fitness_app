@@ -7,6 +7,7 @@ import updateReducer from "@/api/profile/profileSlice";
 import exercisesReducerBB from "@/api/exerciseBB/exerciseSliceBB";
 import exercisesReducerCF from "@/api/exerciseCF/exerciseSliceCF"
 import workoutReducerCF from "@/api/workoutCF/workoutSliceCF"
+import workoutReducerBB from "@/api/workoutBB/workoutSliceBB"
 
 const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
     update: updateReducer,
     exercisesBB: exercisesReducerBB,
     exercisesCF: exercisesReducerCF,
-    workoutCF: workoutReducerCF
+    workoutCF: workoutReducerCF,
+    workoutBB: workoutReducerBB,
   },
 });
 
