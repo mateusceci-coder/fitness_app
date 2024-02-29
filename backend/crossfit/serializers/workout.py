@@ -39,28 +39,10 @@ class WorkoutSerializer(serializers.ModelSerializer):
         workout = CrosWorkout.objects.create(**validated_data)
 
         for exercise_data in exercises_data:
-<<<<<<< HEAD
-            exercise_serializer = CrosExerciseSerializer(
-                data=exercise_data['exercise'])
-            if exercise_serializer.is_valid():
-                exercise = exercise_serializer.save(
-                    created_by=workout.created_by)
-                WorkoutExercise.objects.create(
-                    workout=workout,
-                    exercise=exercise,
-                    weight_for_women=exercise_data.get('weight_for_women'),
-                    weight_for_men=exercise_data.get('weight_for_men'),
-                    reps=exercise_data.get('reps')
-                )
-            else:
-                raise serializers.ValidationError(exercise_serializer.errors)
-
-=======
             exercise_data['workout'] = workout
             WorkoutExercise.objects.create(**exercise_data)
             exercise_data['workout'] = workout
             WorkoutExercise.objects.create(**exercise_data)
->>>>>>> e16cbc2 (merging)
         return workout
 
     def update(self, instance, validated_data):
@@ -75,18 +57,9 @@ class WorkoutSerializer(serializers.ModelSerializer):
         instance.time_cap = validated_data.get('time_cap', instance.time_cap)
         instance.save()
 
-<<<<<<< HEAD
-        existing_exercises_ids = [
-            exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
-        existing_exercises_ids = [
-            exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
-        existing_exercises_ids = [
-            exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
-=======
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
         existing_exercises_ids = [exercise.exercise.id for exercise in instance.workoutexercise_set.all()]
->>>>>>> e16cbc2 (merging)
         for exercise_data in exercises_data:
             exercise_id = exercise_data.get('exercise').id
             if exercise_id in existing_exercises_ids:
