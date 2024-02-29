@@ -7,12 +7,8 @@ from crossfit.models.cros_workout import CrosWorkout, WorkoutExercise
 
 
 class WorkoutExerciseSerializer(serializers.ModelSerializer):
-<<<<<<< HEAD
-    workout = serializers.PrimaryKeyRelatedField(
-        queryset=CrosWorkout.objects.all(), required=False)
-    workout = serializers.PrimaryKeyRelatedField(
-        queryset=CrosWorkout.objects.all(), required=False)
-=======
+    workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
+    workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
     workout = serializers.PrimaryKeyRelatedField(queryset=CrosWorkout.objects.all(), required=False)
@@ -22,7 +18,7 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WorkoutExercise
-        fields = ['exercise', 'weight_for_women', 'weight_for_men']
+        fields = ['workout', 'exercise', 'weight_for_women', 'weight_for_men']
 
 class WorkoutSerializer(serializers.ModelSerializer):
     exercises = WorkoutExerciseSerializer(
@@ -36,6 +32,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
                   'rounds', 'time_cap', 'exercises']
 
     def create(self, validated_data):
+        exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
@@ -70,6 +67,7 @@ class WorkoutSerializer(serializers.ModelSerializer):
         exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
         exercises_data = validated_data.pop('workoutexercise_set', [])
+        exercises_data = validated_data.pop('workoutexercise_set', [])
         instance.name = validated_data.get('name', instance.name)
         instance.execution_type = validated_data.get(
             'execution_type', instance.execution_type)
@@ -91,9 +89,13 @@ class WorkoutSerializer(serializers.ModelSerializer):
 >>>>>>> e16cbc2 (merging)
         for exercise_data in exercises_data:
             exercise_id = exercise_data.get('exercise').id
-            exercise = WorkoutExercise.objects.get(workout=instance, exercise_id=exercise_id)
-            exercise.weight_for_women = exercise_data.get('weight_for_women', exercise.weight_for_women)
-            exercise.weight_for_men = exercise_data.get('weight_for_men', exercise.weight_for_men)
-            exercise.save()
+            if exercise_id in existing_exercises_ids:
+                workout_exercise = WorkoutExercise.objects.get(workout=instance, exercise_id=exercise_id)
+                workout_exercise.weight_for_women = exercise_data.get('weight_for_women', workout_exercise.weight_for_women)
+                workout_exercise.weight_for_men = exercise_data.get('weight_for_men', workout_exercise.weight_for_men)
+                workout_exercise.save()
+            else:
+                WorkoutExercise.objects.create(workout=instance,**exercise_data)
+        instance.workoutexercise_set.exclude(exercise_id__in=[data['exercise'].id for data in exercises_data]).delete()
 
         return instance
