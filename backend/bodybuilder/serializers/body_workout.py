@@ -1,40 +1,37 @@
+from django.forms import ValidationError
 from rest_framework import serializers
-from django.db import transaction
-from bodybuilder.models.body_exercise import BodyExercise
-from bodybuilder.models.body_workout import BodyWorkout, BodyWorkoutExercise
-from . import body_exercise
+from rest_framework.validators import UniqueTogetherValidator
+
+from bodybuilder.models.body_workout import BodyExercise, BodyWorkout, WorkoutExercise
+from .body_exercise import BodyExerciseSerializer
 
 
-class BodyWorkoutExerciseSerializer(serializers.ModelSerializer):
-    exercise = body_exercise.BodyExerciseSerializer()
-    workout = serializers.PrimaryKeyRelatedField(queryset=BodyWorkout.objects.all(), required=False)
+class WorkoutExerciseSerializer(serializers.ModelSerializer):
+    exercise = BodyExerciseSerializer()
+
     class Meta:
-        model = BodyWorkoutExercise
-        fields = ['workout', 'exercise', 'series', 'repetitions']
+        model = WorkoutExercise
+        fields = ['id', 'workout', 'exercise', 'series', 'repetitions']
+
 
 class BodyWorkoutSerializer(serializers.ModelSerializer):
-    exercises = BodyWorkoutExerciseSerializer(many=True, source='bodyworkoutexercise_set')
-    created_by = serializers.CharField(source='created_by.username', read_only=True)
+    exercises = WorkoutExerciseSerializer(many=True)
 
     class Meta:
         model = BodyWorkout
-        fields = ['id', 'name', 'exercises', 'created_by']
-    
+        fields = ['id', 'name', 'created_by', 'exercises']
+        validators = [
+            UniqueTogetherValidator(queryset=BodyWorkout.objects.all(), fields=['name', 'created_by'])
+        ]
+
     def create(self, validated_data):
-        exercises_data = validated_data.pop('bodyworkoutexercise_set', [])
+        exercises_data = validated_data.pop('exercises')
         workout = BodyWorkout.objects.create(**validated_data, created_by=self.context['request'].user)
-
-        with transaction.atomic():
-            for exercise_data in exercises_data:
-                exercise_info = exercise_data.pop('exercise')
-                exercise, created = BodyExercise.objects.get_or_create(
-                    **exercise_info,
-                    defaults={'created_by': workout.created_by}
-                )
-
-                BodyWorkoutExercise.objects.create(workout=workout, exercise=exercise, **exercise_data)
-
+        for exercise_data in exercises_data:
+            exercise = BodyExercise.objects.create(**exercise_data, created_by=self.context['request'].user)
+            WorkoutExercise.objects.create(workout=workout, exercise=exercise, **exercise_data)
         return workout
+
 
     def update(self, instance, validated_data):
         exercises_data = validated_data.pop('exercises')
@@ -54,7 +51,7 @@ class BodyWorkoutSerializer(serializers.ModelSerializer):
             else:
                 # Create new exercise
                 exercise, created = BodyExercise.objects.get_or_create(**exercise_data)
-                BodyWorkoutExercise.objects.create(workout=instance, exercise=exercise, **exercise_data)
+                WorkoutExercise.objects.create(workout=instance, exercise=exercise, **exercise_data)
 
         # Delete removed exercises
         for exercise in instance.exercises.all():

@@ -2,8 +2,8 @@ from rest_framework.test import APITestCase, APIClient, APIRequestFactory
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from factories.test_factories import UserFactory, BodyExerciseFactory, WorkoutExerciseFactory, BodyWorkoutFactory
-from bodybuilder.models.body_workout import BodyExercise, BodyWorkout, BodyWorkoutExercise
-from bodybuilder.serializers.body_workout import  BodyWorkoutExerciseSerializer, BodyWorkoutSerializer
+from bodybuilder.models.body_workout import BodyExercise, WorkoutExercise, BodyWorkout
+from bodybuilder.serializers.body_workout import BodyExerciseSerializer, WorkoutExerciseSerializer, BodyWorkoutSerializer
 
 
 # class BodyExerciseSerializerTestCase(APITestCase):
@@ -49,10 +49,11 @@ class WorkoutExerciseSerializerTestCase(APITestCase):
         self.client.force_authenticate(self.user)
         self.workout = BodyWorkoutFactory(created_by=self.user)
         self.exercise = BodyExerciseFactory()
-        self.workout_exercise = WorkoutExerciseFactory(workout=self.workout, exercise=self.exercise)
+        self.workout_exercise = WorkoutExerciseFactory(
+            workout=self.workout, exercise=self.exercise)
 
     def test_valid_serializer(self):
-        serializer = BodyWorkoutExerciseSerializer(self.workout_exercise)
+        serializer = WorkoutExerciseSerializer(self.workout_exercise)
         self.assertEqual(serializer.data, {
             'id': self.workout_exercise.id,
             'workout': self.workout.id,
@@ -72,7 +73,7 @@ class BodyWorkoutSerializerTestCase(APITestCase):
         self.workout = BodyWorkoutFactory(created_by=self.user)
         self.exercise = BodyExerciseFactory()
         self.factory = APIRequestFactory()
-        self.request = self.factory.get('/workout/')
+        self.request = self.factory.get('/')
         self.request.user = self.user
         # WorkoutExerciseFactory(workout=self.workout, exercise=self.exercise)
 
@@ -80,51 +81,53 @@ class BodyWorkoutSerializerTestCase(APITestCase):
         serializer = BodyWorkoutSerializer(self.workout)
         self.assertEqual(serializer.data, {
             'id': self.workout.id,
-            'workout': self.workout.name,
+            'name': self.workout.name,
             'created_by': self.user.username,
             'exercises': [
                 {"exercise":
                     {'id': self.exercise.id,
-                    'created_by': self.user.username,
-                    'name': self.exercise.name,
-                    'equipment': self.exercise.equipment,
-                    'rep_max': self.exercise.rep_max,
-                    'created_at': self.exercise.created_at.isoformat(),
-                    },
-                    'series': 1,  # Default value for series
-                    'repetitions': 1  # Default value for repetitions
-                }
+                     'created_by': self.user.username,
+                     'name': self.exercise.name,
+                     'equipment': self.exercise.equipment,
+                     'rep_max': self.exercise.rep_max,
+                     'created_at': self.exercise.created_at.isoformat(),
+                     'series': 1,  # Default value for series
+                     'repetitions': 1  # Default value for repetitions
+                     }
+                 }
             ]
         })
 
     def test_create_workout_with_new_exercise(self):
+
         data = {
             'name': 'New Workout',  # Nome do treino
             # Não precisa incluir 'created_by' aqui se estiver usando o usuário do request
             'exercises': [
                 {
                     'exercise': {
-                    'name': 'New Exercise',  # Nome do exercício
-                    'equipment': 'Bodyweight',  # Equipamento usado
-                    'rep_max': 20,  # Máximo de repetições
-                    },
-                    'series': 3,  # Número de séries
-                    'repetitions': 10,  # Número de repetições
-                    # 'workout' não precisa ser incluído, será associado automaticamente
+                        'created_by': self.user.username,
+                        'name': 'New Exercise',  # Nome do exercício
+                        'equipment': 'Bodyweight',  # Equipamento usado
+                        'rep_max': 20,  # Máximo de repetições
+                        'series': 3,  # Número de séries
+                        'repetitions': 10,  # Número de repetições
+                        # 'workout' não precisa ser incluído, será associado automaticamente
+                    }
                 }
             ]
         }
-        serializer = BodyWorkoutSerializer(data=data, context={'request': self.request})
+        serializer = BodyWorkoutSerializer(
+            data=data, context={'request': self.request})
         self.assertTrue(serializer.is_valid(), serializer.errors)
         workout = serializer.save()
         self.assertEqual(workout.name, data['name'])
         self.assertEqual(workout.created_by, self.user)
         self.assertEqual(len(workout.exercises.all()), 1)
         exercise = workout.exercises.all()[0].exercise
-        self.assertEqual(exercise.name, data['exercises'][0]['exercise']['name'])
-        self.assertEqual(exercise.equipment, data['exercises'][0]['exercise']['equipment'])
-        self.assertEqual(exercise.rep_max, data['exercises'][0]['exercise']['rep_max'])
-    
+        self.assertEqual(exercise.name, data['exercises'][0]['name'])
+        self.assertEqual(exercise.equipment, data['exercises'][0]['equipment'])
+        self.assertEqual(exercise.rep_max, data['exercises'][0]['rep_max'])
 
     def test_update_workout_with_existing_exercise(self):
         data = {
@@ -139,7 +142,7 @@ class BodyWorkoutSerializerTestCase(APITestCase):
             ]
         }
         serializer = BodyWorkoutSerializer(self.workout, data=data)
-        self.assertTrue(serializer.is_valid(), serializer.errors)
+        self.assertTrue(serializer.is_valid())
         serializer.save()
         self.assertEqual(self.workout.name, data['name'])
         self.assertEqual(len(self.workout.exercises.all()), 1)
