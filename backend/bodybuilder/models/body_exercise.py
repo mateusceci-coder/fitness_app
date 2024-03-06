@@ -10,10 +10,10 @@ class EquipmentChoices(models.TextChoices):
     BODYWEIGHT = 'Bodyweight'
     OTHER = 'Other'
 
-class Exercise(models.Model):
+class BodyExercise(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=150, unique=True, blank=True)
+    slug = models.SlugField(max_length=150, blank=True, unique=True)
     equipment = models.CharField(max_length=100, choices=EquipmentChoices.choices)
     rep_max = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)

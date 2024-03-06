@@ -15,7 +15,7 @@ class CrossExercise(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=150, unique=True, blank=True)
     equipment = models.CharField(max_length=100, choices=EquipmentChoices.choices)
-    rep_max = models.FloatField()
+    rep_max = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

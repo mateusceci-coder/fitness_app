@@ -16,15 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { capitalize, capitalizeText } from "@/lib/utils";
-import {
-  addNewCrossfitWorkout,
-  crossfitExercise,
-  deleteCrossfitWorkout,
-} from "@/store/reducers/workout";
-import { RootReducer } from "@/store/store";
 import { Dumbbell, Undo2, X } from "lucide-react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+
 
 import {
   Table,
@@ -34,12 +28,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useWorkoutCF } from "@/api/workoutCF/useWorkoutCF";
+import {
+  exercisesParamsCF,
+  workoutParamsCF,
+} from "@/api/workoutCF/types";
+import axios from "axios";
+
+import Loading from "../Loading";
 
 export default function WorkCrossfit() {
-  const { workoutsCrossfit } = useSelector(
-    (store: RootReducer) => store.workout
-  );
-  const dispatch = useDispatch();
   const [isFormWorkOpen, setIsFormWorkOpen] = useState(false);
   const [addingExercise, setAddingExercise] = useState(false);
   const [nameWod, setNameWod] = useState("");
@@ -50,14 +48,43 @@ export default function WorkCrossfit() {
   const [repsExercise, setRepsExercise] = useState(1);
   const [womenWeight, setWomenWeight] = useState(0);
   const [menWeight, setMenWeight] = useState(0);
-  const [wodItem, setWodItem] = useState<crossfitExercise[]>([]);
-  const [equipment, setEquipment] = useState("Bar");
+  const [wodItem, setWodItem] = useState<exercisesParamsCF[]>([]);
+  const [equipment, setEquipment] = useState("Barbell");
   const [noSelectingExercise, setNoSelectingExercise] = useState(true);
   const [noNewExercise, setNoNewExercise] = useState(true);
   const [blankNameWod, setBlankNameWod] = useState(false);
   const [blankExercises, setBlankExercises] = useState(false);
   const [blankTypeWod, setBlankTypeWod] = useState(false);
   const [blankTimeCap, setBlankTimeCap] = useState(false);
+  const [crossfitWorkouts, setCrossfitWorkouts] = useState<
+    workoutParamsCF[] | null
+  >(null);
+
+  const { createWorkoutCF, deleteWorkoutCF } = useWorkoutCF();
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/workouts/crossfit/`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setCrossfitWorkouts(response.data);
+      } else {
+        throw new Error("Profile not found");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData()
+  },[])
 
   const handleFormWork = () => {
     setIsFormWorkOpen((i) => !i);
@@ -69,6 +96,8 @@ export default function WorkCrossfit() {
     setNoSelectingExercise(true);
   };
 
+  console.log(wodItem)
+
   const handleNewWod = () => {
     if (!nameWod || !typeWod || wodItem.length === 0 || timeCap === 0) {
       setBlankNameWod(!nameWod);
@@ -78,17 +107,17 @@ export default function WorkCrossfit() {
 
       return;
     }
+    const newWod = {
+      name: nameWod,
+      execution_type: typeWod,
+      time_cap: timeCap,
+      rounds: rounds,
+      exercises: wodItem,
+    };
 
-    dispatch(
-      addNewCrossfitWorkout({
-        id: crypto.randomUUID(),
-        name: nameWod,
-        type: typeWod,
-        timeCap: timeCap,
-        exercise: wodItem,
-        rounds: rounds,
-      })
-    );
+    createWorkoutCF(newWod, fetchData);
+
+
     setIsFormWorkOpen(false);
     setNameExercise("");
     setRepsExercise(0);
@@ -105,17 +134,15 @@ export default function WorkCrossfit() {
   const handleNewExercise = () => {
     if (!nameExercise || !repsExercise) return;
 
-    setWodItem((wodItem) => [
-      ...wodItem,
-      {
-        nameExercise: nameExercise,
-        repsExercise: repsExercise,
-        womensWeight: womenWeight,
-        mensWeight: menWeight,
-        equipment: equipment,
-      },
-    ]);
-    setEquipment("Bar");
+    setWodItem((listEx) => [...listEx, {
+      name: nameExercise,
+      reps: repsExercise,
+      weight_for_men: menWeight,
+      weight_for_women: womenWeight,
+      equipment: equipment
+    }])
+
+    setEquipment("Barbell");
     setNameExercise("");
     setRepsExercise(0);
     setWomenWeight(0);
@@ -123,8 +150,8 @@ export default function WorkCrossfit() {
     setAddingExercise(false);
   };
 
-  const handleDeleteWod = (id: string) => {
-    dispatch(deleteCrossfitWorkout(id));
+  const handleDeleteWod = (id: number) => {
+    deleteWorkoutCF(id, fetchData)
   };
 
   const textExercise = noSelectingExercise && noNewExercise;
@@ -159,11 +186,11 @@ export default function WorkCrossfit() {
               <SelectValue placeholder="WOD Style" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="amrap">AMRAP</SelectItem>
-              <SelectItem value="forTime">For Time</SelectItem>
+              <SelectItem value="AMRAP">AMRAP</SelectItem>
+              <SelectItem value="FT">For Time</SelectItem>
             </SelectContent>
           </Select>
-          {typeWod !== "amrap" && (
+          {typeWod !== "AMRAP" && (
             <div>
               <Input
                 type="number"
@@ -272,10 +299,11 @@ export default function WorkCrossfit() {
                     <SelectValue placeholder="Equipment" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Bar">Bar</SelectItem>
+                    <SelectItem value="Barbell">Barbell</SelectItem>
                     <SelectItem value="Dumbbell">Dumbbell</SelectItem>
                     <SelectItem value="Kettlebell">Kettlebell</SelectItem>
                     <SelectItem value="Bodyweight">Bodyweight</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button
@@ -288,14 +316,15 @@ export default function WorkCrossfit() {
               </div>
             )}
           </div>
-          <ul className="flex gap-1 flex-col my-2">
+          <ul className="flex gap-1 flex-col my-2 text-white">
             {wodItem.map((exercise) => (
               <li>
-                <span>{exercise.repsExercise}</span> {capitalizeText(exercise.nameExercise)}{" "}
+                <span>{exercise.reps}</span>{" "}
+                {capitalizeText(exercise.name)}{" "}
                 <span>
-                  {exercise.mensWeight === 0 && exercise.womensWeight === 0
+                  {exercise.weight_for_men === 0 && exercise.weight_for_women === 0
                     ? ""
-                    : `(${exercise.mensWeight}/${exercise.womensWeight})`}
+                    : `(${exercise.weight_for_men}/${exercise.weight_for_women})`}
                 </span>
               </li>
             ))}
@@ -312,12 +341,17 @@ export default function WorkCrossfit() {
           {blankTimeCap && (
             <p className="text-sm text-red-500">WOD need to have a time cap</p>
           )}
-          <Button type="button" className="bg-secondary text-black hover:bg-muted-foreground" onClick={handleNewWod}>
+          <Button
+            type="button"
+            className="bg-secondary text-black hover:bg-muted-foreground"
+            onClick={handleNewWod}
+          >
             Create WOD
           </Button>
         </form>
       )}
-      {workoutsCrossfit.map((workout) => (
+      {crossfitWorkouts ? (
+        crossfitWorkouts.map((workout) => (
         <Collapsible className="bg-grayBg p-2 rounded-xl shadow-xl w-72 xs:w-128 relative mb-8">
           <X
             color="red"
@@ -333,8 +367,10 @@ export default function WorkCrossfit() {
           </div>
           <CollapsibleContent className="flex gap-2 flex-col">
             <h1 className="text-lg mt-5 mb-2">
-              <p><b>{workout.type === "amrap" ? "AMRAP" : "For Time"}</b></p>
-              {workout.rounds > 1 && (
+              <p>
+                <b>{workout.execution_type === "AMRAP" ? "AMRAP" : "For Time"}</b>
+              </p>
+              {workout.rounds && workout.rounds > 1 && (
                 <p className="text-center">
                   {workout.rounds} <span>{workout.rounds && "rounds"}</span>{" "}
                 </p>
@@ -351,23 +387,33 @@ export default function WorkCrossfit() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {workout.exercise.map((ex) => (
+                  {workout.exercises.map((ex) => (
                     <TableRow>
-                    <TableCell>{ex.repsExercise}</TableCell>
-                    <TableCell className="font-medium">{capitalizeText(ex.nameExercise)}</TableCell>
-                    <TableCell>{ex.mensWeight === 0 && ex.womensWeight === 0
-                      ? ""
-                      : `(${ex.mensWeight}/${ex.womensWeight})`}</TableCell>
-                    <TableCell className="text-right">{ex.equipment}</TableCell>
-                  </TableRow>
+                      <TableCell>{ex.reps}</TableCell>
+                      <TableCell className="font-medium">
+                        {capitalizeText(ex.name)}
+                      </TableCell>
+                      <TableCell>
+                        {ex.weight_for_men === 0 && ex.weight_for_women === 0
+                          ? ""
+                          : `(${ex.weight_for_men}/${ex.weight_for_women})`}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {ex.equipment}
+                      </TableCell>
+                    </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </div>
-            {workout.timeCap > 0 && <p><b>Time Cap:</b> {workout.timeCap}'</p>}
+            {workout.time_cap > 0 && (
+              <p>
+                <b>Time Cap:</b> {workout.time_cap}'
+              </p>
+            )}
           </CollapsibleContent>
         </Collapsible>
-      ))}
+      ))) : <Loading />}
     </section>
   );
 }

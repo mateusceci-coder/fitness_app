@@ -15,9 +15,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useSelector } from "react-redux";
-import { RootReducer } from "@/store/store";
-import { Dispatch } from "react";
+import { Dispatch, useEffect, useState } from "react";
+import { getExerciseList } from "@/api/exerciseBB/types";
+import axios from "axios"
 
 interface nameExerciseProps {
   nameExercise: string;
@@ -34,9 +34,33 @@ export default function SelectExCrossfit({
   setNoSelectingExercise,
   noSelectingExercise,
 }: nameExerciseProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const { crossfitList } = useSelector((store: RootReducer) => store.exercise);
+  const [crossfitList, setCrossfitList] = useState<getExerciseList[]>([])
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/workouts/crossfit/`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setCrossfitList(response.data);
+      } else {
+        throw new Error("Profile not found");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData()
+  },[])
 
   const handleFormText = () => {
     setNoNewExercise(true)
@@ -56,8 +80,8 @@ export default function SelectExCrossfit({
             {nameExercise
               ? crossfitList.find(
                   (ex) =>
-                    ex.exercise.toLowerCase() === nameExercise.toLowerCase()
-                )?.exercise
+                    ex.name.toLowerCase() === nameExercise.toLowerCase()
+                )?.name
               : "Select Exercise..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -70,7 +94,7 @@ export default function SelectExCrossfit({
               {crossfitList.map((ex) => (
                 <CommandItem
                   key={ex.id}
-                  value={ex.exercise}
+                  value={ex.name}
                   onSelect={(currentValue) => {
                     setNameExercise(
                       currentValue === nameExercise ? "" : currentValue
@@ -81,10 +105,10 @@ export default function SelectExCrossfit({
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      nameExercise === ex.exercise ? "opacity-100" : "opacity-0"
+                      nameExercise === ex.name ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {ex.exercise}
+                  {ex.name}
                 </CommandItem>
               ))}
             </CommandGroup>

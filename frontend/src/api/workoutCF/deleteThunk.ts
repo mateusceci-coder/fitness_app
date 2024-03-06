@@ -3,20 +3,20 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-export const deleteExerciseThunk = createAsyncThunk(
-  "delete/exercise",
+export const deleteWorkoutThunkCF = createAsyncThunk(
+  "delete/workoutCF",
   async ({ id }: { id: number }, { rejectWithValue }) => {
     try {
       const token = sessionStorage.getItem("auth_token");
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/exercises/${id}/`,
+        `http://127.0.0.1:8000/api/workouts/crossfit/${id}/`,
         {
             headers: {
                 Authorization: `Token ${token}`
             }
         }
       );
-      toast.success("Exercise Deleted!");
+      toast.success("Workout Deleted!");
       return response.data;
     } catch (error) {
       toast.error("Falha no registro");

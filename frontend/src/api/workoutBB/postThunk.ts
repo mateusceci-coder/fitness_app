@@ -1,30 +1,30 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 import { toast } from "react-toastify";
+import { postWorkoutBB } from "./types";
 
-export const updateExerciseThunk = createAsyncThunk(
+export const createWorkoutThunkBB = createAsyncThunk(
 
-  "update/exercise",
+  "create/workoutBB",
   async (
-    { "rep_max": rep_max, id }: { rep_max: number,  id:number },
+    { postWorkoutBB}: { postWorkoutBB: postWorkoutBB },
     { rejectWithValue }
   ) => {
     try {
       const token = sessionStorage.getItem("auth_token")
-      const response = await axios.patch(
-        `http://127.0.0.1:8000/api/exercises/${id}/`,
-        { rep_max },
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
+        postWorkoutBB,
         {
           headers: {
             Authorization: `Token ${token}`
           }
         });
-      toast.success("Updated Exercise!");
+      toast.success("Workout Created Successfully!");
       return response.data;
     } catch (error) {
-      toast.error("Falha no registro");
+      toast.error("Registration Failed");
       if (axios.isAxiosError(error) && error.response) {
         const passwordErros = error.response.data.password;
         if (passwordErros) {
@@ -32,10 +32,10 @@ export const updateExerciseThunk = createAsyncThunk(
             toast.error(element);
           });
         } else {
-          toast.error(error.response.data.username || "Falha no registro");
+          toast.error(error.response.data.username || "Registration Failed");
         }
         return rejectWithValue(
-          error.response.data.error || "Falha no registro"
+          error.response.data.error || "Registration Failed"
         );
       }
       return rejectWithValue("Erro desconhecido ao fazer registro");

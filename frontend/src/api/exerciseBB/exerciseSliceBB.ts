@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createExerciseThunk } from './postThunk'
+import { createExerciseThunkBB } from './postThunk'
 
 interface RegisterState {
   error: string | null
@@ -11,23 +11,23 @@ const initialState: RegisterState = {
   updateSuccess: false
 }
 
-const createExerciseSlice = createSlice({
+const createExerciseSliceBB = createSlice({
   name: 'registerModal',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createExerciseThunk.pending, (state) => {
+      .addCase(createExerciseThunkBB.pending, (state) => {
         state.error = null
         state.updateSuccess = false
       })
-      .addCase(createExerciseThunk.fulfilled, (state) => {
+      .addCase(createExerciseThunkBB.fulfilled, (state) => {
         state.updateSuccess = true })
-      .addCase(createExerciseThunk.rejected, (state, action) => {
+      .addCase(createExerciseThunkBB.rejected, (state, action) => {
         state.error = action.payload as string
         state.updateSuccess = false
       })
   }
 })
 
-export default createExerciseSlice.reducer
+export default createExerciseSliceBB.reducer

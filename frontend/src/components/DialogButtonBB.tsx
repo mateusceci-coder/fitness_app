@@ -1,4 +1,4 @@
-import { useExercise } from "@/api/exercise/useExercise";
+import { useExerciseBB } from "@/api/exerciseBB/useExerciseBB";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,35 +15,15 @@ import { Label } from "@/components/ui/label";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { capitalizeText } from "@/lib/utils";
-import {
-  addExerciseBodybuilding,
-  addExerciseCrossfit,
-} from "@/store/reducers/exercise";
-import { RootReducer } from "@/store/store";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
-export default function DialogButton({fetchData}) {
+export default function DialogButton({ fetchData }) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
-  const { weightUser } = useSelector((store: RootReducer) => store.profile);
-  const { createExercise } = useExercise()
+  const { createExerciseBB } = useExerciseBB();
 
   const handleNewExercise = () => {
-
-    let relation: number;
-
-    if (!exercise) {
-      return;
-    }
-
-    if (weightUser) {
-      relation = Number((maxRep / weightUser).toFixed(2));
-    } else {
-      relation = 0;
-    }
 
     const newExercise = {
       name: exercise,
@@ -51,11 +31,10 @@ export default function DialogButton({fetchData}) {
       rep_max: maxRep,
     };
 
-    createExercise(newExercise, fetchData)
-
+    createExerciseBB(newExercise, fetchData);
 
     setExercise("");
-    setEquipment("BB");
+    setEquipment("Barbbell");
     setMaxRep(0);
   };
 
@@ -90,17 +69,17 @@ export default function DialogButton({fetchData}) {
             <RadioGroup className="flex flex-wrap" defaultValue="Barbell">
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="BB"
+                  value="Barbell"
                   id="Barbell"
-                  onClick={() => setEquipment("BB")}
+                  onClick={() => setEquipment("Barbell")}
                 />
                 <Label htmlFor="Barbell">Barbell</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="DB"
+                  value="Dumbbell"
                   id="dumbbell"
-                  onClick={() => setEquipment("DB")}
+                  onClick={() => setEquipment("Dumbbell")}
                 />
                 <Label htmlFor="dumbbell">Dumbbell</Label>
               </div>
@@ -108,23 +87,23 @@ export default function DialogButton({fetchData}) {
                 <RadioGroupItem
                   value="Machine"
                   id="Machine"
-                  onClick={() => setEquipment("MM")}
+                  onClick={() => setEquipment("Machine")}
                 />
                 <Label htmlFor="Machine">Machine</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="BW"
+                  value="Bodyweight"
                   id="Bodyweight"
-                  onClick={() => setEquipment("BW")}
+                  onClick={() => setEquipment("Bodyweight")}
                 />
                 <Label htmlFor="Bodyweight">Bodyweight</Label>
               </div>
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
-                  value="OT"
+                  value="Other"
                   id="Other"
-                  onClick={() => setEquipment("OT")}
+                  onClick={() => setEquipment("Other")}
                 />
                 <Label htmlFor="Other">Other</Label>
               </div>
