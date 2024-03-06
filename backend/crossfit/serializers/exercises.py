@@ -15,13 +15,3 @@ class CrosExerciseSerializer(serializers.ModelSerializer):
         if value < 0:
             raise ValidationError("Rep max cannot be negative")
         return value
-
-    # def validate_name(self, value):
-    #     if value == '':
-    #         raise ValidationError("This field is required.")
-    #     return value
-
-    def validate_equipment(self, value):
-        if value not in EquipmentChoices.choices:
-            raise ValidationError("Invalid equipment")
-        return value

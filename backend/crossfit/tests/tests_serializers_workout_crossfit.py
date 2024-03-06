@@ -12,7 +12,7 @@ class WorkoutExerciseSerializerTest(TestCase):
             created_by=self.user,
             name='Test Exercise',
             equipment='Dumbbell',
-            rep_max=100
+            rep_max=100,
         )
         self.cros_workout = CrosWorkout.objects.create(
             name='Test Workout',
@@ -25,7 +25,8 @@ class WorkoutExerciseSerializerTest(TestCase):
             workout=self.cros_workout,
             exercise=self.cross_exercise,
             weight_for_women=50.0,
-            weight_for_men=70.0
+            weight_for_men=70.0,
+            reps=10
         )
 
     def test_workout_exercise_serialization(self):
@@ -33,19 +34,22 @@ class WorkoutExerciseSerializerTest(TestCase):
         data = serializer.data
         self.assertEqual(data['weight_for_women'], 50.0)
         self.assertEqual(data['weight_for_men'], 70.0)
+        self.assertEqual(data['reps'], 10)
 
     def test_workout_exercise_deserialization(self):
         data = {
             'workout': self.cros_workout.id,
             'exercise': self.cross_exercise.id,
             'weight_for_women': 55.0,
-            'weight_for_men': 75.0
+            'weight_for_men': 75.0,
+            'reps': 15
         }
         serializer = WorkoutExerciseSerializer(data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
         new_workout_exercise = serializer.save()
         self.assertEqual(new_workout_exercise.weight_for_women, 55.0)
         self.assertEqual(new_workout_exercise.weight_for_men, 75.0)
+        self.assertEqual(new_workout_exercise.reps, 15)
 
 
 class WorkoutSerializerTest(TestCase):
@@ -68,7 +72,8 @@ class WorkoutSerializerTest(TestCase):
             workout=self.cros_workout,
             exercise=self.cross_exercise,
             weight_for_women=50.0,
-            weight_for_men=70.0
+            weight_for_men=70.0,
+            reps=10
         )
 
     def test_workout_serialization(self):
@@ -81,7 +86,8 @@ class WorkoutSerializerTest(TestCase):
         exercise_data = {
             'exercise': self.cross_exercise.id,
             'weight_for_women': 60.0,
-            'weight_for_men': 80.0
+            'weight_for_men': 80.0,
+            'reps': 12
         }
         workout_data = {
             'name': 'New Workout',
@@ -106,7 +112,8 @@ class WorkoutSerializerTest(TestCase):
         exercise_data = {
             'exercise': new_exercise.id,
             'weight_for_women': 65.0,
-            'weight_for_men': 85.0
+            'weight_for_men': 85.0,
+            'reps': 15
         }
         update_data = {
             'name': 'Updated Workout',
@@ -117,7 +124,7 @@ class WorkoutSerializerTest(TestCase):
         }
         serializer = WorkoutSerializer(self.cros_workout, data=update_data)
         serializer.is_valid()
-        self.assertTrue(serializer.is_valid())
+        self.assertTrue(serializer.is_valid(), serializer.errors)
         updated_workout = serializer.save()
         self.assertEqual(updated_workout.name, 'Updated Workout')
         self.assertEqual(updated_workout.exercises.count(), 1)  # Assumindo que você substitui o exercício existente

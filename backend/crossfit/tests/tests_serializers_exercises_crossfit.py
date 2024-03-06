@@ -19,7 +19,7 @@ class ProfileSerializerTestCase(APITestCase):
             created_by=user,
             name='Push-ups',
             equipment= EquipmentChoices.BODYWEIGHT,
-            rep_max=10,
+            rep_max=10
         )
         serializer = CrosExerciseSerializer(exercise)
         data = serializer.data
@@ -39,4 +39,5 @@ class ProfileSerializerTestCase(APITestCase):
         self.assertIn('equipment', serializer.errors)
         self.assertIn("This field may not be blank.", serializer.errors['name'][0])
         self.assertIn('"Invalid choice" is not a valid choice.', serializer.errors['equipment'][0])
+
 
