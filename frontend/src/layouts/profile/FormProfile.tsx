@@ -179,6 +179,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
                 <FormControl>
                   <Input
                     type="date"
+                    data-test="birthday"
                     min="1900-01-01"
                     max="2022-01-01"
                     {...field}
@@ -197,6 +198,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
                 <FormLabel>Height (cm)</FormLabel>
                 <FormControl>
                   <Input
+                    data-test="height"
                     type="number"
                     placeholder="173"
                     {...field}
@@ -215,6 +217,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
                 <FormLabel>Weight (kg)</FormLabel>
                 <FormControl>
                   <Input
+                    data-test="weight"
                     type="number"
                     placeholder="76"
                     {...field}
@@ -238,8 +241,8 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Male">Male</SelectItem>
-                    <SelectItem value="Women">Female</SelectItem>
+                    <SelectItem  value="Male">Male</SelectItem>
+                    <SelectItem data-test="female" value="Women">Female</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

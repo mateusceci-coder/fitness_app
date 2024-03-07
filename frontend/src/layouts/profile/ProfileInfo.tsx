@@ -91,7 +91,7 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
           </li>
           <li>
             <div>
-                <Button onClick={() => handleUpdate()}>Update Profile</Button>
+                <Button data-test="update-profile-btn" onClick={() => handleUpdate()}>Update Profile</Button>
             </div>
           </li>
         </ul>

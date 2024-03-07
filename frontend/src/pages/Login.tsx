@@ -61,6 +61,7 @@ export default function Login() {
         <h2 className="text-2xl text-center mb-10">LOGIN</h2>
         <Label htmlFor="username">Username:</Label>
         <Input
+          data-test="username-login"
           className="mb-8"
           name="username"
           type="text"
@@ -69,6 +70,7 @@ export default function Login() {
         />
         <Label htmlFor="password">Password:</Label>
         <Input
+          data-test="password-login"
           className="mb-10"
           type="password"
           name="password"

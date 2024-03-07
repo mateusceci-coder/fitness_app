@@ -14,6 +14,7 @@ export default function Signin() {
     email: "",
     password: "",
   });
+  
   const [samePassword, setSamePassword] = useState(true);
 
   const { registerUser } = useRegister()
@@ -34,9 +35,13 @@ export default function Signin() {
       setSamePassword(false);
       return;
     }
+    try {
+      registerUser(userData as RegisterData);
+      window.location.href = "/login";
 
-    registerUser(userData as RegisterData);
-
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
