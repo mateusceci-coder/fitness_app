@@ -43,7 +43,7 @@ export default function SelectExBodybuilding({
   const fetchList = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
+        `http://127.0.0.1:8000/api/exercises/bodybuilding/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,

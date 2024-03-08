@@ -27,7 +27,6 @@ import { newUserWeight } from "@/store/reducers/exercise";
 import { useState } from "react";
 import { useProfile } from "@/api/profile/useProfile";
 
-
 const MAX_FILE_SIZE = 5000000;
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -94,7 +93,6 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { updateUser } = useProfile();
 
-
   if (!dataUser.profile_picture) {
     dataUser.profile_picture = "";
   }
@@ -123,23 +121,22 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
 
     updateUser(formData, dataUser.id);
 
-
     const updatedProfile = {
-      gender : values.gender,
-      weight : values.weight,
-      height : values.height,
-      birthday : values.birthday,
-      first_name : "Mateus",
-      last_name : "Souza",
-      profile_picture : "",
-    }
+      gender: values.gender,
+      weight: values.weight,
+      height: values.height,
+      birthday: values.birthday,
+      first_name: "Mateus",
+      last_name: "Souza",
+      profile_picture: "",
+    };
 
-    dispatch(userUpdate(updatedProfile))
+    dispatch(userUpdate(updatedProfile));
 
     dispatch(isUpdating(true));
     dispatch(newUserWeight(values.weight));
 
-    window.location.href= "/profile"
+    window.location.href = "/profile";
   }
 
   return (
@@ -241,8 +238,10 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem  value="Male">Male</SelectItem>
-                    <SelectItem data-test="female" value="Women">Female</SelectItem>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem data-test="female" value="Female">
+                      Female
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -250,7 +249,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
             )}
           />
           <div className="flex justify-center">
-            <Button type="submit">Submit</Button>
+            <Button data-test="submit-update-btn" type="submit">Submit</Button>
           </div>
         </form>
       </Form>

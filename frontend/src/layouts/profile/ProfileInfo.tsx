@@ -51,25 +51,25 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
             <p className="text-mainBlue">
               <b>Age:</b>
             </p>
-            <p>{age} years old</p>
+            <p data-test="age-profile">{age} years old</p>
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">
               <b>Height:</b>
             </p>
-            <p>{dataUser.height} cm</p>
+            <p data-test="height-profile">{dataUser.height} cm</p>
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">
               <b>Weight:</b>
             </p>
-            <p>{dataUser.weight} kg</p>
+            <p data-test="weight-profile">{dataUser.weight} kg</p>
           </li>
           <li className="border-b-2 p-2">
             <p className="text-mainBlue">
               <b>Gender:</b>
             </p>
-            <p>{dataUser.gender}</p>
+            <p data-test="gender-profile">{dataUser.gender}</p>
           </li>
 
           <li className="border-b-2 pb-2">
@@ -77,14 +77,14 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
               <b>BMI:</b>
             </p>
             <p>
-              <span className="text-mainBlue">{bmi.bmi}</span> - {bmi.result}
+              <span data-test="bmi" className="text-mainBlue">{bmi.bmi}</span> - <span data-test="result">{bmi.result}</span>
             </p>
           </li>
           <li className="pb-2">
             <p className="text-mainBlue">
               <b>Calories:</b>
             </p>
-            <p>
+            <p data-test="calories">
               You need <span className="text-mainBlue">{calories}</span> kcal to
               maintain your weight
             </p>

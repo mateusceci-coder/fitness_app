@@ -26,7 +26,7 @@ import { getExerciseList } from "@/api/exerciseBB/types";
 import axios from "axios";
 import Loading from "../Loading";
 import { useExerciseBB } from "@/api/exerciseBB/useExerciseBB";
-import { Label } from "@/components/ui/label";
+
 
 
 
@@ -162,16 +162,16 @@ export default function ExBodybuilding() {
         <DialogButtonBB fetchData={fetchData} />
         <div></div>
       </div>
-      <Table className="max-w-5xl mx-auto">
+      <Table data-test="tableBB" className="max-w-5xl mx-auto">
         <TableHeader>
-          <TableRow>
+          <TableRow >
             <TableHead>Exercise</TableHead>
             <TableHead className="text-right">Equipment</TableHead>
             <TableHead className="text-right">Weight (kg)</TableHead>
             <TableHead className="text-right">Relation(%)</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody >
           {listExercises &&
             listExercises
               .filter(
@@ -180,7 +180,7 @@ export default function ExBodybuilding() {
               )
               .map((exercise) => {
                 return (
-                  <TableRow key={exercise.id}>
+                  <TableRow data-test="table-row" key={exercise.id}>
                     <TableCell className="font-medium">
                       {capitalize(exercise.name)}
                     </TableCell>
