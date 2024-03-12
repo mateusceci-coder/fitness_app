@@ -18,3 +18,6 @@ class CrosExerciseSerializer(serializers.ModelSerializer):
 
 
 
+
+
+

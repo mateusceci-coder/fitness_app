@@ -15,7 +15,7 @@ class BodyExercise(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=150, blank=True, unique=True)
     equipment = models.CharField(max_length=100, choices=EquipmentChoices.choices)
-    rep_max = models.FloatField()
+    rep_max = models.FloatField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -25,3 +25,4 @@ class BodyExercise(models.Model):
         if not self.slug:
             self.slug = slugify(f"{self.created_by.id}-{self.name}")
         super().save(*args, **kwargs)
+
