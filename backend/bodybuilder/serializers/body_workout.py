@@ -19,9 +19,9 @@ class BodyWorkoutSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BodyWorkout
-        fields = ['id', 'name', 'created_by', 'exercises']
+        fields = ['id', 'name', 'exercises']
         validators = [
-            UniqueTogetherValidator(queryset=BodyWorkout.objects.all(), fields=['name', 'created_by'])
+            UniqueTogetherValidator(queryset=BodyWorkout.objects.all(), fields=['name'])
         ]
 
     def create(self, validated_data):

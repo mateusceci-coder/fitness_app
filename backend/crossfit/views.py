@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from crossfit.models.cros_exercise import CrossExercise
 from crossfit.models.cros_workout import CrosWorkout
 from crossfit.serializers.exercises import CrosExerciseSerializer
-from crossfit.serializers.workout import WorkoutSerializer
+from crossfit.serializers.workout import CrosWorkoutSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class ExerciseViewSet(viewsets.ModelViewSet):
@@ -18,7 +18,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
 class WorkoutViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    serializer_class = WorkoutSerializer
+    serializer_class = CrosWorkoutSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -29,3 +29,5 @@ class WorkoutViewSet(viewsets.ModelViewSet):
 
     def patch(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
+
+

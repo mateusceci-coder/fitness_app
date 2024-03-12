@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class BodyWorkout(models.Model):
     name = models.CharField(max_length=100)
     created_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='created_body_workouts')
+    User, on_delete=models.CASCADE, related_name='created_body_workouts')
     exercises = models.ManyToManyField(
         'BodyExercise', through='WorkoutExercise')
 

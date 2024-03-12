@@ -7,7 +7,7 @@ class BodyExerciseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BodyExercise
-        fields = ['id', 'created_by', 'name', 'equipment', 'rep_max', 'created_at']
+        fields = ['id', 'name', 'equipment', 'rep_max', 'created_at']
 
     def validate_rep_max(self, value):
         if value < 0:
@@ -17,7 +17,7 @@ class BodyExerciseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Acessa o usuário autenticado a partir do contexto do request
         user = self.context['request'].user
-        validated_data.pop('created_by', None)
+        #validated_data.pop('created_by', None)
         # Define o usuário autenticado como `created_by` ao criar o objeto BodyExercise
         body_exercise = BodyExercise.objects.create(created_by=user, **validated_data)
         return body_exercise

@@ -20,7 +20,7 @@ class BodyExercise(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(f"{self.created_by.id}-{self.name}")

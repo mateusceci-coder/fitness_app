@@ -13,7 +13,7 @@ urlpatterns = [
          name='workout-exercise-list'),
     path('workouts/exercises/<int:pk>/', WorkoutExerciseDetail.as_view(),
          name='workout-exercise-detail'),
-    path('workouts/', BodyWorkoutList.as_view(), name='body-workout-list'),
+    path('workouts/bodybuilding/', BodyWorkoutList.as_view(), name='body-workout-list'),
     path('workouts/<int:pk>/', BodyWorkoutDetail.as_view(),
          name='body-workout-detail'),
 ]
