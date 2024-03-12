@@ -27,9 +27,6 @@ import axios from "axios";
 import Loading from "../Loading";
 import { useExerciseBB } from "@/api/exerciseBB/useExerciseBB";
 
-
-
-
 export default function ExBodybuilding() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
@@ -41,7 +38,7 @@ export default function ExBodybuilding() {
     exercisesData
   );
 
-  const [userWeight, setUserWeight] = useState<number | null>(null)
+  const [userWeight, setUserWeight] = useState<number | null>(null);
 
   const dispatch = useDispatch();
 
@@ -49,17 +46,19 @@ export default function ExBodybuilding() {
 
   const { exerciseId } = useSelector((store: RootReducer) => store.exercise);
 
-
   const fetchProfile = async () => {
     try {
-      const username = sessionStorage.getItem("username")
-      const response = await axios.get(`http://127.0.0.1:8000/api/profile/${username}/`, {
-        headers: {
-          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
-        },
-      });
+      const username = sessionStorage.getItem("username");
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/profile/${username}/`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
       if (response.status === 200) {
-        setUserWeight(response.data.weight)
+        setUserWeight(response.data.weight);
       } else {
         throw new Error("Profile not found");
       }
@@ -70,11 +69,14 @@ export default function ExBodybuilding() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/exercises/bodybuilding`, {
-        headers: {
-          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
-        },
-      });
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/exercises/bodybuilding`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
       if (response.status === 200) {
         setExercisesData(response.data);
         setListExercises(response.data);
@@ -88,14 +90,13 @@ export default function ExBodybuilding() {
 
   useEffect(() => {
     fetchData();
-    fetchProfile()
+    fetchProfile();
 
     // Cleanup function to handle component unmounting
     return () => {
       // Any cleanup actions go here
     };
   }, []);
-
 
   const handleInputRM = (event: ChangeEvent<HTMLInputElement>, id: number) => {
     const newWeight = Number((+event.target.value).toFixed(2));
@@ -141,37 +142,36 @@ export default function ExBodybuilding() {
       <header className="my-16">
         <h1 className="head-text">Bodybuilding Exercises</h1>
       </header>
-      <div className="flex justify-evenly max-w-5xl mx-auto pb-5">
+      <div className="flex flex-col sm:flex-row items-center md:justify-evenly max-w-5xl mx-auto pb-5 gap-2">
         <div className="flex gap-2">
-
-        <span className="text-sm mt-2">Select Equipment</span>
-        <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Equipment" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All">All</SelectItem>
-            <SelectItem value="Barbell">Barbell</SelectItem>
-            <SelectItem value="Dumbbell">Dumbell</SelectItem>
-            <SelectItem value="Machine">Machine</SelectItem>
-            <SelectItem value="Bodyweight">BodyWeight</SelectItem>
-            <SelectItem value="Other">Other</SelectItem>
-          </SelectContent>
-        </Select>
+          <span className="text-sm mt-2">Select Equipment</span>
+          <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Equipment" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All">All</SelectItem>
+              <SelectItem value="Barbell">Barbell</SelectItem>
+              <SelectItem value="Dumbbell">Dumbell</SelectItem>
+              <SelectItem value="Machine">Machine</SelectItem>
+              <SelectItem value="Bodyweight">BodyWeight</SelectItem>
+              <SelectItem value="Other">Other</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <DialogButtonBB fetchData={fetchData} />
         <div></div>
       </div>
       <Table data-test="tableBB" className="max-w-5xl mx-auto">
         <TableHeader>
-          <TableRow >
+          <TableRow>
             <TableHead>Exercise</TableHead>
             <TableHead className="text-right">Equipment</TableHead>
             <TableHead className="text-right">Weight (kg)</TableHead>
             <TableHead className="text-right">Relation(%)</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody >
+        <TableBody>
           {listExercises &&
             listExercises
               .filter(
@@ -187,10 +187,11 @@ export default function ExBodybuilding() {
                     <TableCell className="text-right">
                       {exercise.equipment}
                     </TableCell>
-                    <TableCell className="text-right ">
+                    <TableCell data-test="rmBB" className="text-right ">
                       {exerciseId === exercise.id ? (
                         <div className="flex justify-end">
                           <Input
+                            data-test="update-repMaxBB"
                             className="w-16"
                             type="number"
                             value={exercise.rep_max}
@@ -201,6 +202,7 @@ export default function ExBodybuilding() {
                             max={500}
                           />{" "}
                           <Check
+                            data-test="check-btnBB"
                             color="green"
                             className="ml-1 cursor-pointer"
                             onClick={() => handleFinishEditing(exercise.id)}
@@ -219,14 +221,15 @@ export default function ExBodybuilding() {
                       {exerciseId === exercise.id ? (
                         ""
                       ) : (
-                        <Button onClick={() => handleUpdateRM(exercise.id)}>
+                        <Button data-test="update-btnBB" onClick={() => handleUpdateRM(exercise.id)}>
                           Update
                         </Button>
                       )}
                     </TableCell>
                     <TableCell>
                       <Button
-                        className="bg-destructive"
+                        data-test="delete-btnBB"
+                        className="bg-destructive hover:bg-red-400"
                         onClick={() =>
                           handleDelExerciseBodybuilding(exercise.id)
                         }
@@ -255,7 +258,7 @@ export default function ExBodybuilding() {
             </p>
           </div>
         </article>
-        <article>
+        <article className="mb-16">
           <div className="border-0 p-2 text-center w-80 rounded-full bg-mainGray relative h-24">
             <Lightbulb
               color="yellow"

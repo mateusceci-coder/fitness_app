@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("Testing Bodybuilding Exercises", () => {
+describe("Testing Crossfit Exercises", () => {
   beforeEach(() => {
     cy.request("POST", "http://127.0.0.1:8000/auth/token/login/", {
       username: "teste1234",
@@ -14,7 +14,7 @@ describe("Testing Bodybuilding Exercises", () => {
     cy.url().should("not.include", "/login");
     cy.visit("http://localhost:5173/exercises");
     cy.url().should("include", "/exercises");
-    cy.get('[data-test="ex-bb"]').click();
+    cy.get('[data-test="ex-cf"]').click();
   });
 
   it("Should create new exercise", () => {
@@ -22,27 +22,27 @@ describe("Testing Bodybuilding Exercises", () => {
       .find("tr")
       .its("length")
       .then((length) => {
-        cy.get('[data-test="newExBB"]').click();
-        cy.get('[data-test="add-exerciseBB"]').type("Bench Press");
-        cy.get('[data-test="add-equipmentBB"]').click();
-        cy.get('[data-test="add-repMaxBB"]').type("250");
-        cy.get('[data-test="add-btnBB"]').click();
-        cy.get('[data-test="tableBB"]')
+        cy.get('[data-test="newExCF"]').click();
+        cy.get('[data-test="add-exerciseCF"]').type("Bench Press");
+        cy.get('[data-test="add-equipmentCF"]').click();
+        cy.get('[data-test="add-repMaxCF"]').type("250");
+        cy.get('[data-test="add-btnCF"]').click();
+        cy.get('[data-test="tableCF"]')
           .find("tr")
           .should("have.length", length + 1);
       });
   });
 
   it("Should delete exercise", () => {
-    cy.get('[data-test="tableBB"]')
+    cy.get('[data-test="tableCF"]')
       .find("tr")
       .its("length")
       .then((length) => {
         cy.get('[data-test="table-row"]')
           .first()
-          .find('[data-test="delete-btnBB"]')
+          .find('[data-test="delete-btnCF"]')
           .click();
-        cy.get('[data-test="tableBB"]')
+        cy.get('[data-test="tableCF"]')
           .find("tr")
           .should("have.length", length - 1);
       });
@@ -51,14 +51,14 @@ describe("Testing Bodybuilding Exercises", () => {
   it("Should update exercise", () => {
     cy.get('[data-test="table-row"]')
       .first()
-      .find('[data-test="update-btnBB"]')
+      .find('[data-test="update-btnCF"]')
       .click();
-    cy.get('[data-test="update-repMaxBB"]').clear().type("20");
-    cy.get('[data-test="check-btnBB"]').click();
+    cy.get('[data-test="update-repMaxCF"]').clear().type("20");
+    cy.get('[data-test="check-btnCF"]').click();
 
     cy.get('[data-test="table-row"]')
       .first()
-      .find('[data-test="rmBB"]')
+      .find('[data-test="rmCF"]')
       .should("have.text", "200");
   });
 });

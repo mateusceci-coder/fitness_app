@@ -37,6 +37,8 @@ import axios from "axios";
 
 import Loading from "../Loading";
 
+
+
 export default function WorkCrossfit() {
   const [isFormWorkOpen, setIsFormWorkOpen] = useState(false);
   const [addingExercise, setAddingExercise] = useState(false);
@@ -96,7 +98,6 @@ export default function WorkCrossfit() {
     setNoSelectingExercise(true);
   };
 
-  console.log(wodItem)
 
   const handleNewWod = () => {
     if (!nameWod || !typeWod || wodItem.length === 0 || timeCap === 0) {
@@ -131,16 +132,19 @@ export default function WorkCrossfit() {
     setBlankTypeWod(false);
   };
 
-  const handleNewExercise = () => {
-    if (!nameExercise || !repsExercise) return;
 
-    setWodItem((listEx) => [...listEx, {
-      name: nameExercise,
-      reps: repsExercise,
-      weight_for_men: menWeight,
-      weight_for_women: womenWeight,
-      equipment: equipment
-    }])
+    const handleNewExercise = () => {
+      if (!nameExercise || !repsExercise) return;
+
+      const newExerciseItem = {
+          name: nameExercise,
+          reps: repsExercise,
+          weight_for_men: menWeight,
+          weight_for_women: womenWeight,
+          equipment: equipment
+      };
+
+    setWodItem((currentExercises) => [...currentExercises, newExerciseItem]);
 
     setEquipment("Barbell");
     setNameExercise("");
@@ -355,7 +359,7 @@ export default function WorkCrossfit() {
         <Collapsible className="bg-grayBg p-2 rounded-xl shadow-xl w-72 xs:w-128 relative mb-8">
           <X
             color="red"
-            className="absolute bottom-3 right-2 cursor-pointer"
+            className="absolute top-3 right-2 cursor-pointer"
             onClick={() => handleDeleteWod(workout.id)}
           />
           <div className="flex justify-center">
@@ -417,3 +421,4 @@ export default function WorkCrossfit() {
     </section>
   );
 }
+

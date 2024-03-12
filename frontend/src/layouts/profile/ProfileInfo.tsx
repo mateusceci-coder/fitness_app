@@ -34,8 +34,8 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
           <li className="flex flex-col items-center gap-1">
             {dataUser.profile_picture ? (
               <img
-                src={dataUser.profile_picture || 'src/images/profile-home.jpg'}
-                alt="Profile Photo"
+                src={dataUser.profile_picture}
+                alt="Profile Picture"
                 className="rounded-full h-40 w-40 object-cover"
               />
             ) : (

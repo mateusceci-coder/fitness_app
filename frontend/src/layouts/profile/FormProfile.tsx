@@ -21,9 +21,9 @@ import {
 } from "@/components/ui/select";
 
 import { useDispatch } from "react-redux";
-import { isUpdating, userUpdate } from "@/store/reducers/profile";
+import { isUpdating } from "@/store/reducers/profile";
 
-import { newUserWeight } from "@/store/reducers/exercise";
+
 import { useState } from "react";
 import { useProfile } from "@/api/profile/useProfile";
 
@@ -121,20 +121,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
 
     updateUser(formData, dataUser.id);
 
-    const updatedProfile = {
-      gender: values.gender,
-      weight: values.weight,
-      height: values.height,
-      birthday: values.birthday,
-      first_name: "Mateus",
-      last_name: "Souza",
-      profile_picture: "",
-    };
-
-    dispatch(userUpdate(updatedProfile));
-
     dispatch(isUpdating(true));
-    dispatch(newUserWeight(values.weight));
 
     window.location.href = "/profile";
   }

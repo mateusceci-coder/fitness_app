@@ -65,7 +65,8 @@ export default function ExCrossfit() {
       console.error(error);
     }
   };
-
+  console.log(exercisesData)
+  console.log(sessionStorage.getItem("auth_token"))
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -141,7 +142,7 @@ export default function ExCrossfit() {
       <header className="my-16">
         <h1 className="head-text">Crossfit Exercises</h1>
       </header>
-      <div className="flex justify-evenly pb-5 max-w-5xl mx-auto">
+      <div className="flex flex-col sm:flex-row items-center sm:justify-evenly pb-5 max-w-5xl mx-auto gap-2">
         <div className="flex gap-2">
           <span className="text-sm mt-2">Select Equipment</span>
           <Select defaultValue="All" onValueChange={(e) => handleSelect(e)}>
@@ -160,7 +161,7 @@ export default function ExCrossfit() {
         <DialogButtonCF fetchData={fetchData} />
         <div></div>
       </div>
-      <Table className="max-w-5xl mx-auto">
+      <Table data-test="tableCF" className="max-w-5xl mx-auto">
         <TableHeader>
           <TableRow>
             <TableHead>Exercise</TableHead>
@@ -178,7 +179,7 @@ export default function ExCrossfit() {
               )
               .map((exercise) => {
                 return (
-                  <TableRow key={exercise.id}>
+                  <TableRow data-test="table-row" key={exercise.id}>
                     <TableCell className="font-medium">
                       {capitalize(exercise.name)}
                     </TableCell>
@@ -189,6 +190,7 @@ export default function ExCrossfit() {
                       {exerciseId === exercise.id ? (
                         <div className="flex justify-end">
                           <Input
+                            data-test="update-repMaxCF"
                             className="w-16"
                             type="number"
                             value={exercise.rep_max}
@@ -199,6 +201,7 @@ export default function ExCrossfit() {
                             max={500}
                           />{" "}
                           <Check
+                            data-test="check-btnCF"
                             color="green"
                             className="ml-1 cursor-pointer"
                             onClick={() => handleFinishEditing(exercise.id)}
@@ -213,18 +216,20 @@ export default function ExCrossfit() {
                     <TableCell className="text-right">
                       {userWeight && (exercise.rep_max / userWeight).toFixed(2)}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell data-test="rmCF" className="text-right">
                       {exerciseId === exercise.id ? (
                         ""
                       ) : (
-                        <Button onClick={() => handleUpdateRM(exercise.id)}>
+                        <Button data-test="update-btnCF" onClick={() =>
+                        handleUpdateRM(exercise.id)}>
                           Update
                         </Button>
                       )}
                     </TableCell>
                     <TableCell>
                       <Button
-                        className="bg-destructive"
+                        data-test="delete-btnCF"
+                        className="bg-destructive hover:bg-red-400"
                         onClick={() => handleDelExerciseCrossfit(exercise.id)}
                       >
                         Delete
@@ -251,7 +256,7 @@ export default function ExCrossfit() {
             </p>
           </div>
         </article>
-        <article>
+        <article className="mb-16">
           <div className="border-0 p-2 text-center w-80 rounded-full bg-mainGray relative h-24">
             <Lightbulb
               color="yellow"

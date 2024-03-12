@@ -46,7 +46,7 @@ export default function DialogButton({ fetchData }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add Exercise</Button>
+        <Button data-test="newExCF" >Add Exercise</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[512px]">
         <DialogHeader>
@@ -62,6 +62,7 @@ export default function DialogButton({ fetchData }) {
               Exercise
             </Label>
             <Input
+              data-test="add-exerciseCF"
               id="exercise"
               onChange={(e) => setExercise(capitalizeText(e.target.value))}
               className="col-span-3"
@@ -74,6 +75,7 @@ export default function DialogButton({ fetchData }) {
             <RadioGroup className="flex flex-wrap" defaultValue="Barbell">
               <div className="flex items-center space-x-1">
                 <RadioGroupItem
+                  data-test="add-equipmentCF"
                   value="Barbell"
                   id="Barbell"
                   onClick={() => setEquipment("Barbell")}
@@ -120,6 +122,7 @@ export default function DialogButton({ fetchData }) {
             1 Rep Max (optional)
           </Label>
           <Input
+            data-test="add-repMaxCF"
             id="one-rep-max"
             defaultValue=""
             onChange={(e) => setMaxRep(+e.target.value)}
@@ -129,7 +132,7 @@ export default function DialogButton({ fetchData }) {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button onClick={handleNewExercise}>Add Exercise</Button>
+            <Button data-test="add-btnCF" onClick={handleNewExercise}>Add Exercise</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

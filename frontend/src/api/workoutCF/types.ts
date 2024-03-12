@@ -22,3 +22,4 @@ export interface postWorkoutCF {
     time_cap: number
     exercises: exercisesParamsCF[]
 }
+
