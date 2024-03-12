@@ -13,7 +13,6 @@ class Body_Exercise_Workout(models.Model):
     equipment = models.CharField(max_length=100, choices=EquipmentChoices.choices)
     reps = models.IntegerField()
     series = models.IntegerField()
-    rep_max = models.FloatField(blank=True, null=True)
     slug = models.SlugField(max_length=150, blank=True, unique=True)
 
     def __str__(self):

@@ -5,7 +5,7 @@ from bodybuilder.models.body_workout import BodyWorkout, Body_Exercise_Workout
 class WorkoutExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Body_Exercise_Workout
-        fields = ['id', 'name', 'reps', 'series', 'equipment','rep_max']
+        fields = ['id', 'name', 'reps', 'series', 'equipment']
 
 
 class BodyWorkoutSerializer(serializers.ModelSerializer):
