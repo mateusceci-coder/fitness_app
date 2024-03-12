@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Check, ChevronsUpDown, Undo2 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { capitalizeText, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -79,7 +79,7 @@ export default function SelectExBodybuilding({
           >
             {nameExercise
               ? bodybuildingList.find(
-                  (ex) => ex.name.toLowerCase() === nameExercise.toLowerCase()
+                  (ex) => ex.name === nameExercise
                 )?.name
               : "Select Exercise..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -93,10 +93,10 @@ export default function SelectExBodybuilding({
               {bodybuildingList.map((ex) => (
                 <CommandItem
                   key={ex.id}
-                  value={ex.name}
+                  value={capitalizeText(ex.name)}
                   onSelect={(currentValue) => {
                     setNameExercise(
-                      currentValue === nameExercise ? "" : currentValue
+                      capitalizeText(currentValue) === capitalizeText(nameExercise) ? "" : capitalizeText(currentValue)
                     );
                     setOpen(false);
                   }}
@@ -104,7 +104,7 @@ export default function SelectExBodybuilding({
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      nameExercise === ex.name ? "opacity-100" : "opacity-0"
+                      capitalizeText(nameExercise) === ex.name ? "opacity-100" : "opacity-0"
                     )}
                   />
                   {ex.name}

@@ -34,7 +34,7 @@ export default function DialogButton({ fetchData }) {
     createExerciseBB(newExercise, fetchData);
 
     setExercise("");
-    setEquipment("Barbbell");
+    setEquipment("Barbell");
     setMaxRep(0);
   };
 

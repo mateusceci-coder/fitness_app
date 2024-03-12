@@ -6,9 +6,8 @@ export interface postWorkoutBB {
 export interface exerciseBB {
     name: string
     equipment: string
-    rep_max?: number
     series: number
-    repetitions: number
+    reps: number
 }
 
 export interface workoutParamsBB {

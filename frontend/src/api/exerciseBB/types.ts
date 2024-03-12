@@ -3,7 +3,7 @@
 export interface exerciseParams {
     name: string,
     equipment: string;
-    rep_max: number;
+    rep_max?: number;
 }
 
 export interface getExerciseList {

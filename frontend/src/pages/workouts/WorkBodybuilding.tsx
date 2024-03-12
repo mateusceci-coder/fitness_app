@@ -18,7 +18,6 @@ import {
 import { calculateWeightReps } from "@/lib/calculators";
 import { capitalizeText } from "@/lib/utils";
 
-
 import { Dumbbell, Lightbulb, Undo2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -52,10 +51,10 @@ export default function WorkBodybuilding() {
   const [bodybuildingWorkouts, setBodybuildingWorkouts] = useState<
     workoutParamsBB[] | null
   >(null);
-  const [exercisesList, setExercisesList] = useState<getExerciseList[] | null>(null)
-
+  const [exercisesList, setExercisesList] = useState<getExerciseList[] | null>(
+    null
+  );
   const { createWorkoutBB, deleteWorkoutBB } = useWorkoutBB();
-
 
   const fetchData = async () => {
     try {
@@ -77,37 +76,39 @@ export default function WorkBodybuilding() {
     }
   };
 
+  const fetchExercises = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/exercises/bodybuilding`,
+        {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setExercisesList(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchExercises();
   }, []);
 
-  const handleNewExercise = async () => {
+  const handleNewExercise = () => {
     if (!nameExercise) return;
-
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/exercises/bodybuilding`, {
-        headers: {
-          Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
-        },
-      });
-      if (response.status === 200) {
-        setExercisesList(response.data)
-      }
-      } catch (error) {
-        console.log(error)
-      }
-
-      const repMax = exercisesList ? exercisesList.find((exercise) => exercise.name === nameExercise && exercise.equipment === equipment)?.rep_max : 0
-
 
     setWorkoutItem((workoutItem) => [
       ...workoutItem,
       {
         name: nameExercise,
-        repetitions: repsExercise,
+        reps: repsExercise,
         series: seriesExercise,
         equipment: equipment,
-        rep_max: repMax
       },
     ]);
     setAddingExercise(false);
@@ -126,8 +127,8 @@ export default function WorkBodybuilding() {
 
     const newWorkout = {
       name: nameWorkout,
-      exercises: workoutItem
-    }
+      exercises: workoutItem,
+    };
 
     createWorkoutBB(newWorkout, fetchData);
 
@@ -144,7 +145,6 @@ export default function WorkBodybuilding() {
   const handleDeleteWorkout = (id: number) => {
     deleteWorkoutBB(id, fetchData);
   };
-
 
   const textExercise = noNewExercise && noSelectingExercise;
 
@@ -231,7 +231,7 @@ export default function WorkBodybuilding() {
                   )}
                   {!noSelectingExercise && (
                     <SelectExBodybuilding
-                      nameExercise={nameExercise}
+                      nameExercise={capitalizeText(nameExercise)}
                       setNameExercise={setNameExercise}
                       setNoNewExercise={setNoNewExercise}
                       setNoSelectingExercise={setNoSelectingExercise}
@@ -283,8 +283,7 @@ export default function WorkBodybuilding() {
             <ul className="flex gap-1 flex-col my-5">
               {workoutItem.map((exercise) => (
                 <li className="text-white">
-                  <span>{exercise.series}</span>x
-                  <span>{exercise.repetitions}</span>{" "}
+                  <span>{exercise.series}</span>x<span>{exercise.reps}</span>{" "}
                   {capitalizeText(exercise.name)}{" "}
                   {exercise.equipment !== "Bodyweight" &&
                     `(${exercise.equipment})`}
@@ -337,10 +336,20 @@ export default function WorkBodybuilding() {
                         {capitalizeText(ex.name)}
                       </TableCell>
                       <TableCell>{ex.series}</TableCell>
-                      <TableCell>{ex.repetitions}</TableCell>
+                      <TableCell>{ex.reps}</TableCell>
                       <TableCell>{ex.equipment}</TableCell>
                       <TableCell className="text-right">
-                        {ex.rep_max ? calculateWeightReps(ex.rep_max, ex.repetitions) : 0}
+                        {(() => {
+                          const weight =
+                            exercisesList &&
+                            exercisesList.find(
+                              (exercise) => exercise.name === ex.name
+                            )?.rep_max;
+                          return weight
+                            ? calculateWeightReps(weight, ex.reps)
+                            : 0;
+                        })()}{" "}
+                        kg
                       </TableCell>
                     </TableRow>
                   ))}
