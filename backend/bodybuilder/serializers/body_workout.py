@@ -18,8 +18,7 @@ class BodyWorkoutSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         exercises_data = validated_data.pop('exercises')
-        user = self.context['request'].user
-        workout = BodyWorkout.objects.create(created_by=user, **validated_data)
+        workout = BodyWorkout.objects.create(**validated_data)
         for exercise_data in exercises_data:
             exercise = Body_Exercise_Workout.objects.create(
             **exercise_data, created_by=workout.created_by)

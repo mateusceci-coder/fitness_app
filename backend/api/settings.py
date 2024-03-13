@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "rest_framework", # rest framework
     "rest_framework.authtoken", # token authentication
     "djoser", # authentication library
-    "corsheaders", # library for cors   
+    "corsheaders", # library for cors
     "authentication", # app authentication
     "bodybuilder",
     "crossfit",
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware", # CORS (Cross-Origin Resource Sharing) remove when going to production 
+    "corsheaders.middleware.CorsMiddleware", # CORS (Cross-Origin Resource Sharing) remove when going to production
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -108,7 +108,7 @@ CORS_ALLOW_METHODS = (
     "PATCH",
     "POST",
     "PUT",
-)   
+)
 CORS_ALLOW_HEADERS = (
     "accept",
     "authorization",
@@ -167,6 +167,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
