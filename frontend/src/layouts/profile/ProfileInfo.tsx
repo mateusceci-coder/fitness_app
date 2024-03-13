@@ -12,7 +12,6 @@ export default function ProfileInfo( { dataUser }: { dataUser: dataUser }) {
   const handleUpdate = () => {
     dispatch(isUpdating(false));
       };
-
   const age = calculateAge(dataUser.birthday)
   const bmi = bmiCalculator(dataUser.height, dataUser.weight);
   const calories = caloriesCalculator(dataUser.height, dataUser.weight, age, dataUser.gender);

@@ -14,7 +14,7 @@ export default function Signin() {
     email: "",
     password: "",
   });
-  
+
   const [samePassword, setSamePassword] = useState(true);
 
   const { registerUser } = useRegister()
@@ -103,7 +103,7 @@ export default function Signin() {
         {!samePassword && (
           <p className="text-sm text-red-500 pb-1">Passwords does not match</p>
         )}
-        <Button className="w-full" type="submit">
+        <Button className="w-full mb-12" type="submit">
           Sign in
         </Button>
       </form>

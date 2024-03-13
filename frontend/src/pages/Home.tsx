@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main>
-      <section className="flex flex-col items-center max-w-5xl mx-auto">
+      <section className="flex flex-col items-center max-w-5xl mx-auto p-1">
         <h1 className="mb-4 mt-2 text-center text-6xl text-mainBlue font-playfair">
           My Fitness App
         </h1>

@@ -56,6 +56,7 @@ export default function WorkBodybuilding() {
   );
   const { createWorkoutBB, deleteWorkoutBB } = useWorkoutBB();
 
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -265,7 +266,7 @@ export default function WorkBodybuilding() {
                     <SelectContent>
                       <SelectItem value="Barbell">Barbell</SelectItem>
                       <SelectItem value="Dumbbell">Dumbbell</SelectItem>
-                      <SelectItem value="Machine">Kettlebell</SelectItem>
+                      <SelectItem value="Machine">Machine</SelectItem>
                       <SelectItem value="Bodyweight">Bodyweight</SelectItem>
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
@@ -343,7 +344,9 @@ export default function WorkBodybuilding() {
                           const weight =
                             exercisesList &&
                             exercisesList.find(
-                              (exercise) => exercise.name === ex.name
+                              (exercise) =>
+                                exercise.name === ex.name &&
+                                exercise.equipment === ex.equipment
                             )?.rep_max;
                           return weight
                             ? calculateWeightReps(weight, ex.reps)

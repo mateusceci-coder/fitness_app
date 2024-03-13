@@ -118,7 +118,6 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     if (selectedImage) {
       formData.append("profile_picture", selectedImage);
     }
-
     updateUser(formData, dataUser.id);
 
     dispatch(isUpdating(true));

@@ -154,7 +154,7 @@ export default function ExBodybuilding() {
               <SelectItem value="Barbell">Barbell</SelectItem>
               <SelectItem value="Dumbbell">Dumbell</SelectItem>
               <SelectItem value="Machine">Machine</SelectItem>
-              <SelectItem value="Bodyweight">BodyWeight</SelectItem>
+              <SelectItem value="Bodyweight">Bodyweight</SelectItem>
               <SelectItem value="Other">Other</SelectItem>
             </SelectContent>
           </Select>
