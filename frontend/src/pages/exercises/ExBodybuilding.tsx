@@ -137,6 +137,12 @@ export default function ExBodybuilding() {
     }
   };
 
+  const loggedUser = sessionStorage.getItem("auth_token");
+
+  if (!loggedUser) {
+    return window.location.href = "/login";
+  }
+
   return exercisesData ? (
     <section className="relative">
       <header className="my-16">
@@ -180,7 +186,7 @@ export default function ExBodybuilding() {
               )
               .map((exercise) => {
                 return (
-                  <TableRow data-test="table-row" key={exercise.id}>
+                  <TableRow data-test={exercise.name} key={exercise.id}>
                     <TableCell className="font-medium">
                       {capitalize(exercise.name)}
                     </TableCell>

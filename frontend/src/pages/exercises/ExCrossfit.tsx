@@ -65,8 +65,7 @@ export default function ExCrossfit() {
       console.error(error);
     }
   };
-  console.log(exercisesData)
-  console.log(sessionStorage.getItem("auth_token"))
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -87,6 +86,12 @@ export default function ExCrossfit() {
       console.error(error);
     }
   };
+
+  const loggedUser = sessionStorage.getItem("auth_token");
+
+  if (!loggedUser) {
+    return window.location.href = "/login";
+  }
 
   useEffect(() => {
     fetchData();
@@ -179,14 +184,14 @@ export default function ExCrossfit() {
               )
               .map((exercise) => {
                 return (
-                  <TableRow data-test="table-row" key={exercise.id}>
+                  <TableRow data-test={exercise.name} key={exercise.id}>
                     <TableCell className="font-medium">
                       {capitalize(exercise.name)}
                     </TableCell>
                     <TableCell className="text-right">
                       {exercise.equipment}
                     </TableCell>
-                    <TableCell className="text-right ">
+                    <TableCell data-test="rmCF" className="text-right ">
                       {exerciseId === exercise.id ? (
                         <div className="flex justify-end">
                           <Input
@@ -216,7 +221,7 @@ export default function ExCrossfit() {
                     <TableCell className="text-right">
                       {userWeight && (exercise.rep_max / userWeight).toFixed(2)}
                     </TableCell>
-                    <TableCell data-test="rmCF" className="text-right">
+                    <TableCell  className="text-right">
                       {exerciseId === exercise.id ? (
                         ""
                       ) : (

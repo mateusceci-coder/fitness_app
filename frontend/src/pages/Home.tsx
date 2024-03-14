@@ -25,7 +25,7 @@ export default function Home() {
         <div className="my-6">
           {!user &&
           <>
-            <Button onClick={handleNewAccount}>Create your Account</Button> or <Button onClick={handleLogin}>Log In</Button>
+            <Button onClick={handleNewAccount}>Create Your Account</Button> or <Button onClick={handleLogin}>Login</Button>
           </>}
         </div>
         <div className="flex flex-col">

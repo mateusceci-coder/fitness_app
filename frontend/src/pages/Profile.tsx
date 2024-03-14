@@ -37,7 +37,13 @@ export default function Profile() {
   }, [username]); // Dependency array, the effect will run again if `username` changes
 
   const { updatingProfile } = useSelector((state: RootReducer) => state.profile);
-  
+
+  const loggedUser = sessionStorage.getItem("auth_token");
+
+  if (!loggedUser) {
+    return window.location.href = "/login";
+  }
+
   useEffect(() => {
     if (userData.birthday) {
       dispatch(isUpdating(true));
@@ -45,7 +51,7 @@ export default function Profile() {
       dispatch(isUpdating(false));
     }
   }, [userData]);
-  
+
   const handleUpdate = () => {
     if (updatingProfile && userData) {
       return <ProfileInfo dataUser={userData}/>
@@ -55,7 +61,7 @@ export default function Profile() {
 
   return (
     <div className="h-screen bg-grayBg" >
-      {handleUpdate()} 
+      {handleUpdate()}
     </div>
   );
 }

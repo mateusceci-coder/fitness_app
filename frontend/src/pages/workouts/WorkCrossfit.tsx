@@ -170,13 +170,16 @@ export default function WorkCrossfit() {
       <header>
         <h1 className="head-text">Crossfit Workouts</h1>
       </header>
-      <Button onClick={handleFormWork}>New WOD</Button>
+      <Button
+      data-test="newWodBtnCF"
+      onClick={handleFormWork}>New WOD</Button>
       {isFormWorkOpen && (
         <form className="bg-primary p-4 rounded-xl flex flex-col gap-2 w-72 xs:w-112">
           <Label className="text-center text-white text-lg" htmlFor="wod">
             WOD:
           </Label>
           <Input
+            data-test="workoutNameCF"
             type="text"
             placeholder="Name of the WOD"
             id="wod"
@@ -191,12 +194,13 @@ export default function WorkCrossfit() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="AMRAP">AMRAP</SelectItem>
-              <SelectItem value="FT">For Time</SelectItem>
+              <SelectItem data-test="forTimeCF" value="FT">For Time</SelectItem>
             </SelectContent>
           </Select>
           {typeWod !== "AMRAP" && (
             <div>
               <Input
+                data-test="roundsCF"
                 type="number"
                 min={1}
                 max={500}
@@ -212,6 +216,7 @@ export default function WorkCrossfit() {
           )}
           <div className="mt-4">
             <Button
+              data-test="addExBtnCF"
               type="button"
               variant="outline"
               className="w-36"
@@ -229,6 +234,7 @@ export default function WorkCrossfit() {
               <div className="mt-4 bg-white rounded-xl p-2">
                 <div className="flex gap-2 mb-2">
                   <Input
+                    data-test="repsInputCF"
                     min={1}
                     max={500}
                     type="number"
@@ -246,6 +252,7 @@ export default function WorkCrossfit() {
                       </div>{" "}
                       or{" "}
                       <div
+                        data-test="newExBtnCF"
                         className=" text-mainBlue cursor-pointer hover:underline inline"
                         onClick={() => setNoNewExercise(false)}
                       >
@@ -265,6 +272,7 @@ export default function WorkCrossfit() {
                   {!noNewExercise && (
                     <>
                       <Input
+                        data-test="exNameInputCF"
                         type="text"
                         placeholder="Exercise"
                         onChange={(e) => setNameExercise(e.target.value)}
@@ -281,6 +289,7 @@ export default function WorkCrossfit() {
                 <div className="flex gap-2 mb-2">
                   <span className="text-sm">Weight (optional):</span>
                   <Input
+                    data-test="menWeightCF"
                     type="number"
                     min={0}
                     max={500}
@@ -289,6 +298,7 @@ export default function WorkCrossfit() {
                     onChange={(e) => setMenWeight(+e.target.value)}
                   />
                   <Input
+                    data-test="womenWeightCF"
                     type="number"
                     min={0}
                     max={500}
@@ -303,14 +313,15 @@ export default function WorkCrossfit() {
                     <SelectValue placeholder="Equipment" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Barbell">Barbell</SelectItem>
+                    <SelectItem data-test="barbellCF" value="Barbell">Barbell</SelectItem>
                     <SelectItem value="Dumbbell">Dumbbell</SelectItem>
                     <SelectItem value="Kettlebell">Kettlebell</SelectItem>
-                    <SelectItem value="Bodyweight">Bodyweight</SelectItem>
+                    <SelectItem data-test="bodyweightCF" value="Bodyweight">Bodyweight</SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button
+                  data-test="saveExCF"
                   className="bg-mainGreen hover:bg-mainGreen hover:brightness-105 mt-5"
                   type="button"
                   onClick={handleNewExercise}
@@ -334,6 +345,7 @@ export default function WorkCrossfit() {
             ))}
           </ul>
           <Input
+            data-test="timeCapCF"
             min={1}
             max={500}
             type="number"
@@ -346,6 +358,7 @@ export default function WorkCrossfit() {
             <p className="text-sm text-red-500">WOD need to have a time cap</p>
           )}
           <Button
+            data-test="createWodCF"
             type="button"
             className="bg-secondary text-black hover:bg-muted-foreground"
             onClick={handleNewWod}
@@ -356,8 +369,9 @@ export default function WorkCrossfit() {
       )}
       {crossfitWorkouts ? (
         crossfitWorkouts.map((workout) => (
-        <Collapsible className="bg-grayBg p-2 rounded-xl shadow-xl w-72 xs:w-128 relative mb-8">
+        <Collapsible className="bg-grayBg p-2 rounded-xl shadow-xl w-72 xs:w-128 relative mb-8" data-test={workout.name}>
           <X
+            data-test="deleteWodCF"
             color="red"
             className="absolute top-3 right-2 cursor-pointer"
             onClick={() => handleDeleteWod(workout.id)}

@@ -160,7 +160,7 @@ export default function WorkBodybuilding() {
         <header>
           <h1 className="head-text mb-8 break-words">Bodybuilding Workouts</h1>
         </header>
-        <Button onClick={() => setIsFormWorkOpen((i) => !i)}>
+        <Button data-test="newWorkBtnBB" onClick={() => setIsFormWorkOpen((i) => !i)}>
           New Workout
         </Button>
         {isFormWorkOpen && (
@@ -169,6 +169,7 @@ export default function WorkBodybuilding() {
               Workout:
             </Label>
             <Input
+              data-test="workoutName"
               type="text"
               placeholder="Name of the Workout"
               id="workout"
@@ -179,6 +180,7 @@ export default function WorkBodybuilding() {
             )}
             <div className="mt-4">
               <Button
+                data-test="addExBtnBB"
                 type="button"
                 variant="outline"
                 className="w-36"
@@ -206,6 +208,7 @@ export default function WorkBodybuilding() {
                       </div>{" "}
                       or{" "}
                       <div
+                        data-test="newExBtnBB"
                         className="text-mainBlue hover:underline cursor-pointer"
                         onClick={() => setNoNewExercise(false)}
                       >
@@ -216,6 +219,7 @@ export default function WorkBodybuilding() {
                   {!noNewExercise && (
                     <div className="flex">
                       <Input
+                        data-test="exNameInputBB"
                         type="text"
                         placeholder="Exercise"
                         onChange={(e) =>
@@ -241,6 +245,7 @@ export default function WorkBodybuilding() {
                   )}
                   <div className="flex gap-4 my-2">
                     <Input
+                      data-test="seriesInputBB"
                       type="number"
                       className="w-20"
                       placeholder="Series"
@@ -249,6 +254,7 @@ export default function WorkBodybuilding() {
                       max={500}
                     />
                     <Input
+                      data-test="repsInputBB"
                       type="number"
                       className="w-20"
                       placeholder="Reps"
@@ -259,13 +265,13 @@ export default function WorkBodybuilding() {
                   </div>
                 </div>
                 <div className="mb-2">
-                  <Select onValueChange={(e) => setEquipment(e)}>
+                  <Select data-test="equipmentSelectBB" onValueChange={(e) => setEquipment(e)}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Equipment" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Barbell">Barbell</SelectItem>
-                      <SelectItem value="Dumbbell">Dumbbell</SelectItem>
+                      <SelectItem data-test="barbellBB" value="Barbell">Barbell</SelectItem>
+                      <SelectItem data-test="dumbbellBB" value="Dumbbell">Dumbbell</SelectItem>
                       <SelectItem value="Machine">Machine</SelectItem>
                       <SelectItem value="Bodyweight">Bodyweight</SelectItem>
                       <SelectItem value="Other">Other</SelectItem>
@@ -273,6 +279,7 @@ export default function WorkBodybuilding() {
                   </Select>
                 </div>
                 <Button
+                  data-test="saveExBB"
                   className="bg-mainGreen hover:bg-mainGreen hover:brightness-105"
                   type="button"
                   onClick={handleNewExercise}
@@ -292,6 +299,7 @@ export default function WorkBodybuilding() {
               ))}
             </ul>
             <Button
+              data-test="createWorkoutBB"
               type="button"
               className="bg-secondary text-black hover:bg-muted-foreground"
               onClick={handleNewWorkout}
@@ -303,9 +311,11 @@ export default function WorkBodybuilding() {
         {bodybuildingWorkouts.map((workout) => (
           <Collapsible
             key={workout.id}
+            data-test={workout.name}
             className="flex flex-col bg-grayBg p-2 shadow-xl rounded-xl w-72 xs:w-128 relative mb-5"
           >
             <X
+              data-test="deleteWorkoutBB"
               color="red"
               className="absolute top-2 right-2 cursor-pointer"
               onClick={() => handleDeleteWorkout(workout.id)}

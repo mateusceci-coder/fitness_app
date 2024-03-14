@@ -14,7 +14,6 @@ import Login from "./pages/Login";
 import Signin from "./pages/Signin";
 import { ToastContainer } from "react-toastify";
 
-
 export default function App() {
   return (
     <Router>
