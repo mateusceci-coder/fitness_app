@@ -9,12 +9,12 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import dj_database_url
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv() # load environment variables
+load_dotenv()  # load environment variables
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -41,11 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework", # rest framework
-    "rest_framework.authtoken", # token authentication
-    "djoser", # authentication library
-    "corsheaders", # library for cors
-    "authentication", # app authentication
+    "rest_framework",  # rest framework
+    "rest_framework.authtoken",  # token authentication
+    "djoser",  # authentication library
+    "corsheaders",  # library for cors
+    "authentication",  # app authentication
     "bodybuilder",
     "crossfit",
 ]
@@ -53,7 +53,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware", # CORS (Cross-Origin Resource Sharing) remove when going to production
+    # CORS (Cross-Origin Resource Sharing) remove when going to production
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -121,6 +122,7 @@ CORS_ALLOW_HEADERS = (
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+database_url = os.environ.get("DATABASE_URL")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -130,6 +132,8 @@ DATABASES = {
         },
     }
 }
+
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 
 # Password validation
@@ -156,7 +160,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "America/Sao_Paulo" # change to brazillian timezone
+TIME_ZONE = "America/Sao_Paulo"  # change to brazillian timezone
 
 USE_I18N = True
 
