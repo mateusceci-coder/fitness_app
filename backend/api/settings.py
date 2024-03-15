@@ -133,7 +133,7 @@ DATABASES = {
     }
 }
 
-DATABASES["default"] = dj_database_url.parse(database_url)
+DATABASES["default"] = dj_database_url.parse("postgres://fitness_app_database_user:Mf9VTf9k8sournhX83R3muN9sovWtWLm@dpg-cnqb606ct0pc73cejop0-a.oregon-postgres.render.com/fitness_app_database")
 
 
 # Password validation
