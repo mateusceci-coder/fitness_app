@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import profileReducer from "./reducers/profile";
 import exerciseReducer from "./reducers/exercise";
-import workoutReducer from "./reducers/workout";
 import registerReducer from "@/api/register/registerSlice";
 import updateReducer from "@/api/profile/profileSlice";
 import exercisesReducerBB from "@/api/exerciseBB/exerciseSliceBB";
@@ -13,7 +12,6 @@ const store = configureStore({
   reducer: {
     profile: profileReducer,
     exercise: exerciseReducer,
-    workout: workoutReducer,
     register: registerReducer,
     update: updateReducer,
     exercisesBB: exercisesReducerBB,

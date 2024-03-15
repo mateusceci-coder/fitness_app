@@ -1,5 +1,5 @@
 import FormProfile from "@/layouts/profile/FormProfile";
-import {  isUpdating, userUpdate } from "@/store/reducers/profile";
+import {  isUpdating } from "@/store/reducers/profile";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,6 @@ export default function Profile() {
         const response = await axios.get(`http://127.0.0.1:8000/api/profile/${username}/`);
         if (response.status === 200) {
           setUserData(response.data);
-          dispatch(userUpdate(response.data))
         } else {
           throw new Error("Profile not found");
         }

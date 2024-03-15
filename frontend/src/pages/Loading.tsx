@@ -1,7 +1,11 @@
+import LoadingCircle from "@/components/LoadingCircle";
 
 
 export default function Loading() {
   return (
-    <div className="h-screen text-5xl flex items-center justify-center">Loading</div>
+    <div className="h-screen flex flex-col gap-10 items-center justify-center">
+      <p className="text-3xl">Loading</p>
+      <LoadingCircle />
+    </div>
   )
 }

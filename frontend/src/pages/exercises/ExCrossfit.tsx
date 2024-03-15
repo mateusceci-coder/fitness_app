@@ -31,7 +31,7 @@ export default function ExCrossfit() {
   const [selectedEquipment, setSelectedEquipment] = useState<string | null>(
     null
   );
-  const { exerciseId } = useSelector((store: RootReducer) => store.exercise);
+  const { id } = useSelector((store: RootReducer) => store.exercise);
   const [exercisesData, setExercisesData] = useState<getExerciseList[] | null>(
     null
   );
@@ -107,8 +107,8 @@ export default function ExCrossfit() {
     deleteExerciseCF(id, fetchData);
   };
 
-  const handleUpdateRM = (exerciseId: number) => {
-    dispatch(editingExerciseId(exerciseId));
+  const handleUpdateRM = (id: number) => {
+    dispatch(editingExerciseId(id));
   };
 
   const handleInputRM = (event: ChangeEvent<HTMLInputElement>, id: number) => {
@@ -192,7 +192,7 @@ export default function ExCrossfit() {
                       {exercise.equipment}
                     </TableCell>
                     <TableCell data-test="rmCF" className="text-right ">
-                      {exerciseId === exercise.id ? (
+                      {id === exercise.id ? (
                         <div className="flex justify-end">
                           <Input
                             data-test="update-repMaxCF"
@@ -222,7 +222,7 @@ export default function ExCrossfit() {
                       {userWeight && (exercise.rep_max / userWeight).toFixed(2)}
                     </TableCell>
                     <TableCell  className="text-right">
-                      {exerciseId === exercise.id ? (
+                      {id === exercise.id ? (
                         ""
                       ) : (
                         <Button data-test="update-btnCF" onClick={() =>

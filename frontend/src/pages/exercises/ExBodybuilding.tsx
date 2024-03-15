@@ -44,7 +44,7 @@ export default function ExBodybuilding() {
 
   const { updateExerciseBB, deleteExerciseBB } = useExerciseBB();
 
-  const { exerciseId } = useSelector((store: RootReducer) => store.exercise);
+  const { id } = useSelector((store: RootReducer) => store.exercise);
 
   const fetchProfile = async () => {
     try {
@@ -111,8 +111,8 @@ export default function ExBodybuilding() {
     );
   };
 
-  const handleUpdateRM = (exerciseId: number) => {
-    dispatch(editingExerciseId(exerciseId));
+  const handleUpdateRM = (id: number) => {
+    dispatch(editingExerciseId(id));
   };
 
   const handleFinishEditing = (id: number) => {
@@ -194,7 +194,7 @@ export default function ExBodybuilding() {
                       {exercise.equipment}
                     </TableCell>
                     <TableCell data-test="rmBB" className="text-right ">
-                      {exerciseId === exercise.id ? (
+                      {id === exercise.id ? (
                         <div className="flex justify-end">
                           <Input
                             data-test="update-repMaxBB"
@@ -224,7 +224,7 @@ export default function ExBodybuilding() {
                       {userWeight && (exercise.rep_max / userWeight).toFixed(2)}
                     </TableCell>
                     <TableCell className="text-right">
-                      {exerciseId === exercise.id ? (
+                      {id === exercise.id ? (
                         ""
                       ) : (
                         <Button data-test="update-btnBB" onClick={() => handleUpdateRM(exercise.id)}>
