@@ -24,13 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "True"
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
-
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -101,9 +100,7 @@ DJOSER = {
 }
 
 # CORS (Cross-Origin Resource Sharing) remove when going to production
-CORS_ALLOWED_ORIGINS = [
-    'https://fitness-app-1.onrender.com'
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 CORS_ALLOW_METHODS = (
@@ -126,7 +123,6 @@ CORS_ALLOW_HEADERS = (
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-database_url = os.environ.get("DATABASE_URL")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -136,8 +132,6 @@ DATABASES = {
         },
     }
 }
-
-DATABASES["default"] = dj_database_url.parse("postgres://fitness_app_database_user:Mf9VTf9k8sournhX83R3muN9sovWtWLm@dpg-cnqb606ct0pc73cejop0-a.oregon-postgres.render.com/fitness_app_database")
 
 
 # Password validation
