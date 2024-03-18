@@ -280,7 +280,7 @@ export default function WorkCrossfit() {
                   )}
                 </div>
                 <div className="flex gap-2 mb-2">
-                  <span className="text-sm">Weight (optional):</span>
+                  <span className="text-sm">Weight (kg) (optional):</span>
                   <Input
                     data-test="menWeightCF"
                     type="number"
@@ -299,7 +299,7 @@ export default function WorkCrossfit() {
                     placeholder="women"
                     onChange={(e) => setWomenWeight(+e.target.value)}
                   />
-                  (kg)
+
                 </div>
                 <Select onValueChange={(e) => setEquipment(e)}>
                   <SelectTrigger className="w-[180px]">
