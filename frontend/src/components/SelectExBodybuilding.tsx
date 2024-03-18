@@ -75,7 +75,7 @@ export default function SelectExBodybuilding({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="w-[150px] justify-between"
           >
             {nameExercise
               ? bodybuildingList.find((ex) => ex.name === nameExercise)?.name

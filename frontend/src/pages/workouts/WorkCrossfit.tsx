@@ -61,7 +61,7 @@ export default function WorkCrossfit() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://fitness-app-y9fc.onrender.com/api/workouts/crossfit/`,
+        `http://127.0.0.1:8000/api/workouts/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -225,13 +225,13 @@ export default function WorkCrossfit() {
             )}
             {addingExercise && (
               <div className="mt-4 bg-white rounded-xl p-2">
-                <div className="flex gap-2 mb-2">
+                <div className="flex flex-col items-center mb-4">
                   <Input
                     data-test="repsInputCF"
                     min={1}
                     max={500}
                     type="number"
-                    className="w-20"
+                    className="w-20 my-2"
                     placeholder="Reps"
                     onChange={(e) => setRepsExercise(+e.target.value)}
                   />
@@ -279,27 +279,28 @@ export default function WorkCrossfit() {
                     </>
                   )}
                 </div>
-                <div className="flex gap-2 mb-2">
-                  <span className="text-sm">Weight (kg) (optional):</span>
-                  <Input
-                    data-test="menWeightCF"
-                    type="number"
-                    min={0}
-                    max={500}
-                    className="w-20"
-                    placeholder="men"
-                    onChange={(e) => setMenWeight(+e.target.value)}
-                  />
-                  <Input
-                    data-test="womenWeightCF"
-                    type="number"
-                    min={0}
-                    max={500}
-                    className="w-20"
-                    placeholder="women"
-                    onChange={(e) => setWomenWeight(+e.target.value)}
-                  />
-
+                <div className="flex flex-col gap-2 mb-2">
+                  <span className="text-center">Weight (kg) (optional):</span>
+                  <div className="flex justify-center gap-4">
+                    <Input
+                      data-test="menWeightCF"
+                      type="number"
+                      min={0}
+                      max={500}
+                      className="w-22"
+                      placeholder="men"
+                      onChange={(e) => setMenWeight(+e.target.value)}
+                    />
+                    <Input
+                      data-test="womenWeightCF"
+                      type="number"
+                      min={0}
+                      max={500}
+                      className="w-22"
+                      placeholder="women"
+                      onChange={(e) => setWomenWeight(+e.target.value)}
+                    />
+                  </div>
                 </div>
                 <Select onValueChange={(e) => setEquipment(e)}>
                   <SelectTrigger className="w-[180px]">

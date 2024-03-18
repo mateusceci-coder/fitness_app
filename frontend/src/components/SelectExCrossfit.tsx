@@ -75,7 +75,7 @@ export default function SelectExCrossfit({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="w-[150px] justify-between"
           >
             {nameExercise
               ? crossfitList.find(
