@@ -17,14 +17,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { capitalizeText } from "@/lib/utils";
 import { useState } from "react";
 
-export default function DialogButton({ fetchData }) {
+export default function DialogButton({
+  fetchData,
+}: {
+  fetchData: () => Promise<void>;
+}) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
   const { createExerciseBB } = useExerciseBB();
 
   const handleNewExercise = () => {
-
     const newExercise = {
       name: exercise,
       equipment: equipment,
@@ -127,7 +130,9 @@ export default function DialogButton({ fetchData }) {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button data-test="add-btnBB" onClick={handleNewExercise}>Add Exercise</Button>
+            <Button data-test="add-btnBB" onClick={handleNewExercise}>
+              Add Exercise
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
