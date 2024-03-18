@@ -5,22 +5,22 @@ import { toast } from "react-toastify";
 import { postWorkoutBB } from "./types";
 
 export const createWorkoutThunkBB = createAsyncThunk(
-
   "create/workoutBB",
   async (
-    { postWorkoutBB}: { postWorkoutBB: postWorkoutBB },
+    { postWorkoutBB }: { postWorkoutBB: postWorkoutBB },
     { rejectWithValue }
   ) => {
     try {
-      const token = sessionStorage.getItem("auth_token")
+      const token = sessionStorage.getItem("auth_token");
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
+        `https://fitness-app-y9fc.onrender.com/api/workouts/bodybuilding/`,
         postWorkoutBB,
         {
           headers: {
-            Authorization: `Token ${token}`
-          }
-        });
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
       toast.success("Workout Created Successfully!");
       return response.data;
     } catch (error) {

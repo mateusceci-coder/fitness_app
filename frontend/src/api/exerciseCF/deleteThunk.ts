@@ -9,11 +9,11 @@ export const deleteExerciseThunkCF = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token");
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/exercises/crossfit/${id}/`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/crossfit/${id}/`,
         {
-            headers: {
-                Authorization: `Token ${token}`
-            }
+          headers: {
+            Authorization: `Token ${token}`,
+          },
         }
       );
       toast.success("Exercise Deleted!");

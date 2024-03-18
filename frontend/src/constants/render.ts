@@ -1,0 +1,1 @@
+export const renderBackend = 'https://fitness-app-y9fc.onrender.com'

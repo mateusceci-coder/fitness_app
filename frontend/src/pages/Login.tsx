@@ -4,9 +4,8 @@ import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [userData, setUserData] = useState({
@@ -14,8 +13,7 @@ export default function Login() {
     password: "",
   });
 
-
-  const apiUrl = "http://127.0.0.1:8000/auth/token/login/";
+  const apiUrl = "https://fitness-app-y9fc.onrender.com/auth/token/login/";
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -43,12 +41,10 @@ export default function Login() {
       setTimeout(() => {
         window.location.href = "/profile/";
       }, 3000);
-
     } catch (err) {
       console.log(err);
       toast.error("Login failed. Please try again.");
     }
-
   };
 
   return (

@@ -49,7 +49,7 @@ export default function ExCrossfit() {
     try {
       const username = sessionStorage.getItem("username");
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/profile/${username}/`,
+        `https://fitness-app-y9fc.onrender.com/api/profile/${username}/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -69,7 +69,7 @@ export default function ExCrossfit() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/exercises/crossfit/`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -90,7 +90,7 @@ export default function ExCrossfit() {
   const loggedUser = sessionStorage.getItem("auth_token");
 
   if (!loggedUser) {
-    return window.location.href = "/login";
+    return (window.location.href = "/login");
   }
 
   useEffect(() => {
@@ -221,12 +221,14 @@ export default function ExCrossfit() {
                     <TableCell className="text-right">
                       {userWeight && (exercise.rep_max / userWeight).toFixed(2)}
                     </TableCell>
-                    <TableCell  className="text-right">
+                    <TableCell className="text-right">
                       {id === exercise.id ? (
                         ""
                       ) : (
-                        <Button data-test="update-btnCF" onClick={() =>
-                        handleUpdateRM(exercise.id)}>
+                        <Button
+                          data-test="update-btnCF"
+                          onClick={() => handleUpdateRM(exercise.id)}
+                        >
                           Update
                         </Button>
                       )}

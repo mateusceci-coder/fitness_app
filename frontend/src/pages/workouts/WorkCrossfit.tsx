@@ -19,7 +19,6 @@ import { capitalize, capitalizeText } from "@/lib/utils";
 import { Dumbbell, Undo2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-
 import {
   Table,
   TableBody,
@@ -29,15 +28,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useWorkoutCF } from "@/api/workoutCF/useWorkoutCF";
-import {
-  exercisesParamsCF,
-  workoutParamsCF,
-} from "@/api/workoutCF/types";
+import { exercisesParamsCF, workoutParamsCF } from "@/api/workoutCF/types";
 import axios from "axios";
 
 import Loading from "../Loading";
-
-
 
 export default function WorkCrossfit() {
   const [isFormWorkOpen, setIsFormWorkOpen] = useState(false);
@@ -67,7 +61,7 @@ export default function WorkCrossfit() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/workouts/crossfit/`,
+        `https://fitness-app-y9fc.onrender.com/api/workouts/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -85,8 +79,8 @@ export default function WorkCrossfit() {
   };
 
   useEffect(() => {
-    fetchData()
-  },[])
+    fetchData();
+  }, []);
 
   const handleFormWork = () => {
     setIsFormWorkOpen((i) => !i);
@@ -97,7 +91,6 @@ export default function WorkCrossfit() {
     setNoNewExercise(true);
     setNoSelectingExercise(true);
   };
-
 
   const handleNewWod = () => {
     if (!nameWod || !typeWod || wodItem.length === 0 || timeCap === 0) {
@@ -118,7 +111,6 @@ export default function WorkCrossfit() {
 
     createWorkoutCF(newWod, fetchData);
 
-
     setIsFormWorkOpen(false);
     setNameExercise("");
     setRepsExercise(0);
@@ -132,17 +124,16 @@ export default function WorkCrossfit() {
     setBlankTypeWod(false);
   };
 
+  const handleNewExercise = () => {
+    if (!nameExercise || !repsExercise) return;
 
-    const handleNewExercise = () => {
-      if (!nameExercise || !repsExercise) return;
-
-      const newExerciseItem = {
-          name: nameExercise,
-          reps: repsExercise,
-          weight_for_men: menWeight,
-          weight_for_women: womenWeight,
-          equipment: equipment
-      };
+    const newExerciseItem = {
+      name: nameExercise,
+      reps: repsExercise,
+      weight_for_men: menWeight,
+      weight_for_women: womenWeight,
+      equipment: equipment,
+    };
 
     setWodItem((currentExercises) => [...currentExercises, newExerciseItem]);
 
@@ -155,7 +146,7 @@ export default function WorkCrossfit() {
   };
 
   const handleDeleteWod = (id: number) => {
-    deleteWorkoutCF(id, fetchData)
+    deleteWorkoutCF(id, fetchData);
   };
 
   const textExercise = noSelectingExercise && noNewExercise;
@@ -170,9 +161,9 @@ export default function WorkCrossfit() {
       <header>
         <h1 className="head-text">Crossfit Workouts</h1>
       </header>
-      <Button
-      data-test="newWodBtnCF"
-      onClick={handleFormWork}>New WOD</Button>
+      <Button data-test="newWodBtnCF" onClick={handleFormWork}>
+        New WOD
+      </Button>
       {isFormWorkOpen && (
         <form className="bg-primary p-4 rounded-xl flex flex-col gap-2 w-72 xs:w-112">
           <Label className="text-center text-white text-lg" htmlFor="wod">
@@ -194,7 +185,9 @@ export default function WorkCrossfit() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="AMRAP">AMRAP</SelectItem>
-              <SelectItem data-test="forTimeCF" value="FT">For Time</SelectItem>
+              <SelectItem data-test="forTimeCF" value="FT">
+                For Time
+              </SelectItem>
             </SelectContent>
           </Select>
           {typeWod !== "AMRAP" && (
@@ -313,10 +306,14 @@ export default function WorkCrossfit() {
                     <SelectValue placeholder="Equipment" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem data-test="barbellCF" value="Barbell">Barbell</SelectItem>
+                    <SelectItem data-test="barbellCF" value="Barbell">
+                      Barbell
+                    </SelectItem>
                     <SelectItem value="Dumbbell">Dumbbell</SelectItem>
                     <SelectItem value="Kettlebell">Kettlebell</SelectItem>
-                    <SelectItem data-test="bodyweightCF" value="Bodyweight">Bodyweight</SelectItem>
+                    <SelectItem data-test="bodyweightCF" value="Bodyweight">
+                      Bodyweight
+                    </SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
@@ -334,10 +331,10 @@ export default function WorkCrossfit() {
           <ul className="flex gap-1 flex-col my-2 text-white">
             {wodItem.map((exercise) => (
               <li>
-                <span>{exercise.reps}</span>{" "}
-                {capitalizeText(exercise.name)}{" "}
+                <span>{exercise.reps}</span> {capitalizeText(exercise.name)}{" "}
                 <span>
-                  {exercise.weight_for_men === 0 && exercise.weight_for_women === 0
+                  {exercise.weight_for_men === 0 &&
+                  exercise.weight_for_women === 0
                     ? ""
                     : `(${exercise.weight_for_men}/${exercise.weight_for_women})`}
                 </span>
@@ -369,70 +366,77 @@ export default function WorkCrossfit() {
       )}
       {crossfitWorkouts ? (
         crossfitWorkouts.map((workout) => (
-        <Collapsible className="bg-grayBg p-2 rounded-xl shadow-xl w-72 xs:w-128 relative mb-8" data-test={workout.name}>
-          <X
-            data-test="deleteWodCF"
-            color="red"
-            className="absolute top-3 right-2 cursor-pointer"
-            onClick={() => handleDeleteWod(workout.id)}
-          />
-          <div className="flex justify-center">
-            <CollapsibleTrigger>
-              <h2 className="text-2xl">
-                <b>{capitalize(workout.name)}</b>
-              </h2>
-            </CollapsibleTrigger>
-          </div>
-          <CollapsibleContent className="flex gap-2 flex-col">
-            <h1 className="text-lg mt-5 mb-2">
-              <p>
-                <b>{workout.execution_type === "AMRAP" ? "AMRAP" : "For Time"}</b>
-              </p>
-              {workout.rounds && workout.rounds > 1 && (
-                <p className="text-center">
-                  {workout.rounds} <span>{workout.rounds && "rounds"}</span>{" "}
+          <Collapsible
+            className="bg-grayBg p-2 rounded-xl shadow-xl w-72 xs:w-128 relative mb-8"
+            data-test={workout.name}
+          >
+            <X
+              data-test="deleteWodCF"
+              color="red"
+              className="absolute top-3 right-2 cursor-pointer"
+              onClick={() => handleDeleteWod(workout.id)}
+            />
+            <div className="flex justify-center">
+              <CollapsibleTrigger>
+                <h2 className="text-2xl">
+                  <b>{capitalize(workout.name)}</b>
+                </h2>
+              </CollapsibleTrigger>
+            </div>
+            <CollapsibleContent className="flex gap-2 flex-col">
+              <h1 className="text-lg mt-5 mb-2">
+                <p>
+                  <b>
+                    {workout.execution_type === "AMRAP" ? "AMRAP" : "For Time"}
+                  </b>
+                </p>
+                {workout.rounds && workout.rounds > 1 && (
+                  <p className="text-center">
+                    {workout.rounds} <span>{workout.rounds && "rounds"}</span>{" "}
+                  </p>
+                )}
+              </h1>
+              <div className="mb-2">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[100px]">Reps</TableHead>
+                      <TableHead>Exercise</TableHead>
+                      <TableHead>Weight (M/F)</TableHead>
+                      <TableHead className="text-right">Equipment</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {workout.exercises.map((ex) => (
+                      <TableRow>
+                        <TableCell>{ex.reps}</TableCell>
+                        <TableCell className="font-medium">
+                          {capitalizeText(ex.name)}
+                        </TableCell>
+                        <TableCell>
+                          {ex.weight_for_men === 0 && ex.weight_for_women === 0
+                            ? ""
+                            : `(${ex.weight_for_men}/${ex.weight_for_women})`}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {ex.equipment}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              {workout.time_cap > 0 && (
+                <p>
+                  <b>Time Cap:</b> {workout.time_cap}'
                 </p>
               )}
-            </h1>
-            <div className="mb-2">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[100px]">Reps</TableHead>
-                    <TableHead>Exercise</TableHead>
-                    <TableHead>Weight (M/F)</TableHead>
-                    <TableHead className="text-right">Equipment</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {workout.exercises.map((ex) => (
-                    <TableRow>
-                      <TableCell>{ex.reps}</TableCell>
-                      <TableCell className="font-medium">
-                        {capitalizeText(ex.name)}
-                      </TableCell>
-                      <TableCell>
-                        {ex.weight_for_men === 0 && ex.weight_for_women === 0
-                          ? ""
-                          : `(${ex.weight_for_men}/${ex.weight_for_women})`}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {ex.equipment}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-            {workout.time_cap > 0 && (
-              <p>
-                <b>Time Cap:</b> {workout.time_cap}'
-              </p>
-            )}
-          </CollapsibleContent>
-        </Collapsible>
-      ))) : <Loading />}
+            </CollapsibleContent>
+          </Collapsible>
+        ))
+      ) : (
+        <Loading />
+      )}
     </section>
   );
 }
-

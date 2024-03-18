@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 
 export function DialogLogout() {
-  const apiUrl = "http://127.0.0.1:8000/auth/token/logout/";
+  const apiUrl = "https://fitness-app-y9fc.onrender.com/auth/token/logout/";
 
   const handleLogout = async () => {
     try {
@@ -24,8 +24,8 @@ export function DialogLogout() {
           },
         }
       ),
-      window.location.href = "/login"
-        sessionStorage.removeItem("auth_token");
+        (window.location.href = "/login");
+      sessionStorage.removeItem("auth_token");
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +34,10 @@ export function DialogLogout() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button data-test="logout" className="hover:bg-white hover:text-black absolute top-2 right-3 underline">
+        <Button
+          data-test="logout"
+          className="hover:bg-white hover:text-black absolute top-2 right-3 underline"
+        >
           Logout
         </Button>
       </DialogTrigger>
@@ -49,7 +52,9 @@ export function DialogLogout() {
           <DialogClose asChild>
             <Button>Cancel</Button>
           </DialogClose>
-            <Button data-test="confirm-logout" onClick={handleLogout}>Logout</Button>
+          <Button data-test="confirm-logout" onClick={handleLogout}>
+            Logout
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

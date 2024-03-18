@@ -56,11 +56,10 @@ export default function WorkBodybuilding() {
   );
   const { createWorkoutBB, deleteWorkoutBB } = useWorkoutBB();
 
-
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
+        `https://fitness-app-y9fc.onrender.com/api/workouts/bodybuilding/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -80,7 +79,7 @@ export default function WorkBodybuilding() {
   const fetchExercises = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/exercises/bodybuilding`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/bodybuilding`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -160,7 +159,10 @@ export default function WorkBodybuilding() {
         <header>
           <h1 className="head-text mb-8 break-words">Bodybuilding Workouts</h1>
         </header>
-        <Button data-test="newWorkBtnBB" onClick={() => setIsFormWorkOpen((i) => !i)}>
+        <Button
+          data-test="newWorkBtnBB"
+          onClick={() => setIsFormWorkOpen((i) => !i)}
+        >
           New Workout
         </Button>
         {isFormWorkOpen && (
@@ -265,13 +267,20 @@ export default function WorkBodybuilding() {
                   </div>
                 </div>
                 <div className="mb-2">
-                  <Select data-test="equipmentSelectBB" onValueChange={(e) => setEquipment(e)}>
+                  <Select
+                    data-test="equipmentSelectBB"
+                    onValueChange={(e) => setEquipment(e)}
+                  >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Equipment" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem data-test="barbellBB" value="Barbell">Barbell</SelectItem>
-                      <SelectItem data-test="dumbbellBB" value="Dumbbell">Dumbbell</SelectItem>
+                      <SelectItem data-test="barbellBB" value="Barbell">
+                        Barbell
+                      </SelectItem>
+                      <SelectItem data-test="dumbbellBB" value="Dumbbell">
+                        Dumbbell
+                      </SelectItem>
                       <SelectItem value="Machine">Machine</SelectItem>
                       <SelectItem value="Bodyweight">Bodyweight</SelectItem>
                       <SelectItem value="Other">Other</SelectItem>

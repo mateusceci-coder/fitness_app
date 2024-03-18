@@ -2,11 +2,15 @@
 
 describe("Testing Bodybuilding Exercises", () => {
   beforeEach(() => {
-    cy.request("POST", "http://127.0.0.1:8000/auth/token/login/", {
-      username: "mateusceci",
-      password: "asdf!@#$",
-      email: "testando@email.com",
-    });
+    cy.request(
+      "POST",
+      "https://fitness-app-y9fc.onrender.com/auth/token/login/",
+      {
+        username: "mateusceci",
+        password: "asdf!@#$",
+        email: "testando@email.com",
+      }
+    );
     cy.visit("http://localhost:5173/login");
     cy.get('[data-test="username-login"]').type("mateusceci");
     cy.get('[data-test="password-login"]').type("asdf!@#$");

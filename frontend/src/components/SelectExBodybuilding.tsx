@@ -43,7 +43,7 @@ export default function SelectExBodybuilding({
   const fetchList = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/exercises/bodybuilding/`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/bodybuilding/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -78,9 +78,7 @@ export default function SelectExBodybuilding({
             className="w-[200px] justify-between"
           >
             {nameExercise
-              ? bodybuildingList.find(
-                  (ex) => ex.name === nameExercise
-                )?.name
+              ? bodybuildingList.find((ex) => ex.name === nameExercise)?.name
               : "Select Exercise..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -96,7 +94,10 @@ export default function SelectExBodybuilding({
                   value={capitalizeText(ex.name)}
                   onSelect={(currentValue) => {
                     setNameExercise(
-                      capitalizeText(currentValue) === capitalizeText(nameExercise) ? "" : capitalizeText(currentValue)
+                      capitalizeText(currentValue) ===
+                        capitalizeText(nameExercise)
+                        ? ""
+                        : capitalizeText(currentValue)
                     );
                     setOpen(false);
                   }}
@@ -104,7 +105,9 @@ export default function SelectExBodybuilding({
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      capitalizeText(nameExercise) === ex.name ? "opacity-100" : "opacity-0"
+                      capitalizeText(nameExercise) === ex.name
+                        ? "opacity-100"
+                        : "opacity-0"
                     )}
                   />
                   {ex.name}

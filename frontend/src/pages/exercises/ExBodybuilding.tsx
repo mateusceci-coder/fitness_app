@@ -50,7 +50,7 @@ export default function ExBodybuilding() {
     try {
       const username = sessionStorage.getItem("username");
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/profile/${username}/`,
+        `https://fitness-app-y9fc.onrender.com/api/profile/${username}/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -70,7 +70,7 @@ export default function ExBodybuilding() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/exercises/bodybuilding`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/bodybuilding`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -140,7 +140,7 @@ export default function ExBodybuilding() {
   const loggedUser = sessionStorage.getItem("auth_token");
 
   if (!loggedUser) {
-    return window.location.href = "/login";
+    return (window.location.href = "/login");
   }
 
   return exercisesData ? (
@@ -227,7 +227,10 @@ export default function ExBodybuilding() {
                       {id === exercise.id ? (
                         ""
                       ) : (
-                        <Button data-test="update-btnBB" onClick={() => handleUpdateRM(exercise.id)}>
+                        <Button
+                          data-test="update-btnBB"
+                          onClick={() => handleUpdateRM(exercise.id)}
+                        >
                           Update
                         </Button>
                       )}

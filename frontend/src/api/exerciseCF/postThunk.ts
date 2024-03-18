@@ -4,22 +4,22 @@ import { exerciseParams } from "../exerciseBB/types";
 import { toast } from "react-toastify";
 
 export const createExerciseThunkCF = createAsyncThunk(
-
   "create/exerciseCF",
   async (
     { exerciseParams }: { exerciseParams: exerciseParams },
     { rejectWithValue }
   ) => {
     try {
-      const token = sessionStorage.getItem("auth_token")
+      const token = sessionStorage.getItem("auth_token");
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/exercises/crossfit/`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/crossfit/`,
         exerciseParams,
         {
           headers: {
-            Authorization: `Token ${token}`
-          }
-        });
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
       toast.success("Exercise Created Successfully!");
       return response.data;
     } catch (error) {

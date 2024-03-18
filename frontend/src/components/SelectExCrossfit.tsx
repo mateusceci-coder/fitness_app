@@ -17,14 +17,14 @@ import {
 } from "@/components/ui/popover";
 import { Dispatch, useEffect, useState } from "react";
 import { getExerciseList } from "@/api/exerciseBB/types";
-import axios from "axios"
+import axios from "axios";
 
 interface nameExerciseProps {
   nameExercise: string;
   setNameExercise: Dispatch<React.SetStateAction<string>>;
-  setNoNewExercise: Dispatch<React.SetStateAction<boolean>>
-  setNoSelectingExercise: Dispatch<React.SetStateAction<boolean>>
-  noSelectingExercise: boolean
+  setNoNewExercise: Dispatch<React.SetStateAction<boolean>>;
+  setNoSelectingExercise: Dispatch<React.SetStateAction<boolean>>;
+  noSelectingExercise: boolean;
 }
 
 export default function SelectExCrossfit({
@@ -36,12 +36,12 @@ export default function SelectExCrossfit({
 }: nameExerciseProps) {
   const [open, setOpen] = useState(false);
 
-  const [crossfitList, setCrossfitList] = useState<getExerciseList[]>([])
+  const [crossfitList, setCrossfitList] = useState<getExerciseList[]>([]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/exercises/crossfit/`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -59,13 +59,13 @@ export default function SelectExCrossfit({
   };
 
   useEffect(() => {
-    fetchData()
-  },[])
+    fetchData();
+  }, []);
 
   const handleFormText = () => {
-    setNoNewExercise(true)
-    setNoSelectingExercise(true)
-  }
+    setNoNewExercise(true);
+    setNoSelectingExercise(true);
+  };
 
   return (
     <div>
@@ -79,8 +79,7 @@ export default function SelectExCrossfit({
           >
             {nameExercise
               ? crossfitList.find(
-                  (ex) =>
-                    ex.name.toLowerCase() === nameExercise.toLowerCase()
+                  (ex) => ex.name.toLowerCase() === nameExercise.toLowerCase()
                 )?.name
               : "Select Exercise..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -115,7 +114,14 @@ export default function SelectExCrossfit({
           </Command>
         </PopoverContent>
       </Popover>
-     {!noSelectingExercise && <Undo2 size={24} className="inline ml-1 cursor-pointer" color="green" onClick={handleFormText} />}
+      {!noSelectingExercise && (
+        <Undo2
+          size={24}
+          className="inline ml-1 cursor-pointer"
+          color="green"
+          onClick={handleFormText}
+        />
+      )}
     </div>
   );
 }

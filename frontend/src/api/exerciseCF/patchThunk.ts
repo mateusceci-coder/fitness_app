@@ -1,26 +1,25 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 import { toast } from "react-toastify";
 
 export const updateExerciseThunkCF = createAsyncThunk(
-
   "update/exerciseCF",
   async (
-    { "rep_max": rep_max, id }: { rep_max: number,  id:number },
+    { rep_max: rep_max, id }: { rep_max: number; id: number },
     { rejectWithValue }
   ) => {
     try {
-      const token = sessionStorage.getItem("auth_token")
+      const token = sessionStorage.getItem("auth_token");
       const response = await axios.patch(
-        `http://127.0.0.1:8000/api/exercises/crossfit/${id}/`,
+        `https://fitness-app-y9fc.onrender.com/api/exercises/crossfit/${id}/`,
         { rep_max },
         {
           headers: {
-            Authorization: `Token ${token}`
-          }
-        });
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
       toast.success("Updated Exercise!");
       return response.data;
     } catch (error) {
