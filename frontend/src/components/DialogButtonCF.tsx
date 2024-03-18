@@ -18,7 +18,7 @@ import { capitalizeText } from "@/lib/utils";
 
 import { useState } from "react";
 
-export default function DialogButton({ fetchData }) {
+export default function DialogButton({ fetchData }: { fetchData: () => Promise<void>}  ) {
   const [exercise, setExercise] = useState("");
   const [equipment, setEquipment] = useState("Barbell");
   const [maxRep, setMaxRep] = useState(0);
