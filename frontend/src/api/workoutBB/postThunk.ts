@@ -13,7 +13,7 @@ export const createWorkoutThunkBB = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token");
       const response = await axios.post(
-        `https://fitness-app-y9fc.onrender.com/api/workouts/bodybuilding/`,
+        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
         postWorkoutBB,
         {
           headers: {

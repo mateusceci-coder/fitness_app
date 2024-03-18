@@ -8,11 +8,9 @@ import ProfileInfo from "@/layouts/profile/ProfileInfo";
 import { RootReducer } from "@/store/store";
 import Loading from "./Loading";
 
-//teste
-
 export default function Profile() {
-  const [userData, setUserData] = useState({} as dataUser)
-  const [isLoading, setIsLoading] = useState(true)
+  const [userData, setUserData] = useState({} as dataUser);
+  const [isLoading, setIsLoading] = useState(true);
   const username = sessionStorage.getItem("username");
   const dispatch = useDispatch();
   const { updatingProfile } = useSelector(
@@ -24,7 +22,7 @@ export default function Profile() {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `https://fitness-app-y9fc.onrender.com/api/profile/${username}/`
+          `http://127.0.0.1:8000/api/profile/${username}/`
         );
         if (response.status === 200) {
           setUserData(response.data);
@@ -46,7 +44,6 @@ export default function Profile() {
     };
   }, [username]); // Dependency array, the effect will run again if `username` changes
 
-
   const loggedUser = sessionStorage.getItem("auth_token");
 
   if (!loggedUser) {
@@ -62,13 +59,11 @@ export default function Profile() {
   }, [userData, dispatch]);
 
   const handleUpdate = () => {
-    if(isLoading) {
-      return <Loading />
-    }
-    else if (updatingProfile && userData) {
+    if (isLoading) {
+      return <Loading />;
+    } else if (updatingProfile && userData) {
       return <ProfileInfo dataUser={userData} />;
-    }
-    else return <FormProfile dataUser={userData} />;
+    } else return <FormProfile dataUser={userData} />;
   };
 
   return <div className="h-screen bg-grayBg">{handleUpdate()}</div>;

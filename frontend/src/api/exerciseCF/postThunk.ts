@@ -12,7 +12,7 @@ export const createExerciseThunkCF = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token");
       const response = await axios.post(
-        `https://fitness-app-y9fc.onrender.com/api/exercises/crossfit/`,
+        `http://127.0.0.1:8000/api/exercises/crossfit/`,
         exerciseParams,
         {
           headers: {

@@ -50,7 +50,7 @@ export default function ExBodybuilding() {
     try {
       const username = sessionStorage.getItem("username");
       const response = await axios.get(
-        `https://fitness-app-y9fc.onrender.com/api/profile/${username}/`,
+        `http://127.0.0.1:8000/api/profile/${username}/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -70,7 +70,7 @@ export default function ExBodybuilding() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://fitness-app-y9fc.onrender.com/api/exercises/bodybuilding`,
+        `http://127.0.0.1:8000/api/exercises/bodybuilding`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,

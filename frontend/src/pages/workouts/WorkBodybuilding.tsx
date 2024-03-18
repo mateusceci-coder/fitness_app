@@ -59,7 +59,7 @@ export default function WorkBodybuilding() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://fitness-app-y9fc.onrender.com/api/workouts/bodybuilding/`,
+        `http://127.0.0.1:8000/api/workouts/bodybuilding/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -79,7 +79,7 @@ export default function WorkBodybuilding() {
   const fetchExercises = async () => {
     try {
       const response = await axios.get(
-        `https://fitness-app-y9fc.onrender.com/api/exercises/bodybuilding`,
+        `http://127.0.0.1:8000/api/exercises/bodybuilding`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -100,7 +100,7 @@ export default function WorkBodybuilding() {
   }, []);
 
   const handleNewExercise = () => {
-    if (!nameExercise) return;
+    if (!nameExercise || !repsExercise || !seriesExercise || !equipment) return;
 
     setWorkoutItem((workoutItem) => [
       ...workoutItem,

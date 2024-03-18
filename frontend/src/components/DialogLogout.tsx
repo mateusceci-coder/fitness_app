@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 
 export function DialogLogout() {
-  const apiUrl = "https://fitness-app-y9fc.onrender.com/auth/token/logout/";
+  const apiUrl = "http://127.0.0.1:8000/auth/token/logout/";
 
   const handleLogout = async () => {
     try {

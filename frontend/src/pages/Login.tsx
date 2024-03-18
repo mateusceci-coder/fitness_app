@@ -13,7 +13,7 @@ export default function Login() {
     password: "",
   });
 
-  const apiUrl = "https://fitness-app-y9fc.onrender.com/auth/token/login/";
+  const apiUrl = "http://127.0.0.1:8000/auth/token/login/";
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

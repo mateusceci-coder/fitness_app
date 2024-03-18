@@ -10,7 +10,7 @@ export const registerUserThunk = createAsyncThunk<
 >("auth/registerUser", async (RegisterData, { rejectWithValue }) => {
   try {
     const response = await axios.post<RegisterResponse>(
-      `https://fitness-app-y9fc.onrender.com/auth/users/`,
+      `http://127.0.0.1:8000/auth/users/`,
       RegisterData
     );
     toast.success("Registro realizado com sucesso!");

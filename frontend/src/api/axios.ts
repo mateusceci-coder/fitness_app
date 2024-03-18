@@ -3,7 +3,7 @@ import axios from "axios";
 const TOKEN = sessionStorage.getItem("auth_token");
 
 export const api = axios.create({
-  baseURL: "https://fitness-app-y9fc.onrender.com/",
+  baseURL: "http://127.0.0.1:8000/",
   headers: {
     Authorization: `Token ${TOKEN}`,
   },

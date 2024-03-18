@@ -12,7 +12,7 @@ export const updateExerciseThunkBB = createAsyncThunk(
     try {
       const token = sessionStorage.getItem("auth_token");
       const response = await axios.patch(
-        `https://fitness-app-y9fc.onrender.com/api/exercises/bodybuilding/${id}/`,
+        `http://127.0.0.1:8000/api/exercises/bodybuilding/${id}/`,
         { rep_max },
         {
           headers: {

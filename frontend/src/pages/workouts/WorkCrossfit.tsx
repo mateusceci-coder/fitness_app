@@ -55,13 +55,14 @@ export default function WorkCrossfit() {
   const [crossfitWorkouts, setCrossfitWorkouts] = useState<
     workoutParamsCF[] | null
   >(null);
+  const [wrongExercise, setWrongExercise] = useState(false);
 
   const { createWorkoutCF, deleteWorkoutCF } = useWorkoutCF();
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://fitness-app-y9fc.onrender.com/api/workouts/crossfit/`,
+        `http://127.0.0.1:8000/api/workouts/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
@@ -125,7 +126,10 @@ export default function WorkCrossfit() {
   };
 
   const handleNewExercise = () => {
-    if (!nameExercise || !repsExercise) return;
+    if (!nameExercise || !repsExercise || !equipment) {
+      setWrongExercise(true);
+      return
+    }
 
     const newExerciseItem = {
       name: nameExercise,
@@ -143,6 +147,7 @@ export default function WorkCrossfit() {
     setWomenWeight(0);
     setMenWeight(0);
     setAddingExercise(false);
+    setWrongExercise(false)
   };
 
   const handleDeleteWod = (id: number) => {
@@ -299,7 +304,6 @@ export default function WorkCrossfit() {
                     placeholder="women"
                     onChange={(e) => setWomenWeight(+e.target.value)}
                   />
-
                 </div>
                 <Select onValueChange={(e) => setEquipment(e)}>
                   <SelectTrigger className="w-[180px]">
@@ -317,6 +321,11 @@ export default function WorkCrossfit() {
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
+                {wrongExercise && (
+                  <p className="text-sm text-red-500">
+                    Exercise needs name, reps and equipment
+                  </p>
+                )}
                 <Button
                   data-test="saveExCF"
                   className="bg-mainGreen hover:bg-mainGreen hover:brightness-105 mt-5"
