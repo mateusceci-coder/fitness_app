@@ -38,7 +38,6 @@ export default function Signin() {
     try {
       registerUser(userData as RegisterData);
       window.location.href = "/login";
-
     } catch (error) {
       console.error(error);
     }

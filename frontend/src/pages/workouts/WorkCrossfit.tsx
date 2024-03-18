@@ -55,6 +55,7 @@ export default function WorkCrossfit() {
   const [crossfitWorkouts, setCrossfitWorkouts] = useState<
     workoutParamsCF[] | null
   >(null);
+  const [wrongExercise, setWrongExercise] = useState(false);
 
   const { createWorkoutCF, deleteWorkoutCF } = useWorkoutCF();
 
@@ -125,7 +126,10 @@ export default function WorkCrossfit() {
   };
 
   const handleNewExercise = () => {
-    if (!nameExercise || !repsExercise) return;
+    if (!nameExercise || !repsExercise || !equipment){
+      setWrongExercise(true)
+      return
+    }
 
     const newExerciseItem = {
       name: nameExercise,
@@ -143,6 +147,7 @@ export default function WorkCrossfit() {
     setWomenWeight(0);
     setMenWeight(0);
     setAddingExercise(false);
+    setWrongExercise(false)
   };
 
   const handleDeleteWod = (id: number) => {
@@ -318,6 +323,9 @@ export default function WorkCrossfit() {
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
+                {wrongExercise && (
+                  <p className="text-sm text-red-500">Exercise need to have a name, reps and equipment</p>
+                )}
                 <Button
                   data-test="saveExCF"
                   className="bg-mainGreen hover:bg-mainGreen hover:brightness-105 mt-5"

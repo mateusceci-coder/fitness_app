@@ -54,6 +54,7 @@ export default function WorkBodybuilding() {
   const [exercisesList, setExercisesList] = useState<getExerciseList[] | null>(
     null
   );
+  const [wrongExercise, setWrongExercise] = useState(false);
   const { createWorkoutBB, deleteWorkoutBB } = useWorkoutBB();
 
   const fetchData = async () => {
@@ -100,7 +101,10 @@ export default function WorkBodybuilding() {
   }, []);
 
   const handleNewExercise = () => {
-    if (!nameExercise) return;
+    if (!nameExercise || !repsExercise || !seriesExercise ||!equipment ) {
+      setWrongExercise(true)
+      return;
+    }
 
     setWorkoutItem((workoutItem) => [
       ...workoutItem,
@@ -116,6 +120,7 @@ export default function WorkBodybuilding() {
     setRepsExercise(1);
     setSeriesExercise(1);
     setBlankExercise(false);
+    setWrongExercise(false)
   };
 
   const handleNewWorkout = () => {
@@ -287,6 +292,9 @@ export default function WorkBodybuilding() {
                     </SelectContent>
                   </Select>
                 </div>
+                {wrongExercise && (
+                  <p className="text-red-500 text-small">Exercise need to have a name, series, reps and equipment</p>
+                )}
                 <Button
                   data-test="saveExBB"
                   className="bg-mainGreen hover:bg-mainGreen hover:brightness-105"
