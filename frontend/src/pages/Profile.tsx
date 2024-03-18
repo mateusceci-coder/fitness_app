@@ -6,25 +6,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { dataUser } from "./../layouts/profile/FormProfile";
 import ProfileInfo from "@/layouts/profile/ProfileInfo";
 import { RootReducer } from "@/store/store";
+import Loading from "./Loading";
 
 export default function Profile() {
-  const [userData, setUserData] = useState({} as dataUser); // State to store the fetched profile data
+  const [userData, setUserData] = useState({} as dataUser)
+  const [isLoading, setIsLoading] = useState(true)
   const username = sessionStorage.getItem("username");
   const dispatch = useDispatch();
+  const { updatingProfile } = useSelector(
+    (state: RootReducer) => state.profile
+  );
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await axios.get(
           `https://fitness-app-y9fc.onrender.com/api/profile/${username}/`
         );
         if (response.status === 200) {
           setUserData(response.data);
+          setIsLoading(false);
         } else {
           throw new Error("Profile not found");
         }
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     };
 
@@ -36,9 +44,6 @@ export default function Profile() {
     };
   }, [username]); // Dependency array, the effect will run again if `username` changes
 
-  const { updatingProfile } = useSelector(
-    (state: RootReducer) => state.profile
-  );
 
   const loggedUser = sessionStorage.getItem("auth_token");
 
@@ -52,13 +57,16 @@ export default function Profile() {
     } else {
       dispatch(isUpdating(false));
     }
-  }, [userData]);
+  }, [userData, dispatch]);
 
   const handleUpdate = () => {
-    if (updatingProfile && userData) {
+    if(isLoading) {
+      return <Loading />
+    }
+    else if (updatingProfile && userData) {
       return <ProfileInfo dataUser={userData} />;
     }
-    return <FormProfile dataUser={userData} />;
+    else return <FormProfile dataUser={userData} />;
   };
 
   return <div className="h-screen bg-grayBg">{handleUpdate()}</div>;

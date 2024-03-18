@@ -45,11 +45,11 @@ export default function Signin() {
   };
 
   return (
-    <section className="h-screen bg-grayBg flex flex-col gap-10 justify-center items-center">
-      <h1 className="head-text">Welcome to the App!</h1>
+    <section className="bg-grayBg flex flex-col gap-10 justify-center items-center">
+      <h1 className="head-text mt-8">Welcome to the App!</h1>
       <form
         onSubmit={handleSubmit}
-        className="p-12 rounded-2xl w-96 bg-white shadow-2xl"
+        className="p-8 rounded-2xl w-96 bg-white shadow-2xl mb-16"
       >
         <h2 className="text-2xl text-center mb-10">Sign in</h2>
         <Label htmlFor="email">Email:</Label>
@@ -103,7 +103,7 @@ export default function Signin() {
         {!samePassword && (
           <p className="text-sm text-red-500 pb-1">Passwords does not match</p>
         )}
-        <Button className="w-full mb-12" type="submit">
+        <Button className="w-full" type="submit">
           Sign in
         </Button>
       </form>

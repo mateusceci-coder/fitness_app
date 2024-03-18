@@ -22,7 +22,7 @@ export default function Exercises() {
           </p>
           <img
             className="absolute inset-0 w-full h-full object-cover rounded-xl"
-            src="src/images/crossfit-ex.jpg"
+            src="images/crossfit-ex.jpg"
             alt="crossfit-main"
           />
           <div className="absolute inset-0 rounded-xl bg-black opacity-40"></div>
@@ -35,7 +35,7 @@ export default function Exercises() {
           </p>
           <img
             className="absolute inset-0 w-full h-full object-cover rounded-xl"
-            src="src/images/bodybuilding-ex.jpg"
+            src="images/bodybuilding-ex.jpg"
             alt="bodybuilding-ex"
           />
           <div className="absolute inset-0 rounded-xl bg-black opacity-50"></div>

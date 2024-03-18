@@ -39,7 +39,7 @@ export default function Home() {
               <h2 className="text-3xl text-mainBlue text-center md:text-start mb-12 md:mb-2">
                 Profile
               </h2>
-              <p className="leading-7 md:text-start text-center">
+              <p className="leading-7 md:text-start text-center p-1">
                 By creating a profile, you will gain access to your:
                 <p>
                   <span className="highlighted-text">
@@ -64,7 +64,7 @@ export default function Home() {
               <h2 className="text-3xl text-mainBlue text-center md:text-start mb-2">
                 Exercises
               </h2>
-              <p className="leading-7 md:text-start text-center">
+              <p className="leading-7 md:text-start text-center p-1">
                 In the exercises tab, you can add an exercise and enter your{" "}
                 <span className="highlighted-text">1 rep max (1RM),</span> as
                 well as choose the equipment (bar, dumbbell or kettlebell) that
@@ -84,7 +84,7 @@ export default function Home() {
               <h2 className="text-3xl text-mainBlue text-center md:text-start mb-2">
                 Workouts
               </h2>
-              <p className="leading-7 md:text-start text-center">
+              <p className="leading-7 md:text-start text-center p-1">
                 In the workouts tab, you can{" "}
                 <span className="highlighted-text">
                   create your own workouts
