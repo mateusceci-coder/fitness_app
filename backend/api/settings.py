@@ -101,7 +101,11 @@ DJOSER = {
 }
 
 # CORS (Cross-Origin Resource Sharing) remove when going to production
-CORS_ALLOW_ALL_ORIGINS = True  # Em ambiente de desenvolvimento
+CORS_ALLOWED_ORIGINS = [
+    'https://fitness-app-1.onrender.com'
+]
+
+
 CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
