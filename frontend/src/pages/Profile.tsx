@@ -8,6 +8,8 @@ import ProfileInfo from "@/layouts/profile/ProfileInfo";
 import { RootReducer } from "@/store/store";
 import Loading from "./Loading";
 
+//teste
+
 export default function Profile() {
   const [userData, setUserData] = useState({} as dataUser)
   const [isLoading, setIsLoading] = useState(true)
