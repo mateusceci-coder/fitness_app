@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { exercisesHome, profileHome, workoutHome } from "@/images/imagesUrl";
 import Footer from "@/layouts/Footer";
 
 export default function Home() {
@@ -32,7 +31,7 @@ export default function Home() {
         <div className="flex flex-col">
           <article className="grid md:grid-cols-2 gap-2 article mb-12 md:mb-2">
             <img
-              src={profileHome}
+              src="images/profile-card.jpg"
               alt="Profile Image"
               className="w-112 md:w-152 mx-auto"
             />
@@ -75,7 +74,7 @@ export default function Home() {
               </p>
             </div>
             <img
-              src={exercisesHome}
+              src="/images/exercises-card.jpg"
               alt="Exercises Card"
               className="w-112 md:w-152 mx-auto"
             />
@@ -97,7 +96,7 @@ export default function Home() {
               </p>
             </div>
             <img
-              src={workoutHome}
+              src="/images/workouts-card.jpg"
               alt="Workouts Card"
               className="md:order-1 w-112 md:w-152 mx-auto"
             />
