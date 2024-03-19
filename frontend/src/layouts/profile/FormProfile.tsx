@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -66,10 +66,7 @@ const formSchema = z.object({
   }),
   profile_picture: z
     .any()
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max image size is 5MB.`
-    )
+    .refine((files) => files?.[0]?.size < MAX_FILE_SIZE)
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
       "Only .jpg, .jpeg, .png and .webp formats are supported."
@@ -106,6 +103,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     },
   });
 
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
@@ -115,14 +113,17 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     formData.append("weight", values.weight.toString());
     formData.append("gender", values.gender);
 
+
     if (selectedImage) {
-      formData.append("profile_picture", selectedImage);
+      formData.append("profile_picture", selectedImage)
     }
     updateUser(formData, dataUser.id);
 
-    dispatch(isUpdating(true));
 
-    window.location.href = "/profile";
+    setTimeout(() => {
+      dispatch(isUpdating(true));
+      window.location.href = "/profile";
+    }, 2000);
   }
 
   return (
