@@ -120,9 +120,11 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     }
     updateUser(formData, dataUser.id);
 
-    dispatch(isUpdating(true));
+    setTimeout(() => {
+      dispatch(isUpdating(true));
+      window.location.href = "/profile";
+    }, 2000);
 
-    window.location.href = "/profile";
   }
 
   return (
