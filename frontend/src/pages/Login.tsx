@@ -36,7 +36,7 @@ export default function Login() {
       });
 
       sessionStorage.setItem("auth_token", res.data.auth_token);
-      sessionStorage.setItem("username", username);
+      sessionStorage.getItem("username");
       toast.success("Logged in successfully!");
       setTimeout(() => {
         window.location.href = "/profile/";
@@ -62,6 +62,7 @@ export default function Login() {
           name="username"
           type="text"
           onChange={handleInputChange}
+          autoComplete="off"
           required
         />
         <Label htmlFor="password">Password:</Label>

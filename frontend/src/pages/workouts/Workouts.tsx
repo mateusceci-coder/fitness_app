@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 
 export default function Workouts() {
+  const loggedUser = sessionStorage.getItem("auth_token");
+
+  if (!loggedUser) {
+    return (window.location.href = "/login");
+  }
+
   return (
     <section>
       <header className="flex flex-col gap-4 items-center mt-5">
