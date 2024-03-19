@@ -19,7 +19,7 @@ export default function Signin() {
 
   const [samePassword, setSamePassword] = useState(true);
 
-  const { registerUser } = useRegister()
+  const { registerUser } = useRegister();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -38,12 +38,13 @@ export default function Signin() {
       return;
     }
     try {
-      const res = await registerUser(userData as RegisterData)
-      if (res.error) {
-        console.error(res.error)
-        return
+      const res = await registerUser(userData as RegisterData);
+      sessionStorage.setItem("username", userData.username);
+      if (res.meta.requestStatus === "rejected") {
+        console.log(res.payload);
+        return;
       }
-      navigate('/login')
+      navigate("/login");
     } catch (error) {
       console.error(error);
     }

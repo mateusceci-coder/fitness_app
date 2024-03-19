@@ -16,7 +16,7 @@ export const registerUserThunk = createAsyncThunk<
     toast.success("Registro realizado com sucesso!");
     return response.data;
   } catch (error) {
-    toast.error("Falha no registro");
+    toast.error("Registration Failure");
     if (axios.isAxiosError(error) && error.response) {
       const passwordErros = error.response.data.password;
       if (passwordErros) {
@@ -24,10 +24,12 @@ export const registerUserThunk = createAsyncThunk<
           toast.error(element);
         });
       } else {
-        toast.error(error.response.data.username || "Falha no registro");
+        toast.error(error.response.data.username || "Registration Failure");
       }
-      return rejectWithValue(error.response.data.error || "Falha no registro");
+      return rejectWithValue(
+        error.response.data.error || "Registration Failure"
+      );
     }
-    return rejectWithValue("Erro desconhecido ao fazer registro");
+    return rejectWithValue("Unknown error when registering");
   }
 });

@@ -38,7 +38,7 @@ export const createWorkoutThunkBB = createAsyncThunk(
           error.response.data.error || "Registration Failed"
         );
       }
-      return rejectWithValue("Erro desconhecido ao fazer registro");
+      return rejectWithValue("Unknown error when registering");
     }
   }
 );
