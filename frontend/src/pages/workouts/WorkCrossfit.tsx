@@ -62,7 +62,7 @@ export default function WorkCrossfit() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/workouts/crossfit/`,
+        `https://fitness-app-y9fc.onrender.com/api/workouts/crossfit/`,
         {
           headers: {
             Authorization: `Token ${sessionStorage.getItem("auth_token")}`,
