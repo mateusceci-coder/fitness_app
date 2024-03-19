@@ -40,8 +40,8 @@ export default function Signin() {
     try {
       const res = await registerUser(userData as RegisterData)
       sessionStorage.setItem("username", userData.username)
-      if (res.error) {
-        console.error(res.error)
+      if(res.meta.requestStatus === 'rejected') {
+        console.log(res.payload)
         return
       }
       navigate('/login')
