@@ -4,6 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import { ChangeEvent, useState } from "react";
 import { useRegister } from "@/api/register/useRegister";
 import { RegisterData } from "@/api/register/types";
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -14,6 +15,7 @@ export default function Signin() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const [samePassword, setSamePassword] = useState(true);
 
@@ -36,8 +38,12 @@ export default function Signin() {
       return;
     }
     try {
-      registerUser(userData as RegisterData);
-      window.location.href = "/login";
+      const res = await registerUser(userData as RegisterData)
+      if (res.error) {
+        console.error(res.error)
+        return
+      }
+      navigate('/login')
     } catch (error) {
       console.error(error);
     }
@@ -51,6 +57,14 @@ export default function Signin() {
         className="p-8 rounded-2xl w-96 bg-white shadow-2xl mb-16"
       >
         <h2 className="text-2xl text-center mb-10">Sign in</h2>
+        <Label htmlFor="username">Username:</Label>
+        <Input
+          className="mb-8"
+          name="username"
+          type="text"
+          onChange={handleInputChange}
+          required
+        />
         <Label htmlFor="email">Email:</Label>
         <Input
           className="mb-8"
@@ -71,14 +85,6 @@ export default function Signin() {
         <Input
           className="mb-8"
           name="last_name"
-          type="text"
-          onChange={handleInputChange}
-          required
-        />
-        <Label htmlFor="username">Username:</Label>
-        <Input
-          className="mb-8"
-          name="username"
           type="text"
           onChange={handleInputChange}
           required

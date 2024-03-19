@@ -62,6 +62,7 @@ export default function Login() {
           name="username"
           type="text"
           onChange={handleInputChange}
+          autoComplete="username"
           required
         />
         <Label htmlFor="password">Password:</Label>
