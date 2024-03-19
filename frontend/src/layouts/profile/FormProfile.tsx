@@ -123,7 +123,7 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     setTimeout(() => {
       dispatch(isUpdating(true));
       window.location.href = "/profile";
-    }, 10000);
+    }, 5000);
 
   }
 
