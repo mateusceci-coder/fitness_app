@@ -11,12 +11,12 @@ describe("Testing Bodybuilding Exercises", () => {
         email: "testando@email.com",
       }
     );
-    cy.visit("http://localhost:5173/login");
+    cy.visit("https://fitness-app-1.onrender.com/login");
     cy.get('[data-test="username-login"]').type("mateusceci");
     cy.get('[data-test="password-login"]').type("asdf!@#$");
     cy.get("form").submit();
     cy.url().should("not.include", "/login");
-    cy.visit("http://localhost:5173/");
+    cy.visit("https://fitness-app-1.onrender.com/");
   });
 
   it("should not have a 'create your account' button", () => {
@@ -30,7 +30,7 @@ describe("Testing Bodybuilding Exercises", () => {
   it("should logout and have the create account and login buttons", () => {
     cy.get('[data-test="logout"]').click();
     cy.get('[data-test="confirm-logout"]').click();
-    cy.visit("http://localhost:5173/");
+    cy.visit("https://fitness-app-1.onrender.com/");
     cy.get("button").should("contain", "Create Your Account");
     cy.get("button").should("contain", "Login");
   });

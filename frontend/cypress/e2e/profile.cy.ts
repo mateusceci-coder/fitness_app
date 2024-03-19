@@ -11,7 +11,7 @@ describe("Login User", () => {
         email: "testando@email.com",
       }
     );
-    cy.visit("http://localhost:5173/login");
+    cy.visit("https://fitness-app-1.onrender.com/login");
     cy.get('[data-test="username-login"]').type("teste1234");
     cy.get('[data-test="password-login"]').type("asdf!@#$");
     cy.get("form").submit();
