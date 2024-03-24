@@ -20,10 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useDispatch } from "react-redux";
-import { isUpdating } from "@/store/reducers/profile";
-
-
 import { useState } from "react";
 import { useProfile } from "@/api/profile/useProfile";
 
@@ -89,7 +85,6 @@ export interface dataUser {
 }
 
 export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
-  const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { updateUser } = useProfile();
 
