@@ -12,6 +12,7 @@ export default function Profile() {
   const [userData, setUserData] = useState({} as dataUser);
   const [isLoading, setIsLoading] = useState(true);
   const username = sessionStorage.getItem("username");
+  console.log(username)
   const dispatch = useDispatch();
   const { updatingProfile } = useSelector(
     (state: RootReducer) => state.profile

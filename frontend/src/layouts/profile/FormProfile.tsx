@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -119,11 +119,11 @@ export default function FormProfile({ dataUser }: { dataUser: dataUser }) {
     }
     updateUser(formData, dataUser.id);
 
+    /* dispatch(isUpdating(true)); */
+    window.location.href = "/profile";
 
-    setTimeout(() => {
-      dispatch(isUpdating(true));
-      window.location.href = "/profile";
-    }, 2000);
+   /*  setTimeout(() => {
+    }, 2000); */
   }
 
   return (
